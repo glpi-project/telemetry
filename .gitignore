@@ -1,0 +1,5 @@
+/.vscode/
+/src/vendor/
+/src/public/node_modules/
+/src/cache/
+/src/logs/*.log

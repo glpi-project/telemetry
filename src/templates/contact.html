@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+   <h2 class="content-head is-center">Contact</h2>
+
+   <form class="pure-form pure-form-aligned">
+      <fieldset>
+         <div class="pure-control-group">
+            <label for="subject">Subject</label>
+            <input id="subject" type="text" placeholder="Your subject" required="required">
+         </div>
+
+         <div class="pure-control-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Your message" required="required"></textarea>
+         </div>
+
+         <div class="pure-controls">
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+         </div>
+      </fieldset>
+   </form>
+{% endblock %}

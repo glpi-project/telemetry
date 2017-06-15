@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="node_modules/purecss/build/pure-min.css" />
+      <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
+      <link rel="stylesheet" href="css/base.css" />
+
+      {% block head %}
+         <title>GLPI Telemetry - {% block title %}{% endblock %}</title>
+      {% endblock %}
+   </head>
+   <body>
+      <div class="header">
+         <div class="pure-menu pure-menu-horizontal">
+            <a class="pure-menu-heading" href="">GLPI Usage</a>
+
+            <ul class="pure-menu-list">
+               <li class="pure-menu-item pure-menu-selected">
+                  <a href="/" class="pure-menu-link">
+                     <i class='fa fa-bar-chart'></i>
+                     Telemetry</a></li>
+               <li class="pure-menu-item">
+                  <a href="/references" class="pure-menu-link">
+                     <i class='fa fa-users'></i>
+                     References</a></li>
+               <li class="pure-menu-item">
+                  <a href="/contact" class="pure-menu-link">
+                     <i class='fa fa-envelope-o'></i>
+                     Contact</a></li>
+            </ul>
+         </div>
+      </div>
+
+      <div class="content-wrapper">
+         <div id="content">{% block content %}{% endblock %}</div>
+      </div>
+
+      <div class="footer l-box is-center" id='footer'>
+         {% block footer %}
+            &copy; Copyright 2017 by <a href="http://glpi-project.org">GLPI</a>.
+         {% endblock %}
+      </div>
+    </body>
+</html>
