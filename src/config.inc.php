@@ -1,11 +1,17 @@
 <?php
 
-$config['db']['host']   = "localhost";
-$config['db']['user']   = "adelaunay";
-$config['db']['pass']   = "adelaunay";
-$config['db']['dbname'] = "glpi_telemetry";
-
-$config['debug'] = true;
-
-$config['displayErrorDetails'] = true;
-$config['addContentLengthHeader'] = false;
+return $config = [
+   'db' => [
+      'driver'    => "pgsql",
+      'host'      => "localhost",
+      'database'  => "glpi_telemetry",
+      'username'  => "adelaunay",
+      'password'  => "adelaunay",
+      'charset'   => 'utf8',
+      'collation' => 'utf8_unicode_ci',
+      'prefix'    => '',
+   ],
+   'debug' => true,
+   'displayErrorDetails' => true,
+   'addContentLengthHeader' => false,
+];

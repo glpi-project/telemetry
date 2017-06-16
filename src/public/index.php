@@ -1,24 +1,15 @@
 <?php
 
-require '../inc/init.php';
+require '../app/init.php';
 
 // route: default
-$app->get('/', function ($request, $response, $args) {
-   return $this->view->render($response, 'index.html');
-});
-
-$app->get('/contact', function ($request, $response, $args) {
-   return $this->view->render($response, 'contact.html');
-});
-
-$app->get('/references', function ($request, $response, $args) {
-   return $this->view->render($response, 'references.html');
-});
+$app->get('/',          'App\Controllers\Telemetry:view');
+$app->get('/telemetry', 'App\Controllers\Telemetry:view');
+$app->get('/contact',   'App\Controllers\Contact:view');
+$app->get('/reference', 'App\Controllers\Reference:view');
 
 // route: post json file
-$app->post('/send_json/', function (Request $request, Response $response) {
-    $data = $request->getParsedBody();
-});
+$app->post('/telemetry', 'App\Controllers\Telemetry:send');
 
 // run slim
 $app->run();

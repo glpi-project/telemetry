@@ -1,7 +1,13 @@
 {
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
     "require": {
         "slim/slim": "^3.8",
         "monolog/monolog": "^1.22",
-        "slim/twig-view": "^2.2"
+        "slim/twig-view": "^2.2",
+        "illuminate/database": "^5.4"
     }
 }

@@ -4,15 +4,10 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 // include user configuration
-require '../config.inc.php';
+$config = require __DIR__ .  '/../config.inc.php';
 
 // autoload composer libs
-require '../vendor/autoload.php';
-
-// manage our own classes
-spl_autoload_register(function ($classname) {
-   require ("./" . $classname . ".php");
-});
+require __DIR__ . '/../vendor/autoload.php';
 
 // init slim
 $app       = new \Slim\App(["settings" => $config]);
@@ -29,23 +24,32 @@ $container['logger'] = function($c) {
 
 // setup db connection
 $container['db'] = function ($container) {
-   $db  = $container['settings']['db'];
-   $pdo = new PDO("pgsql:host=".$db['host'].";dbname=" . $db['dbname'], $db['user'], $db['pass']);
-   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+   $capsule = new \Illuminate\Database\Capsule\Manager;
+   $capsule->addConnection($container['settings']['db']);
 
-   return $pdo;
+   $capsule->setAsGlobal();
+   $capsule->bootEloquent();
+
+   $capsule->getContainer()->singleton(
+      Illuminate\Contracts\Debug\ExceptionHandler::class,
+      App\Exceptions\Handler::class
+   );
+
+   return $capsule;
 };
+
+$app->getContainer()->get("db");
 
 // setup twig
 $container['view'] = function ($container) {
-   $view = new \Slim\Views\Twig('../templates', [
-      'cache' => $container['settings']['debug'] ? false : '../cache'
+   $view = new \Slim\Views\Twig('../app/Templates', [
+      'cache' => $container['settings']['debug'] ? false : '../app/Templates/Cache'
    ]);
 
    // Instantiate and add Slim specific extension
    $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+   $view->addExtension(new Twig_Extension_Debug());
 
    return $view;
 };
