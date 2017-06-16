@@ -1,5 +1,29 @@
-{% extends "base.html" %}
+{% extends "partials/base.html" %}
 {% block title %}References{% endblock %}
 {% block content %}
    <h2 class="content-head is-center">References</h2>
+
+   <table class="pure-table">
+      <thead>
+         <tr>
+            <td>Nom</td>
+            <td>Pays</td>
+            <td>Nb assets</td>
+            <td>Date inscription</td>
+         </tr>
+      </thead>
+      <tbody>
+         {% for reference in references %}
+         <tr>
+            <td>{{reference.name}}</td>
+            <td>{{reference.country}}</td>
+            <td>{{reference.num_assets}}</td>
+            <td>{{reference.date_creation}}</td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+
+   {{ references.render() |raw }}
+
 {% endblock %}

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS telemetry CASCADE;
 CREATE TABLE telemetry (
    id                             BIGSERIAL PRIMARY KEY,
-   date_creation                  TIMESTAMP,
+   date_creation                  TIMESTAMP DEFAULT NOW(),
    glpi_uuid                      VARCHAR(41),
    glpi_version                   VARCHAR(25),
    glpi_default_language          VARCHAR(10),
@@ -74,4 +74,24 @@ CREATE TABLE telemetry_glpi_plugin (
    glpi_plugin_id                 INTEGER REFERENCES glpi_plugin (id),
    version                        VARCHAR(25)
 );
+
+
+
+DROP TABLE IF EXISTS reference CASCADE;
+CREATE TABLE reference (
+   id                             SERIAL PRIMARY KEY,
+   name                           VARCHAR(255),
+   country                        VARCHAR(10),
+   comment                        TEXT,
+   num_assets                     INTEGER,
+   num_helpdesk                   INTEGER,
+   email                          VARCHAR(255),
+   phone                          VARCHAR(30),
+   url                            VARCHAR(255),
+   referent                       VARCHAR(255),
+   date_creation                  TIMESTAMP DEFAULT NOW(),
+   is_displayed                   BOOLEAN
+);
+
+
 

@@ -9,6 +9,7 @@
         "slim/slim": "^3.8",
         "monolog/monolog": "^1.22",
         "slim/twig-view": "^2.2",
-        "illuminate/database": "^5.4"
+        "illuminate/database": "~5.2.0",
+        "illuminate/pagination": "~5.2.0"
     }
 }
