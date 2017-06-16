@@ -1,5 +1,6 @@
 /.vscode/
 /src/vendor/
 /src/public/node_modules/
-/src/templates/cache/*/
+/src/app/Templates/Cache/*
+!/src/app/Templates/Cache/.gitkeep
 /src/logs/*.log
