@@ -16,7 +16,7 @@ $container = $app->getContainer();
 // setup monolog
 $container['logger'] = function($c) {
    $logger       = new \Monolog\Logger('my_logger');
-   $file_handler = new \Monolog\Handler\StreamHandler("../logs/app.log");
+   $file_handler = new \Monolog\Handler\StreamHandler("../data/logs/app.log");
    $logger->pushHandler($file_handler);
 
    return $logger;
@@ -25,7 +25,7 @@ $container['logger'] = function($c) {
 // setup twig
 $container['view'] = function ($container) {
    $view = new \Slim\Views\Twig('../app/Templates', [
-      'cache' => $container['settings']['debug'] ? false : '../app/Templates/Cache'
+      'cache' => $container['settings']['debug'] ? false : '../data/cache'
    ]);
 
    // Instantiate and add Slim specific extension
