@@ -1,4 +1,4 @@
-DROP TABLE telemetry CASCADE;
+DROP TABLE IF EXISTS telemetry CASCADE;
 CREATE TABLE telemetry (
    id                             BIGSERIAL PRIMARY KEY,
    date_creation                  TIMESTAMP,
@@ -35,7 +35,7 @@ CREATE TABLE telemetry (
    os_version                     VARCHAR(255)
 );
 
-DROP TABLE glpi_plugin CASCADE;
+DROP TABLE IF EXISTS glpi_plugin CASCADE;
 CREATE TABLE glpi_plugin (
    id                             SERIAL PRIMARY KEY,
    pkey                           VARCHAR(50)
@@ -68,7 +68,7 @@ INSERT INTO glpi_plugin (pkey) VALUES
 ('service'), ('modifications'), ('credit'), ('myassets'), ('xivo');
 
 
-DROP TABLE telemetry_glpi_plugin CASCADE;
+DROP TABLE IF EXISTS telemetry_glpi_plugin CASCADE;
 CREATE TABLE telemetry_glpi_plugin (
    telemetry_entry_id             BIGINT REFERENCES telemetry (id),
    glpi_plugin_id                 INTEGER REFERENCES glpi_plugin (id),
