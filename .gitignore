@@ -4,3 +4,4 @@
 /src/app/Templates/Cache/*
 !/src/app/Templates/Cache/.gitkeep
 /src/logs/*.log
+/src/config.inc.php
