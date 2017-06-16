@@ -22,24 +22,6 @@ $container['logger'] = function($c) {
    return $logger;
 };
 
-// setup db connection
-$container['db'] = function ($container) {
-   $capsule = new \Illuminate\Database\Capsule\Manager;
-   $capsule->addConnection($container['settings']['db']);
-
-   $capsule->setAsGlobal();
-   $capsule->bootEloquent();
-
-   $capsule->getContainer()->singleton(
-      Illuminate\Contracts\Debug\ExceptionHandler::class,
-      App\Exceptions\Handler::class
-   );
-
-   return $capsule;
-};
-
-$app->getContainer()->get("db");
-
 // setup twig
 $container['view'] = function ($container) {
    $view = new \Slim\Views\Twig('../app/Templates', [
@@ -53,3 +35,8 @@ $container['view'] = function ($container) {
 
    return $view;
 };
+
+// setup db connection
+$capsule = new Illuminate\Database\Capsule\Manager;
+$capsule->addConnection($container->get('settings')['db']);
+$capsule->bootEloquent();
