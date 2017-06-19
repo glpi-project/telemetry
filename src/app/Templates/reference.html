@@ -1,9 +1,11 @@
 {% extends "partials/base.html" %}
 {% block title %}References{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="node_modules/country-flags-sass/flags.css" />
+{% endblock %}
+
 {% block content %}
-
-
-
 <div class="page-header">
    <div class="container">
       <h1>References</h1>
@@ -15,77 +17,85 @@
    <div class="row">
 
       <div class="col">
+         <div class="card">
+            <div class="card-header">Register your own instance</div>
+            <div class="card-block">
+               <form>
+                  <div class="form-group">
+                     <label class="sr-only" for="name">Name</label>
+                     <input class="form-control form-control-sm" id="name" type="text"
+                           required="required"
+                           placeholder="Your name">
+                  </div>
 
-         <h4>Register your own instance</h4>
+                  <div class="form-group">
+                     <label class="sr-only" for="url">Url</label>
+                     <input class="form-control form-control-sm" id="url" type="url"
+                           placeholder="URL">
+                  </div>
 
-         <form>
-            <div class="form-group">
-               <label class="sr-only" for="name">Name</label>
-               <input class="form-control form-control-sm" id="name" type="text"
-                     required="required"
-                     placeholder="Your name">
+                  <div class="form-group">
+                     <label class="sr-only" for="country">Country</label>
+                     <select class="form-control"
+                           id="countries_select"
+                           placeholder="Country">
+                        <option></option>
+                        {% for country in countries %}
+                        <option value="{{country.cca2}}">{{country.name.common}}</option>
+                        {% endfor %}
+                     </select>
+                  </div>
+
+                  <div class="form-group">
+                     <label class="sr-only" for="phone">Phone</label>
+                     <input class="form-control form-control-sm" id="phone" type="text"
+                           placeholder="Phone">
+                  </div>
+
+                  <div class="form-group">
+                     <label class="sr-only" for="email">Email</label>
+                     <input class="form-control form-control-sm" id="email" type="email"
+                           placeholder="Email">
+                  </div>
+
+                  <div class="form-group">
+                     <label class="sr-only" for="referent">Referent</label>
+                     <input class="form-control form-control-sm" id="referent" type="text"
+                           placeholder="Referent">
+                  </div>
+
+                  <div class="form-group">
+                     <label class="sr-only" for="num_assets">Number of asset</label>
+                     <input class="form-control form-control-sm" id="num_assets" type="number"
+                           placeholder="Number of asset">
+                  </div>
+
+                  <div class="form-group">
+                     <label class="sr-only" for="num_helpdesk">Number of helpdesk entries</label>
+                     <input class="form-control form-control-sm" id="num_helpdesk" type="number"
+                           placeholder="Number of helpdesk entries">
+                  </div>
+
+                  <div class="form-group">
+                     <label class="sr-only" for="comment">Comment</label>
+                     <textarea class="form-control form-control-sm" id="comment"
+                              placeholder="Your message"></textarea>
+                  </div>
+
+                  <button type="submit" class="btn btn-outline-primary">Register</button>
+               </form>
             </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="url">Url</label>
-               <input class="form-control form-control-sm" id="url" type="url"
-                     placeholder="URL">
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="country">Country</label>
-               TODO COUNTRY
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="phone">Phone</label>
-               <input class="form-control form-control-sm" id="phone" type="text"
-                     placeholder="Phone">
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="email">Email</label>
-               <input class="form-control form-control-sm" id="email" type="email"
-                     placeholder="Email">
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="referent">Referent</label>
-               <input class="form-control form-control-sm" id="referent" type="text"
-                     placeholder="Referent">
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="num_assets">Number of asset</label>
-               <input class="form-control form-control-sm" id="num_assets" type="number"
-                     placeholder="Number of asset">
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="num_helpdesk">Number of helpdesk entries</label>
-               <input class="form-control form-control-sm" id="num_helpdesk" type="number"
-                     placeholder="Number of helpdesk entries">
-            </div>
-
-            <div class="form-group">
-               <label class="sr-only" for="comment">Comment</label>
-               <textarea class="form-control form-control-sm" id="comment"
-                        placeholder="Your message"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-         </form>
-
+         </div>
       </div>
 
       <div class="col-12  col-md-auto">
 
          <h4>They already have registered their GLPI installation</h4>
 
-         <table class="table table-striped">
+         <table class="table table-striped table-sm table-responsive">
             <thead>
                <tr>
-                  <td>Nom</td>
+                  <td><aNom</td>
                   <td>Pays</td>
                   <td>Nb assets</td>
                   <td>Date inscription</td>
@@ -95,7 +105,9 @@
                {% for reference in references %}
                <tr>
                   <td>{{reference.name}}</td>
-                  <td>{{reference.country}}</td>
+                  <td>
+                     <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
+                  </td>
                   <td>{{reference.num_assets}}</td>
                   <td>{{reference.date_creation}}</td>
                </tr>
@@ -110,5 +122,23 @@
    </div>
 
 </div>
+{% endblock %}
 
+{% block userscripts %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+   var countries_s2 = $("#countries_select").select2({
+      templateSelection: formatState,
+      templateResult: formatState,
+      placeholder: "Country"
+   });
+
+   getCountryCode.done(function(result) {
+      countries_s2
+         .val(result.country_code)
+         .trigger("change")
+   });
+});
+</script>
 {% endblock %}

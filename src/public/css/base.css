@@ -1,5 +1,3 @@
-
-
 .page-header {
    padding: 2rem 15px;
    margin-bottom: 1.5rem;
@@ -49,4 +47,15 @@
 
 .footer-links li+li {
     margin-left: 1rem;
+}
+
+
+/** matches select2 style with boostrap **/
+.select2-container--default .select2-selection--single {
+   border: 1px solid rgba(0,0,0,.15);
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+   color: #636c72;
+   line-height: normal;
 }
