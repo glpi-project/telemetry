@@ -1,0 +1,52 @@
+
+
+.page-header {
+   padding: 2rem 15px;
+   margin-bottom: 1.5rem;
+   color: #fff;
+   text-align: center;
+   background-color: #25a2dd;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    font-weight: 400;
+    color: #fff;
+}
+
+@media (min-width: 576px) {
+   .page-header {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+      margin-bottom: 3rem;
+      text-align: left;
+   }
+}
+
+@media (min-width: 576px) {
+   .page-footer {
+      text-align: left;
+   }
+}
+
+.page-footer {
+    padding: 4rem 0;
+    margin-top: 4rem;
+    font-size: 85%;
+    text-align: center;
+    background-color: #f7f7f7;
+}
+
+
+.page-footer a {
+   font-weight: 500;
+   color: #464a4c;
+}
+
+.footer-links li {
+    display: inline-block;
+}
+
+.footer-links li+li {
+    margin-left: 1rem;
+}

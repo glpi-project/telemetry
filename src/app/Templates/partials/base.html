@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="node_modules/purecss/build/pure-min.css" />
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="node_modules/tether/dist/css/tether.min.css" />
       <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
       <link rel="stylesheet" href="css/base.css" />
 
@@ -11,35 +14,14 @@
       {% endblock %}
    </head>
    <body>
-      <div class="header">
-         <div class="pure-menu pure-menu-horizontal">
-            <a class="pure-menu-heading" href="">GLPI Usage</a>
+      {% include "partials/nav.html" %}
 
-            <ul class="pure-menu-list">
-               <li class="pure-menu-item pure-menu-selected">
-                  <a href="/telemetry" class="pure-menu-link">
-                     <i class='fa fa-bar-chart'></i>
-                     Telemetry</a></li>
-               <li class="pure-menu-item">
-                  <a href="/reference" class="pure-menu-link">
-                     <i class='fa fa-users'></i>
-                     References</a></li>
-               <li class="pure-menu-item">
-                  <a href="/contact" class="pure-menu-link">
-                     <i class='fa fa-envelope-o'></i>
-                     Contact</a></li>
-            </ul>
-         </div>
-      </div>
+      <div id="content">{% block content %}{% endblock %}</div>
 
-      <div class="content-wrapper">
-         <div id="content">{% block content %}{% endblock %}</div>
-      </div>
+      {% include "partials/footer.html" %}
 
-      <div class="footer l-box is-center" id='footer'>
-         {% block footer %}
-            &copy; Copyright 2017 by <a href="http://glpi-project.org">GLPI</a>.
-         {% endblock %}
-      </div>
+      <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+      <script src="node_modules/tether/dist/js/tether.min.js"></script>
+      <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     </body>
 </html>
