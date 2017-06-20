@@ -1,0 +1,17 @@
+{% extends "./partials/base.html" %}
+{% block title %}Server error{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Server Error !</h1>
+
+    <div class="alert alert-danger" role="alert">
+      <strong>Oh snap!</strong>
+      {{exception.message}}
+    </div>
+
+    <button class="btn" onclick="javascript:history.back()">Back</button>
+</div>
+
+{% endblock %}

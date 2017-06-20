@@ -73,6 +73,17 @@ $container[ReCaptcha::class] = function ($c) {
 $recaptcha = $app->getContainer()->get(Captcha::class);
 
 
+// error handling
+$container['errorHandler'] = function ($c) { //CUSTOM Error Handler
+   return function (\Slim\Http\Request $request,
+                    \Slim\Http\Response $response,
+                    $exception) use ($c) {
+      return $c['view']->render($response,
+                                "errors/server.html",
+                                ["exception" => $exception]);
+   };
+};
+
 // manage page parameter for Eloquent Paginator
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php
 Paginator::currentPageResolver(function ($pageName = 'page') {
