@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS telemetry CASCADE;
 CREATE TABLE telemetry (
    id                             BIGSERIAL PRIMARY KEY,
-   date_creation                  TIMESTAMP DEFAULT NOW(),
+   created_at                     TIMESTAMP DEFAULT NOW(),
+   updated_at                     TIMESTAMP DEFAULT NOW(),
    glpi_uuid                      VARCHAR(41),
    glpi_version                   VARCHAR(25),
    glpi_default_language          VARCHAR(10),
@@ -89,8 +90,9 @@ CREATE TABLE reference (
    phone                          VARCHAR(30),
    url                            VARCHAR(255),
    referent                       VARCHAR(255),
-   date_creation                  TIMESTAMP DEFAULT NOW(),
-   is_displayed                   BOOLEAN
+   created_at                     TIMESTAMP DEFAULT NOW(),
+   updated_at                     TIMESTAMP DEFAULT NOW(),
+   is_displayed                   BOOLEAN DEFAULT FALSE
 );
 
 

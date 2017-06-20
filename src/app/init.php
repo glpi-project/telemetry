@@ -21,7 +21,7 @@ $capsule->bootEloquent();
 
 // setup monolog
 $container['logger'] = function($c) {
-   $logger       = new \Monolog\Logger('my_logger');
+   $logger       = new \Monolog\Logger('telemetry');
    $file_handler = new \Monolog\Handler\StreamHandler("../data/logs/app.log");
    $logger->pushHandler($file_handler);
 
