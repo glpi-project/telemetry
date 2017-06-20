@@ -49,6 +49,15 @@
     margin-left: 1rem;
 }
 
+/** make boostrap alerts floating */
+.alert-fixed {
+  position:fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%
+  z-index:9999;
+  border-radius:0px
+}
 
 /** matches select2 style with boostrap **/
 .select2-container--default .select2-selection--single {

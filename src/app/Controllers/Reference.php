@@ -42,8 +42,12 @@ class Reference extends ControllerAbstract {
       $post['num_helpdesk'] = (int) $post['num_helpdesk'];
       $post['country']      = strtolower($post['country']);
 
-      // create in db
+      // create reference in db
       ReferenceModel::create($post);
+
+      // store a message for user (displayed after redirect)
+      $this->container->flash->addMessage('success',
+         'Your reference has been stored! An administrator will moderate if before display on the site.');
 
       // redirect to list
       return $res->withRedirect('/reference');

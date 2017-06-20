@@ -17,16 +17,20 @@
    <body>
       {% include "partials/nav.html" %}
 
-      <div id="content">{% block content %}{% endblock %}</div>
+      <div id="content">
+         {% block content %}{% endblock %}
+      </div>
 
       {% include "partials/footer.html" %}
 
       <script src="node_modules/jquery/dist/jquery.min.js"></script>
       <script src="node_modules/tether/dist/js/tether.min.js"></script>
       <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="node_modules/bootstrap-notify/bootstrap-notify.min.js"></script>
       <script src="node_modules/select2/dist/js/select2.min.js"></script>
       <script src="js/base.js"></script>
 
+      {% include "partials/alerts.html" %}
       {% block userscripts %}{% endblock %}
     </body>
 </html>

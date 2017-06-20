@@ -1,0 +1,21 @@
+<script type="text/javascript">
+
+$(document).ready(function() {
+    {% for alert_type, alerts in flash() %}
+    {% for msg in alerts %}
+    $.notify({
+        icon: getAlertIcon('{{alert_type}}'),
+        message: '{{msg}}'
+    },{
+        // settings
+        type: '{{alert_type}}',
+        delay: getAlertDelay('{{alert_type}}'),
+        placement: {
+            from: 'bottom'
+        }
+    });
+
+    {% endfor %}
+    {% endfor %}
+});
+</script>

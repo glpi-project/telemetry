@@ -4,6 +4,9 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Illuminate\Pagination\Paginator;
 
+// Start PHP session
+session_start();
+
 // include user configuration
 $config = require __DIR__ .  '/../config.inc.php';
 
@@ -28,15 +31,27 @@ $container['logger'] = function($c) {
    return $logger;
 };
 
+//setup flash messages
+$container['flash'] = function () {
+    return new \Slim\Flash\Messages();
+};
+
 // setup twig
 $container['view'] = function ($container) {
    $view = new \Slim\Views\Twig('../app/Templates', [
-      'cache' => $container['settings']['debug'] ? false : '../data/cache'
+      'cache' => $container['settings']['debug'] ? false : '../data/cache',
+      'debug' => $container['settings']['debug']
    ]);
 
    // Instantiate and add Slim specific extension
    $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+   $view->addExtension(new Knlv\Slim\Views\TwigMessages(
+      new Slim\Flash\Messages()
+   ));
+   if ($container['settings']['debug']) {
+      $view->addExtension(new Twig_Extension_Debug());
+   }
 
    return $view;
 };

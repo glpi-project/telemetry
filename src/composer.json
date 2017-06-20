@@ -11,6 +11,8 @@
         "slim/twig-view": "^2.2",
         "illuminate/database": "~5.2.0",
         "illuminate/pagination": "~5.2.0",
-        "mledoze/countries": "^1.8"
+        "mledoze/countries": "^1.8",
+        "slim/flash": "^0.2.0",
+        "kanellov/slim-twig-flash": "^0.2.0"
     }
 }
