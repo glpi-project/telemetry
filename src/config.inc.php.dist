@@ -11,6 +11,10 @@ return $config = [
       'collation' => 'utf8_unicode_ci',
       'prefix'    => '',
    ],
+   'recaptcha' => [
+      'sitekey'   => '',
+      'secret'    => ''
+   ],
    'debug' => true,
    'displayErrorDetails' => true,
    'addContentLengthHeader' => false,

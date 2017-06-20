@@ -13,6 +13,8 @@
         "illuminate/pagination": "~5.2.0",
         "mledoze/countries": "^1.8",
         "slim/flash": "^0.2.0",
-        "kanellov/slim-twig-flash": "^0.2.0"
+        "kanellov/slim-twig-flash": "^0.2.0",
+        "google/recaptcha": "^1.1",
+        "geggleto/psr7-recaptcha": "^0.0.1"
     }
 }

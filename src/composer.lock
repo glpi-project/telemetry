@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "41d9d6ccfa5340d125bb01cc9d48c791",
+    "content-hash": "d0f9a62a6e867ff15d911329ae07b6d2",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -103,6 +103,96 @@
                 "string"
             ],
             "time": "2015-11-06T14:35:42+00:00"
+        },
+        {
+            "name": "geggleto/psr7-recaptcha",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geggleto/psr7-recaptcha.git",
+                "reference": "648c0e62c12289892d88b5165c5bce6f50213c6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geggleto/psr7-recaptcha/zipball/648c0e62c12289892d88b5165c5bce6f50213c6a",
+                "reference": "648c0e62c12289892d88b5165c5bce6f50213c6a",
+                "shasum": ""
+            },
+            "require": {
+                "google/recaptcha": "~1.1",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0",
+                "slim/slim": "^3.0-RC2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Geggleto\\Service\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Glenn Eggleton",
+                    "email": "geggleto@gmail.com"
+                }
+            ],
+            "keywords": [
+                "framework",
+                "middleware",
+                "slim"
+            ],
+            "time": "2015-11-16T15:35:16+00:00"
+        },
+        {
+            "name": "google/recaptcha",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/recaptcha.git",
+                "reference": "5a56d15ca10a7b75158178752b2ad8f755eb4f78"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/recaptcha/zipball/5a56d15ca10a7b75158178752b2ad8f755eb4f78",
+                "reference": "5a56d15ca10a7b75158178752b2ad8f755eb4f78",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ReCaptcha\\": "src/ReCaptcha"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Client library for reCAPTCHA, a free service that protect websites from spam and abuse.",
+            "homepage": "http://www.google.com/recaptcha/",
+            "keywords": [
+                "Abuse",
+                "captcha",
+                "recaptcha",
+                "spam"
+            ],
+            "time": "2017-03-09T18:44:34+00:00"
         },
         {
             "name": "illuminate/container",

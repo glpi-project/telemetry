@@ -3,6 +3,8 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use Illuminate\Pagination\Paginator;
+use Geggleto\Service\Captcha;
+use ReCaptcha\ReCaptcha;
 
 // Start PHP session
 session_start();
@@ -53,8 +55,23 @@ $container['view'] = function ($container) {
       $view->addExtension(new Twig_Extension_Debug());
    }
 
+   // add some global to view
+   $view->getEnvironment()
+      // add recaptcha sitekey
+      ->addGlobal('recaptchasitekey', $container['settings']['recaptcha']['sitekey']);
+
    return $view;
 };
+
+//setup recaptcha
+$container[Captcha::class] = function ($c) {
+   return new Captcha($c[ReCaptcha::class]);
+};
+$container[ReCaptcha::class] = function ($c) {
+   return new ReCaptcha($c['settings']['recaptcha']['secret']);
+};
+$recaptcha = $app->getContainer()->get(Captcha::class);
+
 
 // manage page parameter for Eloquent Paginator
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php
