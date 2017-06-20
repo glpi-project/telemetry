@@ -26,6 +26,10 @@
   background-color: #87C38D
 }
 
+.error.page-header {
+  background-color: #E56665
+}
+
 @media (min-width: 576px) {
    .page-header {
       padding-top: 4rem;
