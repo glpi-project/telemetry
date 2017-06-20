@@ -9,135 +9,158 @@
 <div class="page-header">
    <div class="container">
       <h1>References</h1>
+      <p>
+        We maintain a public database of registered GLPI installations.
+        You may want register <a id="register" href="#" data-toggle="modal" data-target="#register_reference">your own</a> !
+      </p>
    </div>
 </div>
 
 <div class="container">
 
-   <div class="row">
+   <h4>They already have registered their GLPI installation</h4>
 
-      <div class="col">
-         <div class="card">
-            <div class="card-header">Register your own instance</div>
-            <div class="card-block">
-               <form method="post">
-                  <div class="form-group">
-                     <label class="sr-only" for="name">Name</label>
-                     <input class="form-control form-control-sm" type="text"
-                           required="required"
-                           name='name'
-                           placeholder="Your name">
-                  </div>
+   <table class="table table-striped table-responsive glpi_references">
+      <thead>
+         <tr>
+            <td>
+               {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href='/reference?orderby=name'>Nom</a>
+            </td>
+            <td>
+               {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href='/reference?orderby=country'>Pays</a>
+            </td>
+            <td>
+               {% if orderby == 'num_assets' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href='/reference?orderby=num_assets'># assets</a>
+            </td>
+            <td>
+               {% if orderby == 'num_helpdesk' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href='/reference?orderby=num_helpdesk'># helpdesk</a>
+            </td>
+            <td>
+               {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href='/reference?orderby=created_at'>Date inscription</a>
+            </td>
+            <td>
+               Comment
+            </td>
+         </tr>
+      </thead>
+      <tbody>
+         {% for reference in references %}
+         <tr>
+            <td>{{reference.name}}</td>
+            <td>
+               <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
+            </td>
+            <td>{{reference.num_assets}}</td>
+            <td>{{reference.num_helpdesk}}</td>
+            <td>{{reference.created_at}}</td>
+            <td>
+               <div class="elipsis" title="{{reference.comment}}">
+                  {{reference.comment}}
+               </div>
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="url">Url</label>
-                     <input class="form-control form-control-sm" type="url"
-                            name='url'
-                            placeholder="URL">
-                  </div>
+   <nav aria-label="Page navigation">
+      {{ references.render() |raw }}
+   </nav>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="country">Country</label>
-                     <select class="form-control"
-                             id="countries_select"
-                             name="country"
-                             placeholder="Country">
-                        <option></option>
-                        {% for country in countries %}
-                        <option value="{{country.cca2}}">{{country.name.common}}</option>
-                        {% endfor %}
-                     </select>
-                  </div>
+   <form method="post">
+   <div class="modal fade" id="register_reference">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Register your own instance</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                  <label class="sr-only" for="name">Name</label>
+                  <input class="form-control form-control-sm" type="text"
+                        required="required"
+                        name='name'
+                        placeholder="Your name">
+               </div>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="phone">Phone</label>
-                     <input class="form-control form-control-sm" type="text"
-                            name='phone'
-                            placeholder="Phone">
-                  </div>
+               <div class="form-group">
+                  <label class="sr-only" for="url">Url</label>
+                  <input class="form-control form-control-sm" type="url"
+                         name='url'
+                         placeholder="URL">
+               </div>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="email">Email</label>
-                     <input class="form-control form-control-sm" type="email"
-                            name="email"
-                            placeholder="Email">
-                  </div>
+               <div class="form-group">
+                  <label class="sr-only" for="country">Country</label>
+                  <select class="form-control"
+                          id="countries_select"
+                          name="country"
+                          placeholder="Country">
+                     <option></option>
+                     {% for country in countries %}
+                     <option value="{{country.cca2}}">{{country.name.common}}</option>
+                     {% endfor %}
+                  </select>
+               </div>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="referent">Referent</label>
-                     <input class="form-control form-control-sm" type="text"
-                            name="referent"
-                            placeholder="Referent">
-                  </div>
+               <div class="form-group">
+                  <label class="sr-only" for="phone">Phone</label>
+                  <input class="form-control form-control-sm" type="text"
+                         name='phone'
+                         placeholder="Phone">
+               </div>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="num_assets">Number of asset</label>
-                     <input class="form-control form-control-sm" type="number"
-                            name="num_assets"
-                            placeholder="Number of asset">
-                  </div>
+               <div class="form-group">
+                  <label class="sr-only" for="email">Email</label>
+                  <input class="form-control form-control-sm" type="email"
+                         name="email"
+                         placeholder="Email">
+               </div>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="num_helpdesk">Number of helpdesk entries</label>
-                     <input class="form-control form-control-sm" type="number"
-                            name="num_helpdesk"
-                            placeholder="Number of helpdesk entries">
-                  </div>
+               <div class="form-group">
+                  <label class="sr-only" for="referent">Referent</label>
+                  <input class="form-control form-control-sm" type="text"
+                         name="referent"
+                         placeholder="Referent">
+               </div>
 
-                  <div class="form-group">
-                     <label class="sr-only" for="comment">Comment</label>
-                     <textarea class="form-control form-control-sm"
-                               name="comment"
-                               placeholder="Your message"></textarea>
-                  </div>
+               <div class="form-group">
+                  <label class="sr-only" for="num_assets">Number of asset</label>
+                  <input class="form-control form-control-sm" type="number"
+                         name="num_assets"
+                         placeholder="Number of asset">
+               </div>
 
-                  <button type="submit" class="btn btn-outline-primary">Register</button>
-               </form>
+               <div class="form-group">
+                  <label class="sr-only" for="num_helpdesk">Number of helpdesk entries</label>
+                  <input class="form-control form-control-sm" type="number"
+                         name="num_helpdesk"
+                         placeholder="Number of helpdesk entries">
+               </div>
+
+               <div class="form-group">
+                  <label class="sr-only" for="comment">Comment</label>
+                  <textarea class="form-control form-control-sm"
+                            name="comment"
+                            placeholder="Your message"></textarea>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-outline-primary">Register</button>
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
          </div>
       </div>
-
-      <div class="col-12  col-md-auto">
-
-         <h4>They already have registered their GLPI installation</h4>
-
-         <table class="table table-striped table-sm table-responsive">
-            <thead>
-               <tr>
-                  <td>
-                     <a href='/reference?orderby=name'>Nom</a>
-                  </td>
-                  <td>
-                     <a href='/reference?orderby=country'>Pays</a>
-                  </td>
-                  <td>
-                     <a href='/reference?orderby=num_assets'>Nb assets</a>
-                  </td>
-                  <td>
-                     <a href='/reference?orderby=created_at'>Date inscription</a>
-                  </td>
-               </tr>
-            </thead>
-            <tbody>
-               {% for reference in references %}
-               <tr>
-                  <td>{{reference.name}}</td>
-                  <td>
-                     <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
-                  </td>
-                  <td>{{reference.num_assets}}</td>
-                  <td>{{reference.created_at}}</td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-
-         <nav aria-label="Page navigation">
-            {{ references.render() |raw }}
-         </nav>
-      </div>
    </div>
-
+   </form>
 </div>
 {% endblock %}
 
@@ -148,7 +171,8 @@ $(document).ready(function() {
    var countries_s2 = $("#countries_select").select2({
       templateSelection: formatState,
       templateResult: formatState,
-      placeholder: "Country"
+      placeholder: "Country",
+      width: '100%'
    });
 
    getCountryCode.done(function(result) {
@@ -156,6 +180,10 @@ $(document).ready(function() {
          .val(result.country_code)
          .trigger("change")
    });
+
+   $("#register").click(function() {
+
+   })
 });
 </script>
 {% endblock %}

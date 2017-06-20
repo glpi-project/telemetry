@@ -9,28 +9,45 @@ use Slim\Http\Response;
 class Reference extends ControllerAbstract {
 
    public function view(Request $req,  Response $res) {
-      $orderby = "created_at";
-      $sort    = "dec";
-      $get     = $req->getQueryParams();
-      if (isset($get['orderby'])) {
-         $orderby = $get['orderby'];
-      }
-      if (isset($get['sort'])) {
-         $sort = $get['sort'];
+      $get = $req->getQueryParams();
+
+      // default session param for this controller
+      if (!isset($_SESSION['reference'])) {
+         $_SESSION['reference'] = [
+            "orderby" => 'created_at',
+            "sort"    => "desc"
+         ];
       }
 
-      $references = ReferenceModel::orderBy($orderby, $sort)
+      // manage sorting
+      if (isset($get['orderby'])) {
+         if ($_SESSION['reference']['orderby'] == $get['orderby']) {
+            // toggle sort if orderby requested on the same column
+            $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
+                                                ? "asc"
+                                                : "desc");
+         }
+         $_SESSION['reference']['orderby'] = $get['orderby'];
+      }
+
+      // retrieve data from model
+      $references = ReferenceModel::where('is_displayed', true)
+                           ->orderBy($_SESSION['reference']['orderby'],
+                                     $_SESSION['reference']['sort'])
                            ->paginate(15);
 
+      // retrive countries in json from mledoze/countries package
       $countries_json = file_get_contents("../vendor/mledoze/countries/dist/countries.json");
       $countries      = json_decode($countries_json, true) ;
 
+      // render in twig view
       $this->render('reference.html', [
+         'class'      => 'reference',
          'references' => $references,
          'pagination' => $references->appends($_GET)->render(),
          'countries'  => $countries,
-         'orderby'    => $orderby,
-         'sort'       => $sort
+         'orderby'    => $_SESSION['reference']['orderby'],
+         'sort'       => $_SESSION['reference']['sort']
       ]);
    }
 
