@@ -18,6 +18,14 @@
   text-decoration: underline;
 }
 
+.reference .page-header {
+  background-color: #EF8E4F
+}
+
+.contact .page-header {
+  background-color: #87C38D
+}
+
 @media (min-width: 576px) {
    .page-header {
       padding-top: 4rem;

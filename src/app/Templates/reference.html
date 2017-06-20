@@ -18,18 +18,18 @@
 
 <div class="container">
 
-   <h4>They already have registered their GLPI installation</h4>
+   <h4>They already registered their GLPI installation</h4>
 
    <table class="table table-striped table-responsive glpi_references">
       <thead>
          <tr>
             <td>
                {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='/reference?orderby=name'>Nom</a>
+               <a href='/reference?orderby=name'>Name</a>
             </td>
             <td>
                {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='/reference?orderby=country'>Pays</a>
+               <a href='/reference?orderby=country'>Country</a>
             </td>
             <td>
                {% if orderby == 'num_assets' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
@@ -41,7 +41,7 @@
             </td>
             <td>
                {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='/reference?orderby=created_at'>Date inscription</a>
+               <a href='/reference?orderby=created_at'>Registration date</a>
             </td>
             <td>
                Comment
