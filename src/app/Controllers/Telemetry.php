@@ -24,11 +24,29 @@ class Telemetry  extends ControllerAbstract {
 
       // retrieve glpi versions
       $glpi_versions = TelemetryModel::select(
-            DB::raw("split_part(glpi_version, '.', 1) || '.' || split_part(glpi_version, '.', 2) as version,
-                     count(*) as total")
+            DB::raw("glpi_version as version, count(*) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
-         ->groupBy(DB::raw("version"))
+         ->groupBy(DB::raw("glpi_version"))
+         ->get()
+         ->toArray();
+
+      // retrieve top 5 plugins
+      $top_plugins = GlpiPluginModel::join( 'telemetry_glpi_plugin',
+                                            'glpi_plugin.id', '=', 'telemetry_glpi_plugin.glpi_plugin_id')
+         ->select(DB::raw("glpi_plugin.pkey, count(telemetry_glpi_plugin.*) as total"))
+         ->where('telemetry_glpi_plugin.created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->orderBy('total', 'desc')
+         ->groupBy(DB::raw("glpi_plugin.pkey"))
+         ->get()
+         ->toArray();
+
+      // retrieve os
+      $os_family = TelemetryModel::select(
+            DB::raw("os_family, count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("os_family"))
          ->get()
          ->toArray();
 
@@ -40,7 +58,16 @@ class Telemetry  extends ControllerAbstract {
          'glpi_versions' => json_encode([
             'labels' => array_column($glpi_versions, 'version'),
             'series' => array_column($glpi_versions, 'total')
-         ])
+         ]),
+         'top_plugins' => json_encode([
+            'labels' => array_column($top_plugins, 'pkey'),
+            'series' => array_column($top_plugins, 'total')
+         ]),
+         'os_family' => json_encode([
+            'labels' => array_column($os_family, 'os_family'),
+            'series' => array_column($os_family, 'total')
+         ]),
+
       ]);
 
       return $response;

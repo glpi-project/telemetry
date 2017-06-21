@@ -38,6 +38,26 @@
       {% include 'partials/chart.html' with vars %}
       </div>
 
+      <div class="col-sm-4">
+      {% set vars = {'chart': {
+                        'id':    'top_plugins',
+                        'title': 'Top plugins',
+                        'text':  '',
+                        'data':  top_plugins
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="col-sm-4">
+      {% set vars = {'chart': {
+                        'id':    'os_family',
+                        'title': 'Operating systems',
+                        'text':  '',
+                        'data':  os_family
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
    </div>
 </div>
 {% endblock %}
