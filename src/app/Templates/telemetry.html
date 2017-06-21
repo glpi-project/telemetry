@@ -22,7 +22,7 @@
       {% set vars = {'chart': {
                         'id':    'php_versions',
                         'title': 'PHP versions',
-                        'text':  '',
+                        'text':  'grouped on major versions',
                         'data':  php_versions
                      }} %}
       {% include 'partials/chart.html' with vars %}
@@ -32,7 +32,7 @@
       {% set vars = {'chart': {
                         'id':    'glpi_versions',
                         'title': 'GLPI versions',
-                        'text':  '',
+                        'text':  'Note: we don&apos;t have any data for glpi versions inferior to 9.2',
                         'data':  glpi_versions
                      }} %}
       {% include 'partials/chart.html' with vars %}
@@ -42,7 +42,7 @@
       {% set vars = {'chart': {
                         'id':    'top_plugins',
                         'title': 'Top plugins',
-                        'text':  '',
+                        'text':  'Only the top 5 is displayed',
                         'data':  top_plugins
                      }} %}
       {% include 'partials/chart.html' with vars %}
@@ -52,7 +52,7 @@
       {% set vars = {'chart': {
                         'id':    'os_family',
                         'title': 'Operating systems',
-                        'text':  '',
+                        'text':  'Family of operatings systems',
                         'data':  os_family
                      }} %}
       {% include 'partials/chart.html' with vars %}
