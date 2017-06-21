@@ -23,6 +23,8 @@ CREATE TABLE telemetry (
    db_size                        BIGINT,
    db_log_size                    BIGINT,
    db_sql_mode                    TEXT,
+   web_engine                     VARCHAR(25),
+   web_version                    VARCHAR(25),
    php_version                    VARCHAR(25),
    php_modules                    TEXT,
    php_config_max_execution_time  INTEGER,
@@ -39,7 +41,9 @@ CREATE TABLE telemetry (
 DROP TABLE IF EXISTS glpi_plugin CASCADE;
 CREATE TABLE glpi_plugin (
    id                             SERIAL PRIMARY KEY,
-   pkey                           VARCHAR(50)
+   pkey                           VARCHAR(50),
+   created_at                     TIMESTAMP DEFAULT NOW(),
+   updated_at                     TIMESTAMP DEFAULT NOW()
 );
 
 INSERT INTO glpi_plugin (pkey) VALUES
@@ -71,9 +75,12 @@ INSERT INTO glpi_plugin (pkey) VALUES
 
 DROP TABLE IF EXISTS telemetry_glpi_plugin CASCADE;
 CREATE TABLE telemetry_glpi_plugin (
+   id                             SERIAL PRIMARY KEY,
    telemetry_entry_id             BIGINT REFERENCES telemetry (id),
    glpi_plugin_id                 INTEGER REFERENCES glpi_plugin (id),
-   version                        VARCHAR(25)
+   version                        VARCHAR(25),
+   created_at                     TIMESTAMP DEFAULT NOW(),
+   updated_at                     TIMESTAMP DEFAULT NOW()
 );
 
 
