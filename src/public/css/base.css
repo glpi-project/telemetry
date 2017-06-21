@@ -1,33 +1,49 @@
 .page-header {
    padding: 2rem 15px;
-   margin-bottom: 1.5rem;
+   margin: 0 -10px 1.5rem -10px;
    color: #fff;
    text-align: center;
    background-color: #25a2dd;
+   box-shadow: inset 0 1px 8px 0 rgba(0,0,0,.5);
+
 }
 
 .page-header h1 {
-    font-size: 3rem;
-    font-weight: 400;
-    color: #fff;
+   font-size: 3rem;
+   font-weight: 400;
+   color: #fff;
 }
 
 .page-header a {
-  font-weight: bolder;
-  color: #FFF;
-  text-decoration: underline;
+   font-weight: bolder;
+   color: #FFF;
+   text-decoration: underline;
 }
 
 .reference .page-header {
-  background-color: #EF8E4F
+   background-color: #EF8E4F
 }
 
 .contact .page-header {
-  background-color: #87C38D
+   background-color: #87C38D
 }
 
 .error.page-header {
-  background-color: #E56665
+   background-color: #E56665
+}
+
+#content {
+   background-color: #EAF2F9;
+   padding-bottom: 4rem;
+}
+
+.reference #content {
+   background-color: #FFF7F0
+}
+
+
+.contact #content {
+   background-color: #E9F7E9
 }
 
 @media (min-width: 576px) {
@@ -46,11 +62,10 @@
 }
 
 .page-footer {
-    padding: 4rem 0;
-    margin-top: 4rem;
-    font-size: 85%;
-    text-align: center;
-    background-color: #f7f7f7;
+   padding: 4rem 0;
+   font-size: 85%;
+   text-align: center;
+   background-color: #f7f7f7;
 }
 
 
@@ -60,38 +75,42 @@
 }
 
 .footer-links li {
-    display: inline-block;
+   display: inline-block;
 }
 
 .footer-links li+li {
-    margin-left: 1rem;
+   margin-left: 1rem;
+}
+
+table.table {
+   background-color: #FFF;
 }
 
 table.glpi_references th,
 table.glpi_references td {
-  max-width: 300px;
+   max-width: 300px;
 }
 
 .elipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
 }
 
 #register_reference {
-  display: none;
+   display: none;
 }
 
 td.sort
 
 /** make boostrap alerts floating */
 .alert-fixed {
-  position:fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%
-  z-index:9999;
-  border-radius:0px
+   position:fixed;
+   top: 0px;
+   left: 0px;
+   width: 100%
+   z-index:9999;
+   border-radius:0px
 }
 
 /** matches select2 style with boostrap **/
@@ -102,4 +121,9 @@ td.sort
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
    color: #636c72;
    line-height: normal;
+}
+
+/** charts **/
+.chart .card {
+   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }

@@ -20,7 +20,7 @@
 <div class="container">
 
    <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-4 chart">
       {% set vars = {'chart': {
                         'id':    'php_versions',
                         'title': 'PHP versions',
@@ -30,7 +30,7 @@
       {% include 'partials/chart.html' with vars %}
       </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-4 chart">
       {% set vars = {'chart': {
                         'id':    'glpi_versions',
                         'title': 'GLPI versions',
@@ -40,7 +40,7 @@
       {% include 'partials/chart.html' with vars %}
       </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-4 chart">
       {% set vars = {'chart': {
                         'id':    'top_plugins',
                         'title': 'Top plugins',
@@ -50,7 +50,7 @@
       {% include 'partials/chart.html' with vars %}
       </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-4 chart">
       {% set vars = {'chart': {
                         'id':    'os_family',
                         'title': 'Operating systems',
