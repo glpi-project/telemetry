@@ -37,6 +37,7 @@ class Telemetry  extends ControllerAbstract {
          ->select(DB::raw("glpi_plugin.pkey, count(telemetry_glpi_plugin.*) as total"))
          ->where('telemetry_glpi_plugin.created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
          ->orderBy('total', 'desc')
+         ->limit(5)
          ->groupBy(DB::raw("glpi_plugin.pkey"))
          ->get()
          ->toArray();
