@@ -1,17 +1,51 @@
 {% extends "partials/base.html" %}
-
 {% block title %}Telemetry{% endblock %}
-
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="node_modules/chartist/dist/chartist.min.css" />
+    <link rel="stylesheet" href="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css"></script>
+{% endblock %}
 {% block content %}
 
 <div class="page-header">
    <div class="container">
       <h1>Telemetry</h1>
-      Since version 9.2 of GLPI, we collect anonymous data from instance of voluntary users. Here is some representations of theses data.
+      Since version 9.2 of GLPI, we collect anonymous data from instance of voluntary users.
+      Here is some representations of theses data.
    </div>
 </div>
 
 <div class="container">
 
+   <div class="row">
+      <div class="col-sm-4">
+      {% set vars = {'chart': {
+                        'id':    'php_versions',
+                        'title': 'PHP versions',
+                        'text':  '',
+                        'data':  php_versions
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="col-sm-4">
+      {% set vars = {'chart': {
+                        'id':    'glpi_versions',
+                        'title': 'GLPI versions',
+                        'text':  '',
+                        'data':  glpi_versions
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+   </div>
 </div>
+{% endblock %}
+
+{% block userscripts %}
+
+<script src="node_modules/chartist/dist/chartist.min.js"></script>
+<script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<script src="js/telemetry.js"></script>
+
 {% endblock %}

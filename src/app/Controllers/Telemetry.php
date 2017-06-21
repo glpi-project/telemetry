@@ -2,6 +2,7 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Illuminate\Database\Capsule\Manager as DB;
 
 use App\Models\Telemetry  as TelemetryModel;
 use App\Models\GlpiPlugin as GlpiPluginModel;
@@ -11,8 +12,36 @@ use App\Models\TelemetryGlpiPlugin;
 class Telemetry  extends ControllerAbstract {
 
    public function view(Request $request, Response $response) {
-      //$plugins = GlpiPluginModel::all()->toJson();
-      $this->render('telemetry.html');
+      // retrieve php versions
+      $php_versions = TelemetryModel::select(
+            DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
+                     count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("version"))
+         ->get()
+         ->toArray();
+
+      // retrieve glpi versions
+      $glpi_versions = TelemetryModel::select(
+            DB::raw("split_part(glpi_version, '.', 1) || '.' || split_part(glpi_version, '.', 2) as version,
+                     count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("version"))
+         ->get()
+         ->toArray();
+
+      $this->render('telemetry.html', [
+         'php_versions' => json_encode([
+            'labels' => array_column($php_versions, 'version'),
+            'series' => array_column($php_versions, 'total')
+         ]),
+         'glpi_versions' => json_encode([
+            'labels' => array_column($glpi_versions, 'version'),
+            'series' => array_column($glpi_versions, 'total')
+         ])
+      ]);
 
       return $response;
    }
@@ -53,7 +82,7 @@ class Telemetry  extends ControllerAbstract {
          'glpi_avg_users'                 => $json['glpi']['usage']['avg_users'],
          'glpi_avg_groups'                => $json['glpi']['usage']['avg_groups'],
          'glpi_ldap_enabled'              => (bool) $json['glpi']['usage']['ldap_enabled'],
-         'glpi_smtp_enabled'              => (bool) $json['glpi']['usage']['smtp_enabled'],
+         // 'glpi_smtp_enabled'              => (bool) $json['glpi']['usage']['smtp_enabled'],
          'glpi_mailcollector_enabled'     => (bool) $json['glpi']['usage']['mailcollector_enabled'],
          'db_engine'                      => $json['system']['db']['engine'],
          'db_version'                     => $json['system']['db']['version'],

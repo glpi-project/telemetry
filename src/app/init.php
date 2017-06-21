@@ -22,6 +22,7 @@ $container = $app->getContainer();
 // setup db connection
 $capsule = new Illuminate\Database\Capsule\Manager;
 $capsule->addConnection($container->get('settings')['db']);
+$capsule->setAsGlobal();
 $capsule->bootEloquent();
 
 // setup monolog

@@ -3,6 +3,8 @@
 {% block head %}
     {{ parent() }}
     <link rel="stylesheet" href="node_modules/country-flags-sass/flags.css" />
+    <link rel="stylesheet" href="node_modules/select2/dist/css/select2.min.css" />
+
 {% endblock %}
 
 {% block content %}
@@ -167,7 +169,11 @@
 
 {% block userscripts %}
 
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="node_modules/select2/dist/js/select2.min.js"></script>
+
 <script type="text/javascript">
+
 $(document).ready(function() {
    var countries_s2 = $("#countries_select").select2({
       templateSelection: formatState,
