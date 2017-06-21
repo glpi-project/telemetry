@@ -18,10 +18,10 @@ class Telemetry  extends ControllerAbstract {
    }
 
    public function send(Request $request, Response $response) {
-      $ctype     = $request->getHeader('Content-Type');
-      $json = $request->getParsedBody();
+      $ctype   = $request->getContentType();
+      $json    = $request->getParsedBody();
 
-      if (strpos('application/json', $ctype[0]) === false) {
+      if (strpos($ctype, 'application/json') === false) {
          return $response
             ->withStatus(400)
             ->withJson([
@@ -90,6 +90,9 @@ class Telemetry  extends ControllerAbstract {
 
       }
 
-      return $response;
+      return $response
+         ->withJson([
+            'message' => 'OK'
+         ]);
    }
 }
