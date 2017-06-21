@@ -75,8 +75,6 @@ class Telemetry  extends ControllerAbstract {
 
       $telemetry_m = TelemetryModel::create($data);
 
-      $this->container->logger->warning('telemetry_m', (array) $telemetry_m);
-
 
       // manage plugins
       foreach ($json['glpi']['plugins'] as $plugin) {
