@@ -12,6 +12,8 @@ use App\Models\TelemetryGlpiPlugin;
 class Telemetry  extends ControllerAbstract {
 
    public function view(Request $request, Response $response) {
+      $json_spec = file_get_contents("../misc/json.spec");
+
       // retrieve php versions
       $php_versions = TelemetryModel::select(
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
@@ -68,7 +70,7 @@ class Telemetry  extends ControllerAbstract {
             'labels' => array_column($os_family, 'os_family'),
             'series' => array_column($os_family, 'total')
          ]),
-
+         'json_data_example' => $json_spec
       ]);
 
       return $response;

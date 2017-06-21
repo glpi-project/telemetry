@@ -4,13 +4,15 @@
     {{ parent() }}
     <link rel="stylesheet" href="node_modules/chartist/dist/chartist.min.css" />
     <link rel="stylesheet" href="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css"></script>
+    <link rel="stylesheet" href="node_modules/prismjs/themes/prism.css"></script>
+
 {% endblock %}
 {% block content %}
 
 <div class="page-header">
    <div class="container">
       <h1>Telemetry</h1>
-      Since version 9.2 of GLPI, we collect anonymous data from instance of voluntary users.
+      Since version 9.2 of GLPI, we collect anonymous <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.
       Here is some representations of theses data.
    </div>
 </div>
@@ -60,12 +62,30 @@
 
    </div>
 </div>
+
+<div class="modal fade" id="json_data_example">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Example of Json data sended by GLPI</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <pre><code class="language-json">{{json_data_example | raw}}</pre>
+         </div>
+      </div>
+   </div>
+</div>
 {% endblock %}
 
 {% block userscripts %}
 
 <script src="node_modules/chartist/dist/chartist.min.js"></script>
 <script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<script src="node_modules/prismjs/prism.js"></script>
+<script src="node_modules/prismjs/components/prism-json.js"></script>
 <script src="js/telemetry.js"></script>
 
 {% endblock %}
