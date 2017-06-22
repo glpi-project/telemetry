@@ -134,6 +134,13 @@ td.sort
 }
 
 /** charts **/
+.chart {
+   transition: all 200ms;
+}
+
+.chart button i {
+   color: #CCC;
+}
 .chart .card {
    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }

@@ -1,0 +1,89 @@
+.chart .ct-series-a .ct-point, .chart .ct-series-a .ct-line, .chart .ct-series-a .ct-bar, .chart .ct-series-a .ct-slice-donut {
+  stroke: #A8DEFB; }
+
+.chart .ct-series-a .ct-slice-pie, .chart .ct-series-a .ct-slice-donut-solid, .chart .ct-series-a .ct-area {
+  fill: #A8DEFB; }
+
+.chart .ct-series-b .ct-point, .chart .ct-series-b .ct-line, .chart .ct-series-b .ct-bar, .chart .ct-series-b .ct-slice-donut {
+  stroke: #1f78b4; }
+
+.chart .ct-series-b .ct-slice-pie, .chart .ct-series-b .ct-slice-donut-solid, .chart .ct-series-b .ct-area {
+  fill: #1f78b4; }
+
+.chart .ct-series-c .ct-point, .chart .ct-series-c .ct-line, .chart .ct-series-c .ct-bar, .chart .ct-series-c .ct-slice-donut {
+  stroke: #b2df8a; }
+
+.chart .ct-series-c .ct-slice-pie, .chart .ct-series-c .ct-slice-donut-solid, .chart .ct-series-c .ct-area {
+  fill: #b2df8a; }
+
+.chart .ct-series-d .ct-point, .chart .ct-series-d .ct-line, .chart .ct-series-d .ct-bar, .chart .ct-series-d .ct-slice-donut {
+  stroke: #33a02c; }
+
+.chart .ct-series-d .ct-slice-pie, .chart .ct-series-d .ct-slice-donut-solid, .chart .ct-series-d .ct-area {
+  fill: #33a02c; }
+
+.chart .ct-series-e .ct-point, .chart .ct-series-e .ct-line, .chart .ct-series-e .ct-bar, .chart .ct-series-e .ct-slice-donut {
+  stroke: #fb9a99; }
+
+.chart .ct-series-e .ct-slice-pie, .chart .ct-series-e .ct-slice-donut-solid, .chart .ct-series-e .ct-area {
+  fill: #fb9a99; }
+
+.chart .ct-series-f .ct-point, .chart .ct-series-f .ct-line, .chart .ct-series-f .ct-bar, .chart .ct-series-f .ct-slice-donut {
+  stroke: #e31a1c; }
+
+.chart .ct-series-f .ct-slice-pie, .chart .ct-series-f .ct-slice-donut-solid, .chart .ct-series-f .ct-area {
+  fill: #e31a1c; }
+
+.chart .ct-series-g .ct-point, .chart .ct-series-g .ct-line, .chart .ct-series-g .ct-bar, .chart .ct-series-g .ct-slice-donut {
+  stroke: #fdbf6f; }
+
+.chart .ct-series-g .ct-slice-pie, .chart .ct-series-g .ct-slice-donut-solid, .chart .ct-series-g .ct-area {
+  fill: #fdbf6f; }
+
+.chart .ct-series-h .ct-point, .chart .ct-series-h .ct-line, .chart .ct-series-h .ct-bar, .chart .ct-series-h .ct-slice-donut {
+  stroke: #ff7f00; }
+
+.chart .ct-series-h .ct-slice-pie, .chart .ct-series-h .ct-slice-donut-solid, .chart .ct-series-h .ct-area {
+  fill: #ff7f00; }
+
+.chart .ct-series-i .ct-point, .chart .ct-series-i .ct-line, .chart .ct-series-i .ct-bar, .chart .ct-series-i .ct-slice-donut {
+  stroke: #f05b4f; }
+
+.chart .ct-series-i .ct-slice-pie, .chart .ct-series-i .ct-slice-donut-solid, .chart .ct-series-i .ct-area {
+  fill: #f05b4f; }
+
+.chart .ct-series-j .ct-point, .chart .ct-series-j .ct-line, .chart .ct-series-j .ct-bar, .chart .ct-series-j .ct-slice-donut {
+  stroke: #cab2d6; }
+
+.chart .ct-series-j .ct-slice-pie, .chart .ct-series-j .ct-slice-donut-solid, .chart .ct-series-j .ct-area {
+  fill: #cab2d6; }
+
+.chart .ct-series-k .ct-point, .chart .ct-series-k .ct-line, .chart .ct-series-k .ct-bar, .chart .ct-series-k .ct-slice-donut {
+  stroke: #6a3d9a; }
+
+.chart .ct-series-k .ct-slice-pie, .chart .ct-series-k .ct-slice-donut-solid, .chart .ct-series-k .ct-area {
+  fill: #6a3d9a; }
+
+.chart .ct-series-l .ct-point, .chart .ct-series-l .ct-line, .chart .ct-series-l .ct-bar, .chart .ct-series-l .ct-slice-donut {
+  stroke: #ffff99; }
+
+.chart .ct-series-l .ct-slice-pie, .chart .ct-series-l .ct-slice-donut-solid, .chart .ct-series-l .ct-area {
+  fill: #ffff99; }
+
+.chart .ct-series-m .ct-point, .chart .ct-series-m .ct-line, .chart .ct-series-m .ct-bar, .chart .ct-series-m .ct-slice-donut {
+  stroke: #b15928; }
+
+.chart .ct-series-m .ct-slice-pie, .chart .ct-series-m .ct-slice-donut-solid, .chart .ct-series-m .ct-area {
+  fill: #b15928; }
+
+.chart .ct-series-n .ct-point, .chart .ct-series-n .ct-line, .chart .ct-series-n .ct-bar, .chart .ct-series-n .ct-slice-donut {
+  stroke: #6188e2; }
+
+.chart .ct-series-n .ct-slice-pie, .chart .ct-series-n .ct-slice-donut-solid, .chart .ct-series-n .ct-area {
+  fill: #6188e2; }
+
+.chart .ct-series-o .ct-point, .chart .ct-series-o .ct-line, .chart .ct-series-o .ct-bar, .chart .ct-series-o .ct-slice-donut {
+  stroke: #a748ca; }
+
+.chart .ct-series-o .ct-slice-pie, .chart .ct-series-o .ct-slice-donut-solid, .chart .ct-series-o .ct-area {
+  fill: #a748ca; }

@@ -48,6 +48,26 @@ $(document).ready(function() {
                     });
    animateDonut(os_family);
 
+
+   // permits to expand chart cards
+   $(".chart .expand").click(function() {
+      var that = $(this);
+
+      // toggle columm class
+      that
+         .parents(".chart")
+            .toggleClass('col-sm-4')
+            .toggleClass('col-sm-12');
+
+      // redraw chart
+      setTimeout(function() {
+         that
+            .parents(".chart")
+            .find(".ct-chart")
+            .get(0).__chartist__.update();
+      }, 400);
+   });
+
 });
 
 

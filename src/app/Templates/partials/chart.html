@@ -1,5 +1,10 @@
 <div class="card">
-   <h3 class="card-header">{{chart.title}}</h3>
+   <h3 class="card-header">
+      {{chart.title}}
+      <button type="button" class="close expand" data-dismiss="modal" aria-label="Expand">
+         <i class="fa fa-expand"></i>
+      </button>
+   </h3>
    <div class="card-block">
       <div class="ct-chart ct-golden-section"
            id="{{chart.id}}"
