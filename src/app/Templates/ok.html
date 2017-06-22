@@ -1,21 +1,22 @@
 {% extends "partials/base.html" %}
 {% block title %}Contact{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-envelope"></i> Thank you!',
+   'text':  '',
+} %}
+{{ parent() }}
+{% endblock %}
+
 {% block content %}
-
-
-<div class="page-header">
-   <div class="container">
-      <h1><i class='fa fa-envelope'></i> Thank you</h1>
-   </div>
-</div>
-
 <div class="container">
 
    {% for alert_type, alerts in flash() %}
    {% for msg in alerts %}
 
    <div class="alert alert-{{alert_type}}" role="alert">
-      {{msg}}.
+      {{msg}}
    </div>
 
    {% endfor %}

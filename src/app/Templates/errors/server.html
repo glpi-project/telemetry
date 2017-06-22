@@ -1,14 +1,16 @@
 {% extends "./partials/base.html" %}
 {% block title %}Server error{% endblock %}
 
+{% block header %}
+{% set myheader= {
+   'class': 'error',
+   'title': '<i class="fa fa-exclamation-triangle"></i> Server Error !',
+   'text':  'An error triggered',
+} %}
+{{ parent() }}
+{% endblock %}
+
 {% block content %}
-
-<div class="page-header error">
-   <div class="container">
-      <h1>Server Error !</h1>
-   </div>
-</div>
-
 <div class="container">
     <div class="alert alert-danger" role="alert">
       <strong>Oh snap!</strong>
@@ -18,5 +20,4 @@
     </div>
 
 </div>
-
 {% endblock %}

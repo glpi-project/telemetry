@@ -1,15 +1,15 @@
 {% extends "partials/base.html" %}
 {% block title %}Contact{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-envelope"></i> Contact',
+   'text':  'Send us a message about this site, the project or anything about glpi !',
+} %}
+{{ parent() }}
+{% endblock %}
+
 {% block content %}
-
-
-<div class="page-header">
-   <div class="container">
-      <h1><i class='fa fa-envelope'></i> Contact</h1>
-      Send us a message about this site, the project or anything about glpi !
-   </div>
-</div>
-
 <div class="container">
 
    <form method="post">

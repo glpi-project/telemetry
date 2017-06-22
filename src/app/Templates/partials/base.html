@@ -16,8 +16,19 @@
    <body class="{{ class }}">
       {% include "partials/nav.html" %}
 
-      <div id="content">
-         {% block content %}{% endblock %}
+      <div id="page">
+         {% block header %}
+         <div class="page-header {{myheader.class}}">
+            <div class="container">
+               <h1>{{myheader.title | raw}}</h1>
+               <p>{{myheader.text | raw}}</p>
+            </div>
+         </div>
+         {% endblock %}
+
+         <div class="page-content">
+            {% block content %}{% endblock %}
+         </div>
       </div>
 
       {% include "partials/footer.html" %}
