@@ -1,7 +1,7 @@
 /.vscode/
-/src/vendor/
-/src/public/node_modules/
-/src/data/cache/*
-!/src/data/cache/.gitkeep
-/src/data/logs/*.log
-/src/config.inc.php
+/vendor/
+/public/node_modules/
+/data/cache/*
+!/data/cache/.gitkeep
+/data/logs/*.log
+/config.inc.php
