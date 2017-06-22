@@ -1,0 +1,283 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {},
+    "id": "json.spec",
+    "properties": {
+        "data": {
+            "id": "/properties/data",
+            "properties": {
+                "glpi": {
+                    "id": "/properties/data/properties/glpi",
+                    "properties": {
+                        "default_language": {
+                            "id": "/properties/data/properties/glpi/properties/default_language",
+                            "type": "string"
+                        },
+                        "plugins": {
+                            "id": "/properties/data/properties/glpi/properties/plugins",
+                            "items": {
+                                "id": "/properties/data/properties/glpi/properties/plugins/items",
+                                "properties": {
+                                    "key": {
+                                        "id": "/properties/data/properties/glpi/properties/plugins/items/properties/key",
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "id": "/properties/data/properties/glpi/properties/plugins/items/properties/version",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "version",
+                                    "key"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "usage": {
+                            "id": "/properties/data/properties/glpi/properties/usage",
+                            "properties": {
+                                "avg_changes": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_changes",
+                                    "type": "string"
+                                },
+                                "avg_computers": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_computers",
+                                    "type": "string"
+                                },
+                                "avg_entities": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_entities",
+                                    "type": "string"
+                                },
+                                "avg_groups": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_groups",
+                                    "type": "string"
+                                },
+                                "avg_networkequipments": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_networkequipments",
+                                    "type": "string"
+                                },
+                                "avg_problems": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_problems",
+                                    "type": "string"
+                                },
+                                "avg_projects": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_projects",
+                                    "type": "string"
+                                },
+                                "avg_tickets": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_tickets",
+                                    "type": "string"
+                                },
+                                "avg_users": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/avg_users",
+                                    "type": "string"
+                                },
+                                "ldap_enabled": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/ldap_enabled",
+                                    "type": "boolean"
+                                },
+                                "mailcollector_enabled": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/mailcollector_enabled",
+                                    "type": "boolean"
+                                },
+                                "smtp_enabled": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/smtp_enabled",
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "avg_networkequipments",
+                                "avg_groups",
+                                "smtp_enabled",
+                                "mailcollector_enabled",
+                                "avg_projects",
+                                "avg_entities",
+                                "avg_problems",
+                                "avg_changes",
+                                "avg_computers",
+                                "avg_users",
+                                "ldap_enabled",
+                                "avg_tickets"
+                            ],
+                            "type": "object"
+                        },
+                        "uuid": {
+                            "id": "/properties/data/properties/glpi/properties/uuid",
+                            "type": "string"
+                        },
+                        "version": {
+                            "id": "/properties/data/properties/glpi/properties/version",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "usage",
+                        "version",
+                        "default_language",
+                        "uuid",
+                        "plugins"
+                    ],
+                    "type": "object"
+                },
+                "system": {
+                    "id": "/properties/data/properties/system",
+                    "properties": {
+                        "db": {
+                            "id": "/properties/data/properties/system/properties/db",
+                            "properties": {
+                                "engine": {
+                                    "id": "/properties/data/properties/system/properties/db/properties/engine",
+                                    "type": "string"
+                                },
+                                "log_size": {
+                                    "id": "/properties/data/properties/system/properties/db/properties/log_size",
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "id": "/properties/data/properties/system/properties/db/properties/size",
+                                    "type": "string"
+                                },
+                                "sql_mode": {
+                                    "id": "/properties/data/properties/system/properties/db/properties/sql_mode",
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "id": "/properties/data/properties/system/properties/db/properties/version",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "engine",
+                                "log_size",
+                                "version",
+                                "sql_mode",
+                                "size"
+                            ],
+                            "type": "object"
+                        },
+                        "os": {
+                            "id": "/properties/data/properties/system/properties/os",
+                            "properties": {
+                                "distribution": {
+                                    "id": "/properties/data/properties/system/properties/os/properties/distribution",
+                                    "type": "string"
+                                },
+                                "family": {
+                                    "id": "/properties/data/properties/system/properties/os/properties/family",
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "id": "/properties/data/properties/system/properties/os/properties/version",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "distribution",
+                                "version",
+                                "family"
+                            ],
+                            "type": "object"
+                        },
+                        "php": {
+                            "id": "/properties/data/properties/system/properties/php",
+                            "properties": {
+                                "modules": {
+                                    "id": "/properties/data/properties/system/properties/php/properties/modules",
+                                    "items": {
+                                        "id": "/properties/data/properties/system/properties/php/properties/modules/items",
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "setup": {
+                                    "id": "/properties/data/properties/system/properties/php/properties/setup",
+                                    "properties": {
+                                        "max_execution_time": {
+                                            "id": "/properties/data/properties/system/properties/php/properties/setup/properties/max_execution_time",
+                                            "type": "string"
+                                        },
+                                        "memory_limit": {
+                                            "id": "/properties/data/properties/system/properties/php/properties/setup/properties/memory_limit",
+                                            "type": "string"
+                                        },
+                                        "post_max_size": {
+                                            "id": "/properties/data/properties/system/properties/php/properties/setup/properties/post_max_size",
+                                            "type": "string"
+                                        },
+                                        "safe_mode": {
+                                            "id": "/properties/data/properties/system/properties/php/properties/setup/properties/safe_mode",
+                                            "type": "string"
+                                        },
+                                        "session": {
+                                            "id": "/properties/data/properties/system/properties/php/properties/setup/properties/session",
+                                            "type": "string"
+                                        },
+                                        "upload_max_filesize": {
+                                            "id": "/properties/data/properties/system/properties/php/properties/setup/properties/upload_max_filesize",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "memory_limit",
+                                        "max_execution_time",
+                                        "upload_max_filesize",
+                                        "session",
+                                        "safe_mode",
+                                        "post_max_size"
+                                    ],
+                                    "type": "object"
+                                },
+                                "version": {
+                                    "id": "/properties/data/properties/system/properties/php/properties/version",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "setup",
+                                "version",
+                                "modules"
+                            ],
+                            "type": "object"
+                        },
+                        "web_server": {
+                            "id": "/properties/data/properties/system/properties/web_server",
+                            "properties": {
+                                "engine": {
+                                    "id": "/properties/data/properties/system/properties/web_server/properties/engine",
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "id": "/properties/data/properties/system/properties/web_server/properties/version",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "engine",
+                                "version"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "os",
+                        "web_server",
+                        "php",
+                        "db"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "glpi",
+                "system"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "data"
+    ],
+    "type": "object"
+}

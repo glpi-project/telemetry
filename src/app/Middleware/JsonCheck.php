@@ -3,6 +3,7 @@ namespace App\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use JsonSchema\Constraints\Constraint;
 
 class JsonCheck extends Middleware {
 
@@ -29,13 +30,16 @@ class JsonCheck extends Middleware {
 
       // check json structure
       $validator = new \JsonSchema\Validator;
-      //$validator->validate($json, $this->container->json_spec);
-      $validator->validate($json, (object)['$ref' => 'file://' . realpath('../../misc/schema.json')]);
+      $validator->validate($json,
+                           (object)['$ref' => 'file://' .
+                                              realpath('../misc/json.spec.schema')],
+                           Constraint::CHECK_MODE_TYPE_CAST);
       if (!$validator->isValid()) {
          return $response
             ->withStatus(400)
             ->withJson([
-               'message' => 'json not validated against schema'
+               'message' => 'json not validated against schema',
+               'errors' => $validator->getErrors()
             ]);
       }
 
