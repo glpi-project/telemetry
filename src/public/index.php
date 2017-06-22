@@ -17,5 +17,11 @@ $app->post('/reference', 'App\Controllers\Reference:register')
 $app->get('/telemetry', 'App\Controllers\Telemetry:view');
 $app->post('/telemetry', 'App\Controllers\Telemetry:send');
 
+$app->get('/ok', function ($request, $response, $args) {
+   return $this->view->render($response, 'ok.html', [
+      'class' => 'ok'
+   ]);
+});
+
 // run slim
 $app->run();

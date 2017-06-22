@@ -15,6 +15,7 @@ return $config = [
       'sitekey'   => '',
       'secret'    => ''
    ],
+   'mail_admin' => '',
    'debug' => true,
    'displayErrorDetails' => true,
    'addContentLengthHeader' => false,

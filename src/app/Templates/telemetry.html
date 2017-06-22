@@ -81,6 +81,7 @@
 {% endblock %}
 
 {% block userscripts %}
+{{ parent() }}
 
 <script src="node_modules/chartist/dist/chartist.min.js"></script>
 <script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>

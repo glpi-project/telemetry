@@ -15,6 +15,7 @@
         "slim/flash": "^0.2.0",
         "kanellov/slim-twig-flash": "^0.2.0",
         "google/recaptcha": "^1.1",
-        "geggleto/psr7-recaptcha": "^0.0.1"
+        "geggleto/psr7-recaptcha": "^0.0.1",
+        "phpmailer/phpmailer": "^5.2"
     }
 }

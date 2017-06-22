@@ -28,7 +28,9 @@
       <script src="node_modules/bootstrap-notify/bootstrap-notify.min.js"></script>
       <script src="js/base.js"></script>
 
+      {% block userscripts %}
       {% include "partials/alerts.html" %}
-      {% block userscripts %}{% endblock %}
+
+      {% endblock %}
     </body>
 </html>

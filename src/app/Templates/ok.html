@@ -1,0 +1,28 @@
+{% extends "partials/base.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+
+
+<div class="page-header">
+   <div class="container">
+      <h1><i class='fa fa-envelope'></i> Thank you</h1>
+   </div>
+</div>
+
+<div class="container">
+
+   {% for alert_type, alerts in flash() %}
+   {% for msg in alerts %}
+
+   <div class="alert alert-{{alert_type}}" role="alert">
+      {{msg}}.
+   </div>
+
+   {% endfor %}
+   {% endfor %}
+
+   <button class="btn btn-secondary" onclick="javascript:history.back()">Back</button>
+
+</div>
+{% endblock %}
+{% block userscripts %}{% endblock %}
