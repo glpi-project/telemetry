@@ -19,6 +19,9 @@ require __DIR__ . '/../vendor/autoload.php';
 $app       = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
+// set our json spec in container
+$container['json_spec'] = file_get_contents("../misc/json.spec");
+
 // setup db connection
 $capsule = new Illuminate\Database\Capsule\Manager;
 $capsule->addConnection($container->get('settings')['db']);
@@ -39,27 +42,32 @@ $container['flash'] = function () {
     return new \Slim\Flash\Messages();
 };
 
+//setup Slim\CSRF middleware
+$container['csrf'] = function ($c) {
+   return new \Slim\Csrf\Guard;
+};
+
 // setup twig
-$container['view'] = function ($container) {
+$container['view'] = function ($c) {
    $view = new \Slim\Views\Twig('../app/Templates', [
-      'cache' => $container['settings']['debug'] ? false : '../data/cache',
-      'debug' => $container['settings']['debug']
+      'cache' => $c['settings']['debug'] ? false : '../data/cache',
+      'debug' => $c['settings']['debug']
    ]);
 
    // Instantiate and add Slim specific extension
-   $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
-   $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+   $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
+   $view->addExtension(new Slim\Views\TwigExtension($c['router'], $basePath));
    $view->addExtension(new Knlv\Slim\Views\TwigMessages(
       new Slim\Flash\Messages()
    ));
-   if ($container['settings']['debug']) {
+   if ($c['settings']['debug']) {
       $view->addExtension(new Twig_Extension_Debug());
    }
 
    // add some global to view
    $view->getEnvironment()
       // add recaptcha sitekey
-      ->addGlobal('recaptchasitekey', $container['settings']['recaptcha']['sitekey']);
+      ->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
 
    return $view;
 };
@@ -75,15 +83,17 @@ $recaptcha = $app->getContainer()->get(Captcha::class);
 
 
 // error handling
-$container['errorHandler'] = function ($c) { //CUSTOM Error Handler
-   return function (\Slim\Http\Request $request,
-                    \Slim\Http\Response $response,
-                    $exception) use ($c) {
-      return $c['view']->render($response,
-                                "errors/server.html",
-                                ["exception" => $exception]);
+if (!$config['debug']) {
+   $container['errorHandler'] = function ($c) { //CUSTOM Error Handler
+      return function (\Slim\Http\Request $request,
+                       \Slim\Http\Response $response,
+                       $exception) use ($c) {
+         return $c['view']->render($response,
+                                   "errors/server.html",
+                                   ["exception" => $exception]);
+      };
    };
-};
+}
 
 // manage page parameter for Eloquent Paginator
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php

@@ -16,6 +16,10 @@
         "kanellov/slim-twig-flash": "^0.2.0",
         "google/recaptcha": "^1.1",
         "geggleto/psr7-recaptcha": "^0.0.1",
-        "phpmailer/phpmailer": "^5.2"
+        "phpmailer/phpmailer": "^5.2",
+        "slim/csrf": "^0.8.1"
+    },
+    "scripts": {
+        "start": "php -S 0.0.0.0:8080 -t public public/index.php"
     }
 }

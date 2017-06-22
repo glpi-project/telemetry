@@ -12,8 +12,6 @@ use App\Models\TelemetryGlpiPlugin;
 class Telemetry  extends ControllerAbstract {
 
    public function view(Request $request, Response $response) {
-      $json_spec = file_get_contents("../misc/json.spec");
-
       // retrieve php versions
       $php_versions = TelemetryModel::select(
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
@@ -70,33 +68,14 @@ class Telemetry  extends ControllerAbstract {
             'labels' => array_column($os_family, 'os_family'),
             'series' => array_column($os_family, 'total')
          ]),
-         'json_data_example' => $json_spec
+         'json_data_example' => $this->container['json_spec']
       ]);
 
       return $response;
    }
 
    public function send(Request $request, Response $response) {
-      $ctype   = $request->getContentType();
-      $json    = $request->getParsedBody();
-
-      if (strpos($ctype, 'application/json') === false) {
-         return $response
-            ->withStatus(400)
-            ->withJson([
-               'message' => 'Content-Type must be application/json'
-            ]);
-      }
-
-      if (!is_array($json)) {
-         return $response
-            ->withStatus(400)
-            ->withJson([
-               'message' => 'body seems invalid (not a json ?)'
-            ]);
-      }
-
-      $json = $json['data'];
+      $json    = $request->getParsedBody()['data'];
 
       $data = [
          'glpi_uuid'                      => $json['glpi']['uuid'],
