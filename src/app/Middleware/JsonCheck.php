@@ -28,7 +28,16 @@ class JsonCheck extends Middleware {
       }
 
       // check json structure
-      $json_spec = json_decode($this->container->json_spec, true);
+      $validator = new \JsonSchema\Validator;
+      //$validator->validate($json, $this->container->json_spec);
+      $validator->validate($json, (object)['$ref' => 'file://' . realpath('../../misc/schema.json')]);
+      if (!$validator->isValid()) {
+         return $response
+            ->withStatus(400)
+            ->withJson([
+               'message' => 'json not validated against schema'
+            ]);
+      }
 
       return $next($request, $response);
    }
