@@ -1,51 +1,61 @@
 $(document).ready(function() {
+   // defines options for carts
+   var donut_options = {
+      donut: true,
+      plugins: [
+         Chartist.plugins.tooltip()
+      ]
+  };
 
-   var php_versions = new Chartist.Pie('#php_versions',
-                    $('#php_versions').data("id"),
-                    {
-                        donut: true,
-                        plugins: [
-                           Chartist.plugins.tooltip()
-                        ]
-                    });
+  var simple_bar_options = {
+      // horizontalBars: true,
+      distributeSeries: true,
+      axisX: {
+         showGrid: false,
+      },
+      axisY: {
+         showGrid: false,
+         showLabel: false,
+      },
+      plugins: [
+         Chartist.plugins.tooltip()
+      ]
+  }
+
+   // render charts
+   var php_versions = new Chartist.Pie(
+      '#php_versions',
+      $('#php_versions').data("id"),
+      donut_options
+   );
    animateDonut(php_versions);
 
-   var glpi_versions = new Chartist.Pie('#glpi_versions',
-                    $('#glpi_versions').data("id"),
-                    {
-                        donut: true,
-                        plugins: [
-                           Chartist.plugins.tooltip()
-                        ]
-                    });
+   var glpi_versions = new Chartist.Pie(
+      '#glpi_versions',
+      $('#glpi_versions').data("id"),
+      donut_options
+   );
    animateDonut(glpi_versions);
 
-   var top_plugins = new Chartist.Bar('#top_plugins',
-                    $('#top_plugins').data("id"),
-                    {
-                        // horizontalBars: true,
-                        distributeSeries: true,
-                        axisX: {
-                           showGrid: false,
-                        },
-                        axisY: {
-                           showGrid: false,
-                           showLabel: false,
-                        },
-                        plugins: [
-                           Chartist.plugins.tooltip()
-                        ]
-                    });
+   var top_plugins = new Chartist.Bar(
+      '#top_plugins',
+      $('#top_plugins').data("id"),
+      simple_bar_options
+   )
+   .on('draw', function(data) {
+      if(data.type === 'bar') {
+         data.element.attr({
+            style: 'stroke-width: 40px'
+         });
+      }
+   });
    animateSimpleBar(top_plugins);
 
-   var os_family = new Chartist.Pie('#os_family',
-                    $('#os_family').data("id"),
-                    {
-                        donut: true,
-                        plugins: [
-                           Chartist.plugins.tooltip()
-                        ]
-                    });
+   var os_family = new Chartist.Pie(
+      '#os_family',
+      $('#os_family').data("id"),
+      donut_options
+   );
    animateDonut(os_family);
 
 
