@@ -1,5 +1,10 @@
 {
-    "autoload": {
+    "config": {
+      "platform": {
+        "php": "5.6.19"
+      }
+   },
+   "autoload": {
         "psr-4": {
             "App\\": "app/"
         }
