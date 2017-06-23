@@ -58,7 +58,11 @@ class Reference extends ControllerAbstract {
       $post['num_assets']   = (int) $post['num_assets'];
       $post['num_helpdesk'] = (int) $post['num_helpdesk'];
       $post['country']      = strtolower($post['country']);
+
+      // clean data
       unset($post['g-recaptcha-response']);
+      unset($post['csrf_name']);
+      unset($post['csrf_value']);
 
       // create reference in db
       ReferenceModel::create($post);
