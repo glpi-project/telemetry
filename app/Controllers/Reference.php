@@ -69,9 +69,9 @@ class Reference extends ControllerAbstract {
 
       // store a message for user (displayed after redirect)
       $this->container->flash->addMessage('success',
-         'Your reference has been stored! An administrator will moderate if before display on the site.');
+         'Your reference has been stored! An administrator will moderate it before display on the site.');
 
       // redirect to list
-      return $res->withRedirect('/reference');
+      return $res->withRedirect('./reference');
    }
 }
