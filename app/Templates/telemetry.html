@@ -14,7 +14,7 @@
    'title': '<i class="fa fa-bar-chart"></i> Telemetry',
    'text':  'Since version 9.2 of GLPI, we collect anonymous
              <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.
-             Here is some representations of theses data.',
+             Here is some representations of these data.',
 } %}
 {{ parent() }}
 {% endblock %}
@@ -27,7 +27,7 @@
       {% set vars = {'chart': {
                         'id':    'php_versions',
                         'title': 'PHP versions',
-                        'text':  'grouped on major versions',
+                        'text':  'Grouped on major versions',
                         'data':  php_versions
                      }} %}
       {% include 'partials/chart.html' with vars %}
@@ -37,7 +37,7 @@
       {% set vars = {'chart': {
                         'id':    'glpi_versions',
                         'title': 'GLPI versions',
-                        'text':  'Note: we don&apos;t have any data for glpi versions inferior to 9.2',
+                        'text':  'Note: we don&apos;t have any data for glpi versions prior to 9.2',
                         'data':  glpi_versions
                      }} %}
       {% include 'partials/chart.html' with vars %}
@@ -57,7 +57,7 @@
       {% set vars = {'chart': {
                         'id':    'os_family',
                         'title': 'Operating systems',
-                        'text':  'Family of operatings systems',
+                        'text':  'Family of operating systems',
                         'data':  os_family
                      }} %}
       {% include 'partials/chart.html' with vars %}
