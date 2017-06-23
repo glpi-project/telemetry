@@ -98,6 +98,8 @@ class Telemetry  extends ControllerAbstract {
          'db_size'                        => (int) $json['system']['db']['size'],
          'db_log_size'                    => (int) $json['system']['db']['log_size'],
          'db_sql_mode'                    => $json['system']['db']['sql_mode'],
+         'web_engine'                      => $json['system']['web_server']['engine'],
+         'web_version'                     => $json['system']['web_server']['version'],
          'php_version'                    => $json['system']['php']['version'],
          'php_modules'                    => implode(',', $json['system']['php']['modules']),
          'php_config_max_execution_time'  => (int) $json['system']['php']['setup']['max_execution_time'],
