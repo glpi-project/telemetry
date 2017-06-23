@@ -82,18 +82,54 @@ $container[ReCaptcha::class] = function ($c) {
 $recaptcha = $app->getContainer()->get(Captcha::class);
 
 
-// error handling
-if (!$config['debug']) {
-   $container['errorHandler'] = function ($c) { //CUSTOM Error Handler
-      return function (\Slim\Http\Request $request,
-                       \Slim\Http\Response $response,
-                       $exception) use ($c) {
+// system error handling
+$container['errorHandler'] = function ($c) { //CUSTOM Error Handler
+   return function (\Slim\Http\Request $request,
+                    \Slim\Http\Response $response,
+                    \Exception $exception) use ($c) {
+
+      // log error
+      $c->logger->error('error', [$exception->getMessage()]);
+
+      // return json error
+      if (strpos($request->getContentType(), 'application/json') !== false) {
+         $answer = [
+            'message' => 'Something went wrong!'
+         ];
+
+         if ($c['settings']['debug']) {
+            $answer['message'] = $exception->getMessage();
+         }
+
+         return $response
+            ->withStatus(500)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($answer));
+      }
+
+      // html error for production env
+      if (!$c['settings']['debug']) {
          return $c['view']->render($response,
-                                   "errors/server.html",
-                                   ["exception" => $exception]);
-      };
+                                   "errors/server.html");
+      }
+
+      // if not special case, return slim default handler
+      $error = new Slim\Handlers\Error($c['settings']['displayErrorDetails']);
+      return $error->__invoke($request, $response, $exception);
+   };
+};
+
+// php error handler
+if (!$config['debug']) {
+   $c['phpErrorHandler'] = function ($c) {
+       return function ($request, $response, $error) use ($c) {
+            $c->logger->error('error', [$e->getMessage()]);
+            return $c['view']->render($response,
+                                      "errors/server.html");
+       };
    };
 }
+
 
 // manage page parameter for Eloquent Paginator
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php
