@@ -12,6 +12,7 @@ $(document).ready(function() {
       distributeSeries: true,
       axisX: {
          showGrid: false,
+         offset: 30
       },
       axisY: {
          showGrid: false,
