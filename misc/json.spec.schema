@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "definitions": {},
-    "id": "json.spec",
+    "id": "http://example.com/example.json",
     "properties": {
         "data": {
             "id": "/properties/data",
@@ -82,15 +82,15 @@
                                     "id": "/properties/data/properties/glpi/properties/usage/properties/mailcollector_enabled",
                                     "type": "boolean"
                                 },
-                                "smtp_enabled": {
-                                    "id": "/properties/data/properties/glpi/properties/usage/properties/smtp_enabled",
-                                    "type": "boolean"
+                                "notifications_modes": {
+                                    "id": "/properties/data/properties/glpi/properties/usage/properties/notifications_modes",
+                                    "items": {},
+                                    "type": "array"
                                 }
                             },
                             "required": [
                                 "avg_networkequipments",
                                 "avg_groups",
-                                "smtp_enabled",
                                 "mailcollector_enabled",
                                 "avg_projects",
                                 "avg_entities",
@@ -99,7 +99,8 @@
                                 "avg_computers",
                                 "avg_users",
                                 "ldap_enabled",
-                                "avg_tickets"
+                                "avg_tickets",
+                                "notifications_modes"
                             ],
                             "type": "object"
                         },
@@ -208,7 +209,7 @@
                                         },
                                         "safe_mode": {
                                             "id": "/properties/data/properties/system/properties/php/properties/setup/properties/safe_mode",
-                                            "type": "string"
+                                            "type": "boolean"
                                         },
                                         "session": {
                                             "id": "/properties/data/properties/system/properties/php/properties/setup/properties/session",

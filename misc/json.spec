@@ -29,7 +29,7 @@
             "avg_users": "500-1000",
             "avg_groups": "0-500",
             "ldap_enabled": true,
-            "smtp_enabled": true,
+            "notifications_modes": [],
             "mailcollector_enabled": true
          }
       },
@@ -62,7 +62,7 @@
                "max_execution_time": "30",
                "memory_limit": "128M",
                "post_max_size": "20M",
-               "safe_mode": "",
+               "safe_mode": true,
                "session": "save_handler=\"files\"",
                "upload_max_filesize": "20M"
             }
