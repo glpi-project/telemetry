@@ -1,16 +1,18 @@
-<div class="card">
-   <h3 class="card-header">
-      {{chart.title}}
-      <button type="button" class="close expand" data-dismiss="modal" aria-label="Expand">
-         <i class="fa fa-expand"></i>
-      </button>
-   </h3>
+<div class="card" id="chart-{{chart.id}}">
+   <div class="card-header">
+      <h3>
+         {{chart.title}}
+         <button type="button" class="close expand" data-dismiss="modal" aria-label="Expand">
+            <i class="fa fa-expand"></i>
+         </button>
+      </h3>
+   <div class="card-block description">
+      <p class="card-text">{{chart.text | raw}}</p>
+   </div>
+   </div>
    <div class="card-block">
       <div class="ct-chart ct-golden-section"
            id="{{chart.id}}"
            data-id="{{chart.data}}"></div>
-   </div>
-   <div class="card-block">
-      <p class="card-text"><i>{{chart.text | raw}}</i></p>
    </div>
 </div>

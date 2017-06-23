@@ -12,6 +12,7 @@
     "chartist-plugin-tooltips": "^0.0.17",
     "country-flags-sass": "^0.0.2",
     "font-awesome": "^4.7.0",
+    "masonry-layout": "^4.2.0",
     "prismjs": "^1.6.0",
     "select2": "^4.0.3"
   }

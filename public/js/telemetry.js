@@ -1,22 +1,33 @@
 $(document).ready(function() {
+   // masonry on dashboard
+   $('.dashboard').masonry({
+     itemSelector: '.chart',
+     columnWidth: 350
+   });
+
    // defines options for carts
    var donut_options = {
       donut: true,
+      donutWidth: 60,
+      // donutSolid: true,
+      height: 200,
       plugins: [
          Chartist.plugins.tooltip()
       ]
   };
 
   var simple_bar_options = {
-      // horizontalBars: true,
+      horizontalBars: true,
       distributeSeries: true,
+      reverseData: true,
+      height: 200,
       axisX: {
          showGrid: false,
-         offset: 30
+         showLabel: false,
       },
       axisY: {
+         offset: 100,
          showGrid: false,
-         showLabel: false,
       },
       plugins: [
          Chartist.plugins.tooltip()
@@ -43,13 +54,13 @@ $(document).ready(function() {
       $('#top_plugins').data("id"),
       simple_bar_options
    )
-   .on('draw', function(data) {
+   /*.on('draw', function(data) {
       if(data.type === 'bar') {
          data.element.attr({
             style: 'stroke-width: 40px'
          });
       }
-   });
+   })*/;
    animateSimpleBar(top_plugins);
 
    var os_family = new Chartist.Pie(

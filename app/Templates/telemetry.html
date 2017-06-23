@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css"></script>
     <link rel="stylesheet" href="node_modules/prismjs/themes/prism.css"></script>
     <link rel="stylesheet" href="css/chart-palette.css"></script>
+    <link rel="stylesheet" href="css/telemetry.css"></script>
 
 {% endblock %}
 
@@ -20,50 +21,48 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container dashboard">
 
-   <div class="row">
-      <div class="col-sm-4 chart">
-      {% set vars = {'chart': {
-                        'id':    'php_versions',
-                        'title': 'PHP versions',
-                        'text':  'Grouped on major versions',
-                        'data':  php_versions
-                     }} %}
-      {% include 'partials/chart.html' with vars %}
-      </div>
-
-      <div class="col-sm-4 chart">
-      {% set vars = {'chart': {
-                        'id':    'glpi_versions',
-                        'title': 'GLPI versions',
-                        'text':  'Note: we don&apos;t have any data for glpi versions prior to 9.2',
-                        'data':  glpi_versions
-                     }} %}
-      {% include 'partials/chart.html' with vars %}
-      </div>
-
-      <div class="col-sm-4 chart">
-      {% set vars = {'chart': {
-                        'id':    'top_plugins',
-                        'title': 'Top plugins',
-                        'text':  'Only the top 5 is displayed',
-                        'data':  top_plugins
-                     }} %}
-      {% include 'partials/chart.html' with vars %}
-      </div>
-
-      <div class="col-sm-4 chart">
-      {% set vars = {'chart': {
-                        'id':    'os_family',
-                        'title': 'Operating systems',
-                        'text':  'Family of operating systems',
-                        'data':  os_family
-                     }} %}
-      {% include 'partials/chart.html' with vars %}
-      </div>
-
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'php_versions',
+                     'title': 'PHP versions',
+                     'text':  'Grouped on major versions',
+                     'data':  php_versions
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
    </div>
+
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'glpi_versions',
+                     'title': 'GLPI versions',
+                     'text':  '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to 9.2',
+                     'data':  glpi_versions
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'top_plugins',
+                     'title': 'Top plugins',
+                     'text':  'Only the top 5 is displayed',
+                     'data':  top_plugins
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'os_family',
+                     'title': 'Operating systems',
+                     'text':  'Family of operating systems',
+                     'data':  os_family
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
 </div>
 
 <div class="modal fade" id="json_data_example">
@@ -88,6 +87,7 @@
 
 <script src="node_modules/chartist/dist/chartist.min.js"></script>
 <script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<script src="node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
 <script src="node_modules/prismjs/prism.js"></script>
 <script src="node_modules/prismjs/components/prism-json.js"></script>
 <script src="js/telemetry.js"></script>
