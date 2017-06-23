@@ -18,14 +18,14 @@ CREATE TABLE telemetry (
    glpi_ldap_enabled              BOOLEAN,
    glpi_mailcollector_enabled     BOOLEAN,
    glpi_notifications             TEXT,
-   db_engine                      VARCHAR(25),
-   db_version                     VARCHAR(25),
+   db_engine                      VARCHAR(50),
+   db_version                     VARCHAR(50),
    db_size                        BIGINT,
    db_log_size                    BIGINT,
    db_sql_mode                    TEXT,
-   web_engine                     VARCHAR(25),
-   web_version                    VARCHAR(25),
-   php_version                    VARCHAR(25),
+   web_engine                     VARCHAR(50),
+   web_version                    VARCHAR(50),
+   php_version                    VARCHAR(50),
    php_modules                    TEXT,
    php_config_max_execution_time  INTEGER,
    php_config_memory_limit        VARCHAR(10),
@@ -35,7 +35,7 @@ CREATE TABLE telemetry (
    php_config_upload_max_filesize VARCHAR(10),
    os_family                      VARCHAR(50),
    os_distribution                VARCHAR(50),
-   os_version                     VARCHAR(255)
+   os_version                     VARCHAR(50)
 );
 
 DROP TABLE IF EXISTS glpi_plugin CASCADE;
@@ -78,7 +78,7 @@ CREATE TABLE telemetry_glpi_plugin (
    id                             SERIAL PRIMARY KEY,
    telemetry_entry_id             BIGINT REFERENCES telemetry (id),
    glpi_plugin_id                 INTEGER REFERENCES glpi_plugin (id),
-   version                        VARCHAR(25),
+   version                        VARCHAR(50),
    created_at                     TIMESTAMP DEFAULT NOW(),
    updated_at                     TIMESTAMP DEFAULT NOW()
 );
@@ -88,15 +88,15 @@ CREATE TABLE telemetry_glpi_plugin (
 DROP TABLE IF EXISTS reference CASCADE;
 CREATE TABLE reference (
    id                             SERIAL PRIMARY KEY,
-   name                           VARCHAR(255),
+   name                           VARCHAR(505),
    country                        VARCHAR(10),
    comment                        TEXT,
    num_assets                     INTEGER,
    num_helpdesk                   INTEGER,
-   email                          VARCHAR(255),
+   email                          VARCHAR(505),
    phone                          VARCHAR(30),
-   url                            VARCHAR(255),
-   referent                       VARCHAR(255),
+   url                            VARCHAR(505),
+   referent                       VARCHAR(505),
    created_at                     TIMESTAMP DEFAULT NOW(),
    updated_at                     TIMESTAMP DEFAULT NOW(),
    is_displayed                   BOOLEAN DEFAULT FALSE

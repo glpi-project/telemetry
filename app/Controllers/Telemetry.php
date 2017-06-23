@@ -78,39 +78,72 @@ class Telemetry  extends ControllerAbstract {
       $json    = $request->getParsedBody()['data'];
 
       $data = [
-         'glpi_uuid'                      => $json['glpi']['uuid'],
-         'glpi_version'                   => $json['glpi']['version'],
-         'glpi_default_language'          => $json['glpi']['default_language'],
-         'glpi_avg_entities'              => $json['glpi']['usage']['avg_entities'],
-         'glpi_avg_computers'             => $json['glpi']['usage']['avg_computers'],
-         'glpi_avg_networkequipments'     => $json['glpi']['usage']['avg_networkequipments'],
-         'glpi_avg_tickets'               => $json['glpi']['usage']['avg_tickets'],
-         'glpi_avg_problems'              => $json['glpi']['usage']['avg_problems'],
-         'glpi_avg_changes'               => $json['glpi']['usage']['avg_changes'],
-         'glpi_avg_projects'              => $json['glpi']['usage']['avg_projects'],
-         'glpi_avg_users'                 => $json['glpi']['usage']['avg_users'],
-         'glpi_avg_groups'                => $json['glpi']['usage']['avg_groups'],
-         'glpi_ldap_enabled'              => (bool) $json['glpi']['usage']['ldap_enabled'],
-         // 'glpi_smtp_enabled'              => (bool) $json['glpi']['usage']['smtp_enabled'],
-         'glpi_mailcollector_enabled'     => (bool) $json['glpi']['usage']['mailcollector_enabled'],
-         'db_engine'                      => $json['system']['db']['engine'],
-         'db_version'                     => $json['system']['db']['version'],
-         'db_size'                        => (int) $json['system']['db']['size'],
-         'db_log_size'                    => (int) $json['system']['db']['log_size'],
-         'db_sql_mode'                    => $json['system']['db']['sql_mode'],
-         'web_engine'                      => $json['system']['web_server']['engine'],
-         'web_version'                     => $json['system']['web_server']['version'],
-         'php_version'                    => $json['system']['php']['version'],
-         'php_modules'                    => implode(',', $json['system']['php']['modules']),
-         'php_config_max_execution_time'  => (int) $json['system']['php']['setup']['max_execution_time'],
-         'php_config_memory_limit'        => $json['system']['php']['setup']['memory_limit'],
-         'php_config_post_max_size'       => $json['system']['php']['setup']['post_max_size'],
-         'php_config_safe_mode'           => (bool) $json['system']['php']['setup']['safe_mode'],
-         'php_config_session'             => $json['system']['php']['setup']['session'],
-         'php_config_upload_max_filesize' => $json['system']['php']['setup']['upload_max_filesize'],
-         'os_family'                      => $json['system']['os']['family'],
-         'os_distribution'                => $json['system']['os']['distribution'],
-         'os_version'                     => $json['system']['os']['version'],
+         'glpi_uuid'
+            => $this->truncate($json['glpi']['uuid'], 41),
+         'glpi_version'
+            => $this->truncate($json['glpi']['version'], 25),
+         'glpi_default_language'
+            => $this->truncate($json['glpi']['default_language'], 10),
+         'glpi_avg_entities'
+            => $this->truncate($json['glpi']['usage']['avg_entities'], 50),
+         'glpi_avg_computers'
+            => $this->truncate($json['glpi']['usage']['avg_computers'], 50),
+         'glpi_avg_networkequipments'
+            => $this->truncate($json['glpi']['usage']['avg_networkequipments'], 50),
+         'glpi_avg_tickets'
+            => $this->truncate($json['glpi']['usage']['avg_tickets'], 25),
+         'glpi_avg_problems'
+            => $this->truncate($json['glpi']['usage']['avg_problems'], 25),
+         'glpi_avg_changes'
+            => $this->truncate($json['glpi']['usage']['avg_changes'], 25),
+         'glpi_avg_projects'
+            => $this->truncate($json['glpi']['usage']['avg_projects'], 25),
+         'glpi_avg_users'
+            => $this->truncate($json['glpi']['usage']['avg_users'], 25),
+         'glpi_avg_groups'
+            => $this->truncate($json['glpi']['usage']['avg_groups'], 25),
+         'glpi_ldap_enabled'
+            => (bool) $json['glpi']['usage']['ldap_enabled'],
+         // 'glpi_smtp_enabled'
+         //   => (bool) $json['glpi']['usage']['smtp_enabled'],
+         'glpi_mailcollector_enabled'
+            => (bool) $json['glpi']['usage']['mailcollector_enabled'],
+         'db_engine'
+            => $this->truncate($json['system']['db']['engine'], 50),
+         'db_version'
+            => $this->truncate($json['system']['db']['version'], 50),
+         'db_size'
+            => (int) $json['system']['db']['size'],
+         'db_log_size'
+            => (int) $json['system']['db']['log_size'],
+         'db_sql_mode'
+            => $json['system']['db']['sql_mode'],
+         'web_engine'
+            => $this->truncate($json['system']['web_server']['engine'], 50),
+         'web_version'
+            => $this->truncate($json['system']['web_server']['version'], 50),
+         'php_version'
+            => $this->truncate($json['system']['php']['version'], 50),
+         'php_modules'
+            => implode(',', $json['system']['php']['modules']),
+         'php_config_max_execution_time'
+            => (int) $json['system']['php']['setup']['max_execution_time'],
+         'php_config_memory_limit'
+            => $this->truncate($json['system']['php']['setup']['memory_limit'], 10),
+         'php_config_post_max_size'
+            => $this->truncate($json['system']['php']['setup']['post_max_size'], 10),
+         'php_config_safe_mode'
+            => (bool) $json['system']['php']['setup']['safe_mode'],
+         'php_config_session'
+            => $json['system']['php']['setup']['session'],
+         'php_config_upload_max_filesize'
+            => $this->truncate($json['system']['php']['setup']['upload_max_filesize'], 10),
+         'os_family'
+            => $this->truncate($json['system']['os']['family'], 50),
+         'os_distribution'
+            => $this->truncate($json['system']['os']['distribution'], 50),
+         'os_version'
+            => $this->truncate($json['system']['os']['version'], 50),
       ];
 
       $telemetry_m = TelemetryModel::create($data);
@@ -132,5 +165,14 @@ class Telemetry  extends ControllerAbstract {
          ->withJson([
             'message' => 'OK'
          ]);
+   }
+
+   private function truncate($string, $length) {
+      if (strlen($string) > $length) {
+         $this->container->log->warning("String exceed length $length", $string);
+         $string = substr($string, 0, $length);
+      }
+
+      return $string;
    }
 }
