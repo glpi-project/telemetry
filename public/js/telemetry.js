@@ -2,7 +2,8 @@ $(document).ready(function() {
    // masonry on dashboard
    $('.dashboard').masonry({
      itemSelector: '.chart',
-     columnWidth: 350
+     columnWidth: 350,
+     fitWidth: true
    });
 
    // defines options for carts
@@ -10,7 +11,7 @@ $(document).ready(function() {
       donut: true,
       donutWidth: 60,
       // donutSolid: true,
-      height: 200,
+      height: '100%',
       plugins: [
          Chartist.plugins.tooltip()
       ]
@@ -20,7 +21,7 @@ $(document).ready(function() {
       horizontalBars: true,
       distributeSeries: true,
       reverseData: true,
-      height: 200,
+      // height: 200,
       axisX: {
          showGrid: false,
          showLabel: false,
@@ -73,21 +74,40 @@ $(document).ready(function() {
 
    // permits to expand chart cards
    $(".chart .expand").click(function() {
-      var that = $(this);
+      var e_button = $(this);
+      var chart    = e_button.parents(".chart")
+      var chartist = chart.find(".ct-chart").get(0).__chartist__;
 
-      // toggle columm class
-      that
-         .parents(".chart")
-            .toggleClass('col-sm-4')
-            .toggleClass('col-sm-12');
+      // set fullscreen on chart
+      if (!chart.hasClass('chart-max')) {
+         chart
+            .toggleClass("chart-max")
+            .width($(window).width() * .95)
+            .height('80vh')
+            .find(".card-block:not(.description)")
+               .height('calc(80vh - 78px)');
+
+      } else {
+         // disable full screen
+         chart
+            .toggleClass("chart-max")
+            .width("")
+            .height("")
+            .find(".card-block:not(.description)")
+               .height("");
+      }
 
       // redraw chart
-      setTimeout(function() {
-         that
-            .parents(".chart")
-            .find(".ct-chart")
-            .get(0).__chartist__.update();
-      }, 400);
+      $('.dashboard')
+         .masonry()
+         .one( 'layoutComplete', function() {
+            chartist.update();
+
+            // scroll to the chart
+            $('html, body').animate({
+               scrollTop: $(chart).offset().top - 30
+            }, 200);
+         });
    });
 
 });

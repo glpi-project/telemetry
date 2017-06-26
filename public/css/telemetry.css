@@ -1,8 +1,11 @@
 
 /** charts **/
+.dashboard {
+   margin: 0 auto;
+}
+
 .chart {
    width: 350px;
-   transition: all 200ms;
    padding: 5px;
 }
 
@@ -30,6 +33,7 @@
 
 .chart .card-header .fa {
    font-size: .8em;
+   outline-color: transparent;
 }
 
 .chart .card-header h3 {
@@ -48,6 +52,10 @@
 }
 .chart .card-block:not(.description) {
    height: 210px;
+}
+
+.chart .ct-golden-section {
+   height: 100%;
 }
 
 #chart-top_plugins {
