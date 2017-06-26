@@ -36,12 +36,27 @@ $(document).ready(function() {
   }
 
    // render charts
-   var php_versions = new Chartist.Pie(
+   // var php_versions = new Chartist.Line(
+   var php_versions = new Chartist.Bar(
       '#php_versions',
       $('#php_versions').data("id"),
-      donut_options
+      {
+         axisX: {
+            showGrid: false,
+         },
+         axisY: {
+            showGrid: false,
+            showLabel: false,
+         },
+         chartPadding: {
+            top: 40
+         },
+         plugins: [
+            Chartist.plugins.tooltip(),
+            Chartist.plugins.legend()
+         ]
+      }
    );
-   animateDonut(php_versions);
 
    var glpi_versions = new Chartist.Pie(
       '#glpi_versions',
@@ -70,6 +85,27 @@ $(document).ready(function() {
       donut_options
    );
    animateDonut(os_family);
+
+   var default_languages = new Chartist.Pie(
+      '#default_languages',
+      $('#default_languages').data("id"),
+      donut_options
+   );
+   animateDonut(default_languages);
+
+   var web_engines = new Chartist.Pie(
+      '#web_engines',
+      $('#web_engines').data("id"),
+      donut_options
+   );
+   animateDonut(web_engines);
+
+   var db_engines = new Chartist.Pie(
+      '#db_engines',
+      $('#db_engines').data("id"),
+      donut_options
+   );
+   animateDonut(db_engines);
 
 
    // permits to expand chart cards

@@ -15,7 +15,9 @@
    'title': '<i class="fa fa-bar-chart"></i> Telemetry',
    'text':  'Since version 9.2 of GLPI, we collect anonymous
              <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.
-             Here is some representations of these data.',
+             Here is some representations of these data.
+             <br>
+             As we don&apos;t have many data at the moment, the charts will be temporary simple. We&apos;ll complete this page soon.',
 } %}
 {{ parent() }}
 {% endblock %}
@@ -63,6 +65,36 @@
    {% include 'partials/chart.html' with vars %}
    </div>
 
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'web_engines',
+                     'title': 'Web engine',
+                     'text':  '',
+                     'data':  web_engines
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'db_engines',
+                     'title': 'DB engine',
+                     'text':  '',
+                     'data':  db_engines
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'default_languages',
+                     'title': 'Default languages',
+                     'text':  '',
+                     'data':  default_languages
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
 </div>
 
 <div class="modal fade" id="json_data_example">
@@ -87,6 +119,7 @@
 
 <script src="node_modules/chartist/dist/chartist.min.js"></script>
 <script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<script src="node_modules/chartist-plugin-legend/chartist-plugin-legend.js"></script>
 <script src="node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
 <script src="node_modules/prismjs/prism.js"></script>
 <script src="node_modules/prismjs/components/prism-json.js"></script>

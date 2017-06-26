@@ -75,3 +75,40 @@
 #chart-top_plugins .ct-series .ct-bar {
 stroke: #22727B;
 }
+
+.ct-legend {
+   position: relative;
+   z-index: 10;
+   list-style: none;
+   text-align: center;
+}
+.ct-legend li {
+   position: relative;
+   margin-right: 10px;
+   margin-bottom: 3px;
+   padding-left: 23px;
+   cursor: pointer;
+   display: inline-block;
+}
+.ct-legend li:before {
+   width: 16px;
+   height: 16px;
+   position: absolute;
+   left: 0;
+   top: 3px;
+   content: '';
+   border: 3px solid transparent;
+   border-radius: 2px;
+}
+.ct-legend li.inactive:before {
+   background: transparent;
+}
+.ct-legend.ct-legend-inside {
+   position: absolute;
+   top: 0;
+   right: 0;
+}
+.ct-legend.ct-legend-inside li{
+   display: block;
+   margin: 0;
+}

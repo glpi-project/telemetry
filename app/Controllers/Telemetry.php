@@ -13,14 +13,46 @@ class Telemetry  extends ControllerAbstract {
 
    public function view(Request $request, Response $response) {
       // retrieve php versions
-      $php_versions = TelemetryModel::select(
+      $raw_php_versions = TelemetryModel::select(
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
+                     date_trunc('month', created_at) as month_year,
                      count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
-         ->groupBy(DB::raw("version"))
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '2 YEAR'"))
+         ->groupBy(DB::raw("month_year, version"))
          ->get()
          ->toArray();
+
+      // start reconstruct data
+      $php_versions = [];
+      $php_versions_legend = [];
+      $php_versions_labels = [];
+      $php_versions_series = [];
+      foreach ($raw_php_versions as $data) {
+         $php_versions_legend[] = $data['version'];
+         $php_versions_labels[] = $data['month_year'];
+         $php_versions[$data['version']]
+                      [$data['month_year']]
+                        = $data['total'];
+      }
+      // prepare final data
+      $php_versions_legend = array_unique($php_versions_legend);
+      $php_versions_labels = array_unique($php_versions_labels);
+      foreach ($php_versions as $version_name => $version) {
+         $tmp_data = [];
+         foreach ($php_versions_labels as $month_year) {
+            if (isset($version[$month_year])) {
+               $tmp_data[] = $version[$month_year];
+            } else {
+               $tmp_data[] = 'null';
+            }
+         }
+         $php_versions_series[] = [
+            'name' => $version_name,
+            'data' => $tmp_data
+         ];
+      }
+
 
       // retrieve glpi versions
       $glpi_versions = TelemetryModel::select(
@@ -51,10 +83,46 @@ class Telemetry  extends ControllerAbstract {
          ->get()
          ->toArray();
 
+      // retrieve languages
+      $languages = TelemetryModel::select(
+            DB::raw("glpi_default_language, count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("glpi_default_language"))
+         ->get()
+         ->toArray();
+
+      // retrieve db engine
+      $db_engines = TelemetryModel::select(
+            DB::raw("db_engine, count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("db_engine"))
+         ->get()
+         ->toArray();
+
+      // retrieve db engine
+      $web_engines = TelemetryModel::select(
+            DB::raw("web_engine, count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("web_engine"))
+         ->get()
+         ->toArray();
+
+      // retrieve agv_* fields
+      $web_engines = TelemetryModel::select(
+            DB::raw("web_engine, count(*) as total")
+         )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->groupBy(DB::raw("web_engine"))
+         ->get()
+         ->toArray();
+
       $this->render('telemetry.html', [
          'php_versions' => json_encode([
-            'labels' => array_column($php_versions, 'version'),
-            'series' => array_column($php_versions, 'total')
+            'labels' => $php_versions_labels,
+            'series' => $php_versions_series
          ]),
          'glpi_versions' => json_encode([
             'labels' => array_column($glpi_versions, 'version'),
@@ -67,6 +135,18 @@ class Telemetry  extends ControllerAbstract {
          'os_family' => json_encode([
             'labels' => array_column($os_family, 'os_family'),
             'series' => array_column($os_family, 'total')
+         ]),
+         'default_languages' => json_encode([
+            'labels' => array_column($languages, 'glpi_default_language'),
+            'series' => array_column($languages, 'total')
+         ]),
+         'db_engines' => json_encode([
+            'labels' => array_column($db_engines, 'db_engine'),
+            'series' => array_column($db_engines, 'total')
+         ]),
+         'web_engines' => json_encode([
+            'labels' => array_column($web_engines, 'web_engine'),
+            'series' => array_column($web_engines, 'total')
          ]),
          'json_data_example' => $this->container['json_spec']
       ]);
