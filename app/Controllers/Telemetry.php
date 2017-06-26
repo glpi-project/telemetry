@@ -48,7 +48,7 @@ class Telemetry  extends ControllerAbstract {
             }
          }
          $php_versions_series[] = [
-            'name' => $version_name,
+            'meta' => "PHP ".$version_name,
             'data' => $tmp_data
          ];
       }

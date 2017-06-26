@@ -48,12 +48,8 @@ $(document).ready(function() {
             showGrid: false,
             showLabel: false,
          },
-         chartPadding: {
-            top: 40
-         },
          plugins: [
-            Chartist.plugins.tooltip(),
-            Chartist.plugins.legend()
+            Chartist.plugins.tooltip()
          ]
       }
    );
