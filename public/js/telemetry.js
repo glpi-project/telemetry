@@ -7,15 +7,16 @@ $(document).ready(function() {
    });
 
    // defines options for carts
-   var donut_options = {
-      donut: true,
-      donutWidth: 60,
+   var pie_options = {
+      // donutWidth: 60,
       // donutSolid: true,
       height: '100%',
       plugins: [
          Chartist.plugins.tooltip()
       ]
   };
+  var donut_options = pie_options;
+  donut_options.donut = true;
 
   var simple_bar_options = {
       horizontalBars: true,
@@ -78,7 +79,7 @@ $(document).ready(function() {
    var os_family = new Chartist.Pie(
       '#os_family',
       $('#os_family').data("id"),
-      donut_options
+      pie_options
    );
    animateDonut(os_family);
 

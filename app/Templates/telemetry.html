@@ -25,7 +25,7 @@
 {% block content %}
 <div class="dashboard">
 
-   <div class="chart">
+   <div class="chart chart-2">
    {% set vars = {'chart': {
                      'id':    'php_versions',
                      'title': 'PHP versions',
@@ -59,7 +59,7 @@
    {% set vars = {'chart': {
                      'id':    'os_family',
                      'title': 'Operating systems',
-                     'text':  'Family of operating systems',
+                     'text':  'By family',
                      'data':  os_family
                   }} %}
    {% include 'partials/chart.html' with vars %}
@@ -68,7 +68,7 @@
    <div class="chart">
    {% set vars = {'chart': {
                      'id':    'web_engines',
-                     'title': 'Web engine',
+                     'title': 'Web engines',
                      'text':  '',
                      'data':  web_engines
                   }} %}
@@ -78,7 +78,7 @@
    <div class="chart">
    {% set vars = {'chart': {
                      'id':    'db_engines',
-                     'title': 'DB engine',
+                     'title': 'DB engines',
                      'text':  '',
                      'data':  db_engines
                   }} %}

@@ -53,6 +53,9 @@ class Telemetry  extends ControllerAbstract {
          ];
       }
 
+      // retrieve avg usage
+      // TODO
+
 
       // retrieve glpi versions
       $glpi_versions = TelemetryModel::select(
@@ -78,7 +81,7 @@ class Telemetry  extends ControllerAbstract {
       $os_family = TelemetryModel::select(
             DB::raw("os_family, count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         //->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
          ->groupBy(DB::raw("os_family"))
          ->get()
          ->toArray();
@@ -105,7 +108,7 @@ class Telemetry  extends ControllerAbstract {
       $web_engines = TelemetryModel::select(
             DB::raw("web_engine, count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         //->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
          ->groupBy(DB::raw("web_engine"))
          ->get()
          ->toArray();
