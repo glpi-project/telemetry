@@ -133,7 +133,9 @@ $(document).ready(function() {
       $('.dashboard')
          .masonry()
          .one( 'layoutComplete', function() {
-            chartist.update();
+            if (typeof chartist != "undefined") {
+               chartist.update();
+            }
 
             // scroll to the chart
             $('html, body').animate({

@@ -72,6 +72,7 @@ class Telemetry  extends ControllerAbstract {
          $idx  = array_search($cca2, $all_cca2);
          $ctry['cca3'] = strtolower($this->container->countries[$idx]['cca3']);
          $ctry['name'] = $this->container->countries[$idx]['name']['common'];
+         unset($ctry['cca2']);
       }
 
       // retrieve glpi versions
