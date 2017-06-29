@@ -114,7 +114,7 @@ $(document).ready(function() {
       if (!chart.hasClass('chart-max')) {
          chart
             .toggleClass("chart-max")
-            .width($(window).width() * .95)
+            .width($(window).width() * .8)
             .height('80vh')
             .find(".card-block:not(.description)")
                .height('calc(80vh - 78px)');
@@ -135,6 +135,8 @@ $(document).ready(function() {
          .one( 'layoutComplete', function() {
             if (typeof chartist != "undefined") {
                chartist.update();
+            } else {
+               references_map.invalidateSize();
             }
 
             // scroll to the chart

@@ -1,7 +1,9 @@
+var references_map;
+
 $(document).ready(function() {
 
    // leaflet map for references countries
-   var references_map = L.map('references_countries').setView([0.0, 0.0], 2);
+   references_map = L.map('references_countries').setView([0.0, 0.0], 2);
 
    // get tile
    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
