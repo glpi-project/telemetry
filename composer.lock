@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "54e026d3abb9a0e0d7fcd37d27948672",
+    "content-hash": "daf6fcc3eaa7d4eafca473db7590bc7b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -740,6 +740,47 @@
                 "time"
             ],
             "time": "2017-01-16T07:55:07+00:00"
+        },
+        {
+            "name": "nicmart/numbers",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nicmart/Numbers.git",
+                "reference": "409638f0a7d3ea556990026c37c0ea05b27a8ded"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nicmart/Numbers/zipball/409638f0a7d3ea556990026c37c0ea05b27a8ded",
+                "reference": "409638f0a7d3ea556990026c37c0ea05b27a8ded",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Numbers": "src/",
+                    "Numbers\\Test": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolò Martini",
+                    "email": "nicmartnic@gmail.com",
+                    "homepage": "http://nicolo.martini.io"
+                }
+            ],
+            "description": "Format numbers in various formats, like scientific notation or unit-suffix notation",
+            "time": "2013-09-15T19:12:52+00:00"
         },
         {
             "name": "nikic/fast-route",

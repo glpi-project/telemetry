@@ -3,6 +3,7 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Illuminate\Database\Capsule\Manager as DB;
+use Numbers\Number;
 
 use App\Models\Telemetry  as TelemetryModel;
 use App\Models\GlpiPlugin as GlpiPluginModel;
@@ -13,6 +14,20 @@ use App\Models\TelemetryGlpiPlugin;
 class Telemetry  extends ControllerAbstract {
 
    public function view(Request $request, Response $response) {
+      // retrieve nb of telemtry entries
+      $raw_nb_tel_entries = TelemetryModel::count();
+      $nb_tel_entries = [
+         'raw' => $raw_nb_tel_entries,
+         'nb'  => (string) Number::n($raw_nb_tel_entries)->round(2)->getSuffixNotation()
+      ];
+
+     // retrieve nb of reference entries
+      $raw_nb_ref_entries = ReferenceModel::count();
+      $nb_ref_entries = [
+         'raw' => $raw_nb_ref_entries,
+         'nb'  => (string) Number::n($raw_nb_ref_entries)->round(2)->getSuffixNotation()
+      ];
+
       // retrieve php versions
       $raw_php_versions = TelemetryModel::select(
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
@@ -141,6 +156,8 @@ class Telemetry  extends ControllerAbstract {
          ->toArray();
 
       $this->render('telemetry.html', [
+         'nb_telemetry_entries' => json_encode($nb_tel_entries),
+         'nb_reference_entries' => json_encode($nb_ref_entries),
          'php_versions' => json_encode([
             'labels' => $php_versions_labels,
             'series' => $php_versions_series

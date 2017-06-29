@@ -68,6 +68,26 @@
    height: 100%;
 }
 
+.big-number {
+   font-size: 6rem;
+   text-align: center;
+   text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+}
+
+#chart-nb_telemetry_entries,
+#chart-nb_telemetry_entries .card-header,
+#chart-nb_telemetry_entries .card-header i {
+   background-color: #BBE1C3;
+   color: #1E4526;
+}
+
+#chart-nb_reference_entries,
+#chart-nb_reference_entries .card-header,
+#chart-nb_reference_entries .card-header i {
+   background-color: #E9B59F;
+   color: #C24A19;
+}
+
 #chart-top_plugins {
    background-color: #529AA5
 }

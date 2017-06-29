@@ -53,6 +53,18 @@ $(document).ready(function() {
       }
    );
 
+   data_nb_telemetry_entries = $('#nb_telemetry_entries').data("id")
+   var nb_telemetry_entries = $('#nb_telemetry_entries')
+      .html("<div class='big-number' title='"+ data_nb_telemetry_entries.raw +"'>" +
+            data_nb_telemetry_entries.nb +
+            "</div>")
+
+   data_nb_reference_entries = $('#nb_reference_entries').data("id")
+   var nb_reference_entries = $('#nb_reference_entries')
+      .html("<div class='big-number' title='"+ data_nb_reference_entries.raw +"'>" +
+            data_nb_reference_entries.nb +
+            "</div>")
+
    var glpi_versions = new Chartist.Pie(
       '#glpi_versions',
       $('#glpi_versions').data("id"),

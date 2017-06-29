@@ -26,6 +26,26 @@
 {% block content %}
 <div class="dashboard">
 
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'nb_telemetry_entries',
+                     'title': '# Telemetry: data sended',
+                     'text':  '',
+                     'data':  nb_telemetry_entries
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
+   <div class="chart">
+   {% set vars = {'chart': {
+                     'id':    'nb_reference_entries',
+                     'title': '# References added',
+                     'text':  '',
+                     'data':  nb_reference_entries
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
+
    <div class="chart chart-2 chart-2h">
    {% set vars = {'chart': {
                      'id':    'references_countries',
