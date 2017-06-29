@@ -3,6 +3,7 @@
 {% block head %}
     {{ parent() }}
     <link rel="stylesheet" href="node_modules/chartist/dist/chartist.min.css" />
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css"></script>
     <link rel="stylesheet" href="node_modules/prismjs/themes/prism.css"></script>
     <link rel="stylesheet" href="css/chart-palette.css"></script>
@@ -24,6 +25,17 @@
 
 {% block content %}
 <div class="dashboard">
+
+   <div class="chart chart-2 chart-2h">
+   <!-- {{references_countries|raw}} -->
+   {% set vars = {'chart': {
+                     'id':    'references_countries',
+                     'title': 'Countries of references',
+                     'text':  '',
+                     'data':  references_countries
+                  }} %}
+   {% include 'partials/chart.html' with vars %}
+   </div>
 
    <div class="chart chart-2">
    {% set vars = {'chart': {
@@ -120,8 +132,11 @@
 <script src="node_modules/chartist/dist/chartist.min.js"></script>
 <script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
 <script src="node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
+
+<script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/prismjs/prism.js"></script>
 <script src="node_modules/prismjs/components/prism-json.js"></script>
+<script src="js/references_countries.js"></script>
 <script src="js/telemetry.js"></script>
 
 {% endblock %}

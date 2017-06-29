@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 use App\Models\Telemetry  as TelemetryModel;
 use App\Models\GlpiPlugin as GlpiPluginModel;
+use App\Models\Reference  as ReferenceModel;
 use App\Models\TelemetryGlpiPlugin;
 
 
@@ -56,6 +57,22 @@ class Telemetry  extends ControllerAbstract {
       // retrieve avg usage
       // TODO
 
+      // retrieve reference country
+      $references_countries = ReferenceModel::select(
+            DB::raw("country as cca2, count(*) as total")
+         )
+         ->groupBy(DB::raw("country"))
+         ->orderBy('total', 'desc')
+         ->get()
+         ->toArray();
+      $all_cca2 = array_column($this->container->countries, 'cca2');
+      foreach ($references_countries as &$ctry) {
+         //replace alpha2 by alpha3 codes
+         $cca2 = strtoupper($ctry['cca2']);
+         $idx  = array_search($cca2, $all_cca2);
+         $ctry['cca3'] = strtolower($this->container->countries[$idx]['cca3']);
+         $ctry['name'] = $this->container->countries[$idx]['name']['common'];
+      }
 
       // retrieve glpi versions
       $glpi_versions = TelemetryModel::select(
@@ -151,6 +168,7 @@ class Telemetry  extends ControllerAbstract {
             'labels' => array_column($web_engines, 'web_engine'),
             'series' => array_column($web_engines, 'total')
          ]),
+         'references_countries' => json_encode($references_countries),
          'json_data_example' => $this->container['json_spec']
       ]);
 

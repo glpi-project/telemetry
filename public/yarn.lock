@@ -17,14 +17,6 @@ bootstrap@4.0.0-alpha.6:
     jquery ">=1.9.1"
     tether "^1.4.0"
 
-chartist-plugin-axistitle@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/chartist-plugin-axistitle/-/chartist-plugin-axistitle-0.0.1.tgz#c85dcb7c41fcc9f465996f43998a8895c1bb84ad"
-
-chartist-plugin-legend@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/chartist-plugin-legend/-/chartist-plugin-legend-0.6.1.tgz#0f5983aa5b5ed8a76d501c90cb79a5361933b2a6"
-
 chartist-plugin-tooltips@^0.0.17:
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/chartist-plugin-tooltips/-/chartist-plugin-tooltips-0.0.17.tgz#fc1a98eb5d3771235b6e08cd1c18cc96c2110660"
@@ -84,6 +76,10 @@ jquery-mousewheel@~3.1.13:
 jquery@>=1.9.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
+
+leaflet@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.1.0.tgz#63246715cfc783dca6798b843a250e8e6fd84918"
 
 masonry-layout@^4.2.0:
   version "4.2.0"

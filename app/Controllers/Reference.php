@@ -36,16 +36,11 @@ class Reference extends ControllerAbstract {
                                      $_SESSION['reference']['sort'])
                            ->paginate(15);
 
-      // retrive countries in json from mledoze/countries package
-      $countries_json = file_get_contents("../vendor/mledoze/countries/dist/countries.json");
-      $countries      = json_decode($countries_json, true) ;
-
       // render in twig view
       $this->render('reference.html', [
          'class'      => 'reference',
          'references' => $references,
          'pagination' => $references->appends($_GET)->render(),
-         'countries'  => $countries,
          'orderby'    => $_SESSION['reference']['orderby'],
          'sort'       => $_SESSION['reference']['sort']
       ]);

@@ -43,6 +43,11 @@
       {% block userscripts %}
       {% include "partials/alerts.html" %}
 
+      <script type="text/javascript">
+      var countries     = {{ countries     | raw }};
+      var countries_geo = {{ countries_geo | raw }};
+      </script>
+
       {% endblock %}
     </body>
 </html>

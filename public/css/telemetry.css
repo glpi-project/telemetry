@@ -17,6 +17,16 @@
    width: 700px;
 }
 
+@media (max-width: 700px) {
+   .chart-2 {
+      width:99%;
+   }
+}
+
+.chart-2h .card-block:not(.description) {
+   min-height: 420px;
+}
+
 .chart button i {
    color: #CCC;
 }
@@ -119,3 +129,20 @@ stroke: #22727B;
 #chart-web_engines .ct-series-c .ct-slice-donut {
    stroke: #3E78C3#4B85CF;
 }
+
+#chart-references_countries,
+#chart-references_countries .card-header,
+#chart-references_countries .card-header i {
+   background-color: #d1d1d1;
+   color: #4F4F4F;
+}
+
+#references_countries .country_info {
+   padding: 6px 8px;
+   background: white;
+   background: rgba(255,255,255,0.4);
+   box-shadow: 0 0 15px rgba(0,0,0,0.2);
+   border-radius: 5px;
+}
+
+#d1d1d1

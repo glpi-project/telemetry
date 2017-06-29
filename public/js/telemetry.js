@@ -1,10 +1,5 @@
 $(document).ready(function() {
-   // masonry on dashboard
-   $('.dashboard').masonry({
-     itemSelector: '.chart',
-     columnWidth: 350,
-     fitWidth: true
-   });
+   // # OPTIONS FOR CHARTS #
 
    // defines options for carts
    var pie_options = {
@@ -36,6 +31,9 @@ $(document).ready(function() {
       ]
   }
 
+
+   // # CHARTS DEFINITION #
+
    // render charts
    // var php_versions = new Chartist.Line(
    var php_versions = new Chartist.Bar(
@@ -66,14 +64,7 @@ $(document).ready(function() {
       '#top_plugins',
       $('#top_plugins').data("id"),
       simple_bar_options
-   )
-   /*.on('draw', function(data) {
-      if(data.type === 'bar') {
-         data.element.attr({
-            style: 'stroke-width: 40px'
-         });
-      }
-   })*/;
+   );
    animateSimpleBar(top_plugins);
 
    var os_family = new Chartist.Pie(
@@ -104,6 +95,14 @@ $(document).ready(function() {
    );
    animateDonut(db_engines);
 
+   // # MISC INTERACTIONS #
+
+   // masonry on dashboard
+   $('.dashboard').masonry({
+     itemSelector: '.chart',
+     columnWidth: 350,
+     fitWidth: true
+   });
 
    // permits to expand chart cards
    $(".chart .expand").click(function() {
@@ -145,7 +144,7 @@ $(document).ready(function() {
 
 });
 
-
+// # UTILS FUNCTIONS #
 var animateDonut = function (chart) {
    chart.on('draw', function(data) {
       if(data.type === 'slice') {

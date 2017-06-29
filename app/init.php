@@ -47,6 +47,19 @@ $container['csrf'] = function ($c) {
    return new \Slim\Csrf\Guard;
 };
 
+// retrieve countries in json from mledoze/countries package
+$countries_dir = "../vendor/mledoze/countries";
+$countries_json = file_get_contents("$countries_dir/dist/countries.json");
+$container['countries'] = json_decode($countries_json, true);
+$countries_geo = [];
+foreach (scandir("$countries_dir/data/") as $file) {
+   if (strpos($file, '.geo.json') !== false) {
+      $geo_alpha3 = str_replace('.geo.json', '', $file);
+      $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$countries_dir/data/$file"), true);
+   }
+}
+$container['countries_geo'] = $countries_geo;
+
 // setup twig
 $container['view'] = function ($c) {
    $view = new \Slim\Views\Twig('../app/Templates', [
@@ -65,9 +78,14 @@ $container['view'] = function ($c) {
    }
 
    // add some global to view
-   $view->getEnvironment()
-      // add recaptcha sitekey
-      ->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
+   $env = $view->getEnvironment();
+
+   // add recaptcha sitekey
+   $env->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
+
+   // add countries geo data
+   $env->addGlobal('countries', json_encode($c['countries']), true);
+   $env->addGlobal('countries_geo', json_encode($c['countries_geo']), true);
 
    return $view;
 };
@@ -121,7 +139,7 @@ $container['errorHandler'] = function ($c) { //CUSTOM Error Handler
 
 // php error handler
 if (!$config['debug']) {
-   $c['phpErrorHandler'] = function ($c) {
+   $container['phpErrorHandler'] = function ($c) {
        return function ($request, $response, $error) use ($c) {
             $c->logger->error('error', [$e->getMessage()]);
             return $c['view']->render($response,
