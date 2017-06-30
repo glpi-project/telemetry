@@ -84,7 +84,7 @@
                </button>
             </div>
             <div class="modal-body">
-               <div class="alert alert-warning" role="alert">
+               <div class="alert alert-warning" role="alert" id="warning-country">
                   <strong>Warning!</strong> You may have note that your adblocker forbid a freegeoip url. We use this service only to locate your country and prefill the dropdown bellow!
                </div>
                <div class="form-group">
@@ -154,6 +154,7 @@
                   <label class="sr-only" for="comment">Comment</label>
                   <textarea class="form-control form-control-sm"
                             name="comment"
+                            rows="6"
                             placeholder="Your message"></textarea>
                </div>
                <div class="g-recaptcha" data-sitekey="{{ recaptchasitekey }}"></div>
@@ -187,6 +188,7 @@ $(document).ready(function() {
    });
 
    getCountryCode.done(function(result) {
+      $("#warning-country").remove();
       countries_s2
          .val(result.country_code)
          .trigger("change")
