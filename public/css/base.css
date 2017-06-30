@@ -22,7 +22,13 @@ header.navbar {
 .page-header a {
    font-weight: bolder;
    color: #FFF;
-   text-decoration: underline;
+   background-color: rgba(0, 0, 0, .05);
+   padding: 3px;
+   border-radius: 4px;
+}
+
+.page-header a:hover {
+   background-color: rgba(0, 0, 0, .1);
 }
 
 .reference .page-header {
