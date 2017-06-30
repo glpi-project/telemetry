@@ -74,7 +74,7 @@ class Reference extends ControllerAbstract {
       $this->container->flash->addMessage('success',
          'Your reference has been stored! An administrator will moderate it before display on the site.');
 
-      // redirect to list
-      return $res->withRedirect('./reference');
+      // redirect to ok page
+      return $res->withRedirect('./ok');
    }
 }
