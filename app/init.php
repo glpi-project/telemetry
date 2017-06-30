@@ -84,7 +84,7 @@ $container['view'] = function ($c) {
                                                                      "/data/$file"), true);
       }
    }
-   $env->addGlobal('countries', json_encode($c['countries']), true);
+   $env->addGlobal('countries', $c['countries'], true);
    $env->addGlobal('countries_geo', json_encode($countries_geo), true);
 
    return $view;
