@@ -25,6 +25,6 @@ class Contact  extends ControllerAbstract {
          'Thanks for your message, please wait a bit for our answer !');
 
       //redirect
-      return $res->withRedirect('/ok');
+      return $res->withRedirect('./ok');
    }
 }
