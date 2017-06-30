@@ -88,6 +88,7 @@ CREATE TABLE telemetry_glpi_plugin (
 DROP TABLE IF EXISTS reference CASCADE;
 CREATE TABLE reference (
    id                             SERIAL PRIMARY KEY,
+   uuid                           VARCHAR(41),
    name                           VARCHAR(505),
    country                        VARCHAR(10),
    comment                        TEXT,

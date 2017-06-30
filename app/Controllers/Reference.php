@@ -39,6 +39,8 @@ class Reference extends ControllerAbstract {
       // render in twig view
       $this->render('reference.html', [
          'class'      => 'reference',
+         'showmodal'  => isset($get['showmodal']),
+         'uuid'       => isset($get['uuid']) ? $get['uuid'] : '',
          'references' => $references,
          'pagination' => $references->appends($_GET)->render(),
          'orderby'    => $_SESSION['reference']['orderby'],

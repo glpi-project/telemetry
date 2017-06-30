@@ -161,6 +161,7 @@
                <div class="g-recaptcha" data-sitekey="{{ recaptchasitekey }}"></div>
             </div>
             <div class="modal-footer">
+               <input type="hidden" name="uuid" value="{{uuid}}" />
                <button type="submit" class="btn btn-outline-primary">Register</button>
                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
@@ -195,9 +196,10 @@ $(document).ready(function() {
          .trigger("change")
    });
 
-   $("#register").click(function() {
-
-   })
+   // if get parameter showmodal is present, show the corresponding modal
+   {% if showmodal == true %}
+   $("#register_reference").modal('show');
+   {% endif %}
 });
 </script>
 {% endblock %}
