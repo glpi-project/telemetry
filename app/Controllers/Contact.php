@@ -12,12 +12,14 @@ class Contact  extends ControllerAbstract {
    }
 
    public function send(Request $req,  Response $res) {
+      $post = $req->getParsedBody();
+
       // prepare mail
       $mail = new \PHPMailer;
       $mail->setFrom($post['email']);
       $mail->addAddress($this->container['settings']['mail_admin']);
       $mail->Subject = $post['subject'];
-      $mail->Body = $post['message'];
+      $mail->Body    = $post['message'];
       $mail->send();
 
       // store a message for user (displayed after redirect)
