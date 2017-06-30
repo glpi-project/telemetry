@@ -8,13 +8,16 @@
       </a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="./telemetry">
+            <a class="nav-item nav-link {{ class == 'telemetry' ? 'active'}}"
+               href="./telemetry">
                <i class='fa fa-bar-chart'></i>
                Telemetry</a>
-            <a class="nav-item nav-link" href="./reference">
+            <a class="nav-item nav-link {{ class == 'reference' ? 'active'}}"
+               href="./reference">
                <i class='fa fa-users'></i>
                References</a>
-            <a class="nav-item nav-link" href="./contact">
+            <a class="nav-item nav-link {{ class == 'contact' ? 'active'}}"
+               href="./contact">
                <i class='fa fa-envelope'></i>
                Contact</a>
          </div>

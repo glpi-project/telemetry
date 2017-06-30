@@ -15,6 +15,10 @@ header.navbar {
    background-repeat: no-repeat;
 }
 
+.active {
+   color: #4092B9 !important;
+}
+
 .page-header h1 {
    font-size: 3rem;
    font-weight: 400;
@@ -42,6 +46,11 @@ header.navbar {
    background-image: url(../pics/header_bg3.png);
 }
 
+.reference .active {
+   color: #CA7843 !important;
+}
+
+
 @media (max-width: 700px) {
    .page-header {
       background-image: none !important;
@@ -50,6 +59,10 @@ header.navbar {
 
 .contact .page-header {
    background-color: #87C38D
+}
+
+.contact .active {
+   color: #40A24A !important;
 }
 
 .error.page-header {
