@@ -11,6 +11,8 @@ header.navbar {
    color: #fff;
    text-align: center;
    background-color: #25a2dd;
+   background-image: url(../pics/header_bg1.png);
+   background-repeat: no-repeat;
 }
 
 .page-header h1 {
@@ -31,8 +33,19 @@ header.navbar {
    background-color: rgba(0, 0, 0, .1);
 }
 
+.telemetry .page-header {
+   background-image: url(../pics/header_bg2.png);
+}
+
 .reference .page-header {
-   background-color: #EF8E4F
+   background-color: #EF8E4F;
+   background-image: url(../pics/header_bg3.png);
+}
+
+@media (max-width: 700px) {
+   .page-header {
+      background-image: none !important;
+   }
 }
 
 .contact .page-header {

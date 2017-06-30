@@ -156,6 +156,7 @@ class Telemetry  extends ControllerAbstract {
          ->toArray();
 
       $this->render('telemetry.html', [
+         'class' => 'telemetry',
          'nb_telemetry_entries' => json_encode($nb_tel_entries),
          'nb_reference_entries' => json_encode($nb_ref_entries),
          'php_versions' => json_encode([
