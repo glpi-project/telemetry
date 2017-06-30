@@ -18,7 +18,7 @@ class Contact  extends ControllerAbstract {
       $mail = new \PHPMailer;
       $mail->setFrom($post['email']);
       $mail->addAddress($this->container['settings']['mail_admin']);
-      $mail->Subject = $post['subject'];
+      $mail->Subject = "A new message from telemetry site: ".$post['subject'];
       $mail->Body    = $post['message'];
       $mail->send();
 

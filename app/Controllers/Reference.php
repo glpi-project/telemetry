@@ -62,6 +62,14 @@ class Reference extends ControllerAbstract {
       // create reference in db
       ReferenceModel::create($post);
 
+      // send a mail to admin
+      $mail = new \PHPMailer;
+      $mail->setFrom($this->container['settings']['mail_from']);
+      $mail->addAddress($this->container['settings']['mail_admin']);
+      $mail->Subject = "A new reference has been submitted: ".$post['name'];
+      $mail->Body    = var_export($post, true);
+      $mail->send();
+
       // store a message for user (displayed after redirect)
       $this->container->flash->addMessage('success',
          'Your reference has been stored! An administrator will moderate it before display on the site.');
