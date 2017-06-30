@@ -1,13 +1,15 @@
 {% extends "partials/base.html" %}
 {% block title %}Telemetry{% endblock %}
 {% block head %}
-    {{ parent() }}
-    <link rel="stylesheet" href="node_modules/chartist/dist/chartist.min.css" />
-    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css"></script>
-    <link rel="stylesheet" href="node_modules/prismjs/themes/prism.css"></script>
-    <link rel="stylesheet" href="css/chart-palette.css"></script>
-    <link rel="stylesheet" href="css/telemetry.css"></script>
+   {{ parent() }}
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.css" />
+   <link rel="stylesheet" href="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css"></script>
+   <link rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css" />
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" />
+
+   <link rel="stylesheet" href="css/chart-palette.css"></script>
+   <link rel="stylesheet" href="css/telemetry.css"></script>
 
 {% endblock %}
 
@@ -148,13 +150,13 @@
 {% block userscripts %}
 {{ parent() }}
 
-<script src="node_modules/chartist/dist/chartist.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.js"></script>
 <script src="node_modules/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-<script src="node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-json.min.js"></script>
 
-<script src="node_modules/leaflet/dist/leaflet.js"></script>
-<script src="node_modules/prismjs/prism.js"></script>
-<script src="node_modules/prismjs/components/prism-json.js"></script>
 <script src="js/references_countries.js"></script>
 <script src="js/telemetry.js"></script>
 
