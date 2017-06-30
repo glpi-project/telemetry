@@ -27,47 +27,51 @@ $(document).ready(function() {
    };
    references_info.addTo(references_map);
 
-   // add geo json for each country
-   $.each($('#references_countries').data("id"), function(index, value) {
-      var current_geojson = countries_geo[value['cca3']];
-      for (var attr in value) {
-         current_geojson.features[0].properties[attr] = value[attr];
-      }
+   //retrieve geojson data
+   $.getJSON('./telemetry/geojson').done(function(countries_geo) {
 
-      var geojson = L.geoJson(current_geojson, {
-         style: function (country) {
-            return {
-               weight: 1,
-               opacity: 1,
-               color: 'white',
-               dashArray: '',
-               fillOpacity: 0.6,
-               fillColor: getColor(country.properties.total)
-            }
-         },
-         onEachFeature: function (feature, layer) {
-            layer.on({
-               mouseover: function(e) {
-                  var layer = e.target;
-                  layer.setStyle({
-                     weight: 1,
-                     color: '#666',
-                     dashArray: '',
-                     fillOpacity: 0.6
-                  });
-                  if (!L.Browser.ie && !L.Browser.opera) {
-                     layer.bringToFront();
-                  }
-                  references_info.update(layer.feature.properties);
-               },
-               mouseout: function(e) {
-                  geojson.resetStyle(e.target);
-                  references_info.update();
-               },
-            });
-            layer.bindPopup(feature.properties.name);
+      // add geo json for each country
+      $.each($('#references_countries').data("id"), function(index, value) {
+         var current_geojson = countries_geo[value['cca3']];
+         for (var attr in value) {
+            current_geojson.features[0].properties[attr] = value[attr];
          }
-      }).addTo(references_map);
+
+         var geojson = L.geoJson(current_geojson, {
+            style: function (country) {
+               return {
+                  weight: 1,
+                  opacity: 1,
+                  color: 'white',
+                  dashArray: '',
+                  fillOpacity: 0.6,
+                  fillColor: getColor(country.properties.total)
+               }
+            },
+            onEachFeature: function (feature, layer) {
+               layer.on({
+                  mouseover: function(e) {
+                     var layer = e.target;
+                     layer.setStyle({
+                        weight: 1,
+                        color: '#666',
+                        dashArray: '',
+                        fillOpacity: 0.6
+                     });
+                     if (!L.Browser.ie && !L.Browser.opera) {
+                        layer.bringToFront();
+                     }
+                     references_info.update(layer.feature.properties);
+                  },
+                  mouseout: function(e) {
+                     geojson.resetStyle(e.target);
+                     references_info.update();
+                  },
+               });
+               layer.bindPopup(feature.properties.name);
+            }
+         }).addTo(references_map);
+      });
    });
 });
 

@@ -76,16 +76,7 @@ $container['view'] = function ($c) {
    $env->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
 
    // add countries geo data
-   $countries_geo = [];
-   foreach (scandir($c['countries_dir']."/data/") as $file) {
-      if (strpos($file, '.geo.json') !== false) {
-         $geo_alpha3 = str_replace('.geo.json', '', $file);
-         $countries_geo[$geo_alpha3] = json_decode(file_get_contents($c['countries_dir'].
-                                                                     "/data/$file"), true);
-      }
-   }
    $env->addGlobal('countries', $c['countries'], true);
-   $env->addGlobal('countries_geo', json_encode($countries_geo), true);
 
    return $view;
 };

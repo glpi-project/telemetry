@@ -287,6 +287,21 @@ class Telemetry  extends ControllerAbstract {
          ]);
    }
 
+   public function geojson(Request $request, Response $response) {
+      $dir = $this->container->countries_dir;
+      $countries_geo = [];
+      foreach (scandir("$dir/data/") as $file) {
+         if (strpos($file, '.geo.json') !== false) {
+            $geo_alpha3 = str_replace('.geo.json', '', $file);
+            $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+         }
+      }
+
+      return $response->withStatus(200)
+         ->withHeader('Content-Type', 'application/json')
+         ->write(json_encode($countries_geo));
+   }
+
    private function truncate($string, $length) {
       if (strlen($string) > $length) {
          $this->container->log->warning("String exceed length $length", $string);
