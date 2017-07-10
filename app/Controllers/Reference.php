@@ -62,7 +62,7 @@ class Reference extends ControllerAbstract {
       unset($post['csrf_value']);
 
       // create reference in db
-      ReferenceModel::create($post);
+      ReferenceModel::updateOrCreate(['uuid' => $post['uuid']], $post);
 
       // send a mail to admin
       $mail = new \PHPMailer;
