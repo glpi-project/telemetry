@@ -1,4 +1,44 @@
 
+
+.telemetry_form {
+   margin: 0 auto;
+   padding: 0 0 0 50px;
+}
+
+.telemetry_form .form-group {
+   width: 150px;
+   border: 2px solid #509ee3;
+   margin-right: .85em;
+   margin-bottom: .5em;
+   padding: .25em 1em;
+   border-radius: 4px;
+}
+
+.telemetry_form .form-group legend {
+   font-size: 0.83em;
+   color: #959595;
+   position: relative;
+   height: 2px;
+   line-height: 0;
+   margin: 0 0 0-.45em;
+   padding: 0 .5em;
+   width: 80px;
+}
+
+.telemetry_form .form-group select {
+   border: none;
+   background-color: transparent;
+   height: 1.8rem !important;
+   padding: 0;
+   color: #509ee3;
+   font-weight: bold;
+   font-size: 0.9rem;
+}
+
+.telemetry_form .form-group option {
+   color: grey;
+}
+
 /** charts **/
 .dashboard {
    margin: 0 auto;

@@ -24,6 +24,22 @@
 {% endblock %}
 
 {% block content %}
+
+<form class='telemetry_form'>
+   <fieldset class="form-group">
+      <legend><label for="exampleSelect1">Data since</label></legend>
+      <select class="form-control" name="years" onchange='this.form.submit();'>
+         <option value='-1'>always</option>
+         {% for i in 1..20 %}
+         <option value='{{i}}'
+                 {% if form.years == i %} selected="selected"{% endif %}>
+            {{i}} year(s)
+         </option>
+         {% endfor %}
+      </select>
+   </fieldset>
+</form>
+
 <div class="dashboard">
 
    <div class="chart">

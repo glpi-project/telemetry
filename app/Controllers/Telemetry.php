@@ -14,15 +14,25 @@ use App\Models\TelemetryGlpiPlugin;
 class Telemetry  extends ControllerAbstract {
 
    public function view(Request $request, Response $response) {
+      $get   = $request->getQueryParams();
+      $years = 99;
+      if (isset($get['years']) && $get['years'] != -1) {
+         $years = $get['years'];
+      }
+
       // retrieve nb of telemtry entries
-      $raw_nb_tel_entries = TelemetryModel::count();
+      $raw_nb_tel_entries = TelemetryModel
+         ::where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+         ->count();
       $nb_tel_entries = [
          'raw' => $raw_nb_tel_entries,
          'nb'  => (string) Number::n($raw_nb_tel_entries)->round(2)->getSuffixNotation()
       ];
 
      // retrieve nb of reference entries
-      $raw_nb_ref_entries = ReferenceModel::count();
+      $raw_nb_ref_entries = ReferenceModel
+         ::where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+         ->count();
       $nb_ref_entries = [
          'raw' => $raw_nb_ref_entries,
          'nb'  => (string) Number::n($raw_nb_ref_entries)->round(2)->getSuffixNotation()
@@ -35,7 +45,7 @@ class Telemetry  extends ControllerAbstract {
                      to_char(date_trunc('month', created_at), 'YYYY MON') as month_year,
                      count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '2 YEAR'"))
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("month_year, raw_month_year, version"))
          ->orderBy(DB::raw("raw_month_year"), 'ASC')
          ->get()
@@ -81,6 +91,7 @@ class Telemetry  extends ControllerAbstract {
       $references_countries = ReferenceModel::select(
             DB::raw("country as cca2, count(*) as total")
          )
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("country"))
          ->orderBy('total', 'desc')
          ->get()
@@ -100,7 +111,7 @@ class Telemetry  extends ControllerAbstract {
             DB::raw("TRIM(trailing '-dev' FROM glpi_version) as version,
                      count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("glpi_version"))
          ->get()
          ->toArray();
@@ -109,7 +120,9 @@ class Telemetry  extends ControllerAbstract {
       $top_plugins = GlpiPluginModel::join( 'telemetry_glpi_plugin',
                                             'glpi_plugin.id', '=', 'telemetry_glpi_plugin.glpi_plugin_id')
          ->select(DB::raw("glpi_plugin.pkey, count(telemetry_glpi_plugin.*) as total"))
-         ->where('telemetry_glpi_plugin.created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->where('telemetry_glpi_plugin.created_at',
+                 '>=',
+                 DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->orderBy('total', 'desc')
          ->limit(5)
          ->groupBy(DB::raw("glpi_plugin.pkey"))
@@ -120,7 +133,7 @@ class Telemetry  extends ControllerAbstract {
       $os_family = TelemetryModel::select(
             DB::raw("os_family, count(*) as total")
          )
-         //->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("os_family"))
          ->get()
          ->toArray();
@@ -129,7 +142,7 @@ class Telemetry  extends ControllerAbstract {
       $languages = TelemetryModel::select(
             DB::raw("glpi_default_language, count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("glpi_default_language"))
          ->get()
          ->toArray();
@@ -143,7 +156,7 @@ class Telemetry  extends ControllerAbstract {
                      END as reduced_db_engine,
                      count(*) as total")
          )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy('reduced_db_engine')
          ->get()
          ->toArray();
@@ -154,7 +167,7 @@ class Telemetry  extends ControllerAbstract {
             DB::raw("web_engine, count(*) as total")
          )
          ->where([
-            ['created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'")],
+            ['created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'")],
             ['web_engine', '<>', '']
          ])
          ->groupBy(DB::raw("web_engine"))
@@ -162,6 +175,9 @@ class Telemetry  extends ControllerAbstract {
          ->toArray();
 
       $this->render('telemetry.html', [
+         'form' => [
+            'years' => $get['years']
+         ],
          'class' => 'telemetry',
          'nb_telemetry_entries' => json_encode($nb_tel_entries),
          'nb_reference_entries' => json_encode($nb_ref_entries),
