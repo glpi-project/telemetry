@@ -19,6 +19,9 @@ $(document).ready(function() {
       ],
       'icecream': [
          "#FFEC94", "#FFAEAE", "#FFF0AA", "#B0E57C", "#B4D8E7", "#56BAEC"
+      ],
+      'nivo': [
+         "#E8C1A0", "#F47560", "#F1E15B", "#E8A838", "#61CDBB", "#97E3D5"
       ]
    };
 

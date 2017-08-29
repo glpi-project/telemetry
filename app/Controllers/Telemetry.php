@@ -136,12 +136,18 @@ class Telemetry  extends ControllerAbstract {
 
       // retrieve db engine
       $db_engines = TelemetryModel::select(
-            DB::raw("db_engine, count(*) as total")
+            DB::raw("CASE
+                        WHEN UPPER(db_engine) LIKE 'MARIA%' THEN 'MariaDB'
+                        WHEN UPPER(db_engine) LIKE 'MYSQL%' THEN 'MySQL'
+                        ELSE 'MySQL'
+                     END as reduced_db_engine,
+                     count(*) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
-         ->groupBy(DB::raw("db_engine"))
+         ->groupBy('reduced_db_engine')
          ->get()
          ->toArray();
+
 
       // retrieve web engine
       $web_engines = TelemetryModel::select(
@@ -189,8 +195,8 @@ class Telemetry  extends ControllerAbstract {
          'db_engines' => json_encode([[
             'type'   => 'pie',
             'hole'   => .4,
-            'palette' => 'icecream',
-            'labels' => array_column($db_engines, 'db_engine'),
+            'palette' => 'nivo',
+            'labels' => array_column($db_engines, 'reduced_db_engine'),
             'values' => array_column($db_engines, 'total')
          ]]),
          'web_engines' => json_encode([[
