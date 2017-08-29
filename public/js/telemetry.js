@@ -158,8 +158,9 @@ $(document).ready(function() {
    // permits to expand chart cards
    $(".chart .expand").click(function() {
       var e_button = $(this);
-      var chart    = e_button.parents(".chart")
-      var chartist = chart.find(".ct-chart").get(0).__chartist__;
+      var chart_id = e_button.parents(".card").find(".ct-chart").attr('id');
+      var chart    = e_button.parents(".chart");
+      var plotly = chart.find(".plotly");
 
       // set fullscreen on chart
       if (!chart.hasClass('chart-max')) {
@@ -183,15 +184,11 @@ $(document).ready(function() {
       $('.dashboard')
          .masonry()
          .one( 'layoutComplete', function() {
-            console.log(chartist)
-
-            if (typeof chartist != "undefined") {
-               chartist.update();
+            if (plotly.length != 0) {
+               Plotly.Plots.resize(Plotly.d3.select("#"+chart_id).node())
             } else {
                references_map.invalidateSize();
             }
-
-            //Plotly.Plots.resize(Plotly.d3.select('#glpi_versions').node())
 
             // scroll to the chart
             $('html, body').animate({
