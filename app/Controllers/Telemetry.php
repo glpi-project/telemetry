@@ -97,7 +97,8 @@ class Telemetry  extends ControllerAbstract {
 
       // retrieve glpi versions
       $glpi_versions = TelemetryModel::select(
-            DB::raw("glpi_version as version, count(*) as total")
+            DB::raw("TRIM(trailing '-dev' FROM glpi_version) as version,
+                     count(*) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
          ->groupBy(DB::raw("glpi_version"))
