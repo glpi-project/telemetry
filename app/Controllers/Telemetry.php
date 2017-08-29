@@ -31,11 +31,12 @@ class Telemetry  extends ControllerAbstract {
       // retrieve php versions
       $raw_php_versions = TelemetryModel::select(
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
-                     date_trunc('month', created_at) as month_year,
+                     to_char(date_trunc('month', created_at), 'YYYY MON') as month_year,
                      count(*) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '2 YEAR'"))
          ->groupBy(DB::raw("month_year, version"))
+         ->orderBy(DB::raw("version, month_year"))
          ->get()
          ->toArray();
 
@@ -55,17 +56,20 @@ class Telemetry  extends ControllerAbstract {
       $php_versions_legend = array_unique($php_versions_legend);
       $php_versions_labels = array_unique($php_versions_labels);
       foreach ($php_versions as $version_name => $version) {
-         $tmp_data = [];
+         $x_data = $y_data = [];
          foreach ($php_versions_labels as $month_year) {
+            $x_data[] = $month_year;
             if (isset($version[$month_year])) {
-               $tmp_data[] = $version[$month_year];
+               $y_data[] = $version[$month_year];
             } else {
-               $tmp_data[] = 'null';
+               $y_data[] = 'null';
             }
          }
          $php_versions_series[] = [
-            'meta' => "PHP ".$version_name,
-            'data' => $tmp_data
+            'name' => "PHP ".$version_name,
+            'y'    => $y_data,
+            'x'    => $x_data,
+            'mode' => 'lines+markers',
          ];
       }
 
@@ -159,34 +163,47 @@ class Telemetry  extends ControllerAbstract {
          'class' => 'telemetry',
          'nb_telemetry_entries' => json_encode($nb_tel_entries),
          'nb_reference_entries' => json_encode($nb_ref_entries),
-         'php_versions' => json_encode([
-            'labels' => $php_versions_labels,
-            'series' => $php_versions_series
-         ]),
-         'glpi_versions' => json_encode([
-            'labels' => array_column($glpi_versions, 'version'),
-            'series' => array_column($glpi_versions, 'total')
-         ]),
-         'top_plugins' => json_encode([
-            'labels' => array_column($top_plugins, 'pkey'),
-            'series' => array_column($top_plugins, 'total')
-         ]),
-         'os_family' => json_encode([
-            'labels' => array_column($os_family, 'os_family'),
-            'series' => array_column($os_family, 'total')
-         ]),
-         'default_languages' => json_encode([
-            'labels' => array_column($languages, 'glpi_default_language'),
-            'series' => array_column($languages, 'total')
-         ]),
-         'db_engines' => json_encode([
+         'php_versions' => json_encode($php_versions_series),
+         'glpi_versions' => json_encode([[
+            'type'    => 'pie',
+            'hole'    => .4,
+            'palette' => 'belize11',
+            'labels'  => array_column($glpi_versions, 'version'),
+            'values'  => array_column($glpi_versions, 'total')
+         ]]),
+         'top_plugins' => json_encode([[
+            'type'   => 'bar',
+            'marker' => ['color' => "#22727B"],
+            'x'      => array_column($top_plugins, 'pkey'),
+            'y'      => array_column($top_plugins, 'total')
+         ]]),
+         'os_family' => json_encode([[
+            'type'    => 'pie',
+            'hole'    => .4,
+            'palette' => 'fall6',
+            'labels'  => array_column($os_family, 'os_family'),
+            'values'  => array_column($os_family, 'total')
+         ]]),
+         'default_languages' => json_encode([[
+            'type'    => 'pie',
+            'palette' => 'combo',
+            'labels'  => array_column($languages, 'glpi_default_language'),
+            'values'  => array_column($languages, 'total')
+         ]]),
+         'db_engines' => json_encode([[
+            'type'   => 'pie',
+            'hole'   => .4,
+            'palette' => 'icecream',
             'labels' => array_column($db_engines, 'db_engine'),
-            'series' => array_column($db_engines, 'total')
-         ]),
-         'web_engines' => json_encode([
-            'labels' => array_column($web_engines, 'web_engine'),
-            'series' => array_column($web_engines, 'total')
-         ]),
+            'values' => array_column($db_engines, 'total')
+         ]]),
+         'web_engines' => json_encode([[
+            'type'    => 'pie',
+            'hole'    => .4,
+            'palette' => 'bluestone',
+            'labels'  => array_column($web_engines, 'web_engine'),
+            'values'  => array_column($web_engines, 'total')
+         ]]),
          'references_countries' => json_encode($references_countries),
          'json_data_example' => $this->container['json_spec']
       ]);

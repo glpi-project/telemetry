@@ -1,56 +1,94 @@
 $(document).ready(function() {
    // # OPTIONS FOR CHARTS #
-
-   // defines options for carts
-   var pie_options = {
-      // donutWidth: 60,
-      // donutSolid: true,
-      height: '100%',
-      plugins: [
-         Chartist.plugins.tooltip()
+   var palettes = {
+      'belize11': [
+         "#5cbae6","#b6d957","#fac364","#8cd3ff","#d998cb","#f2d249",
+         "#93b9c6","#ccc5a8","#52bacc","#dbdb46","#98aafb"
+      ],
+      'test6': [
+         "#063951", "#0d95bc", "#a2b969", "#ebcb38", "#f36f13", "#c13018"
+      ],
+      'fall6': [
+         "#7C5B37", "#B37A3B", "#E29138", "#DBA365",
+      ],
+      'bluestone': [
+         "#29384B", "#2B486D", "#2E5D98", "#276ABE", "#277EEB"
+      ],
+      'combo': [
+         "#006495", "#004C70", "#0093D1", "#F2635F", "#F4D00C", "#E0A025"
+      ],
+      'icecream': [
+         "#FFEC94", "#FFAEAE", "#FFF0AA", "#B0E57C", "#B4D8E7", "#56BAEC"
       ]
-  };
-  var donut_options = pie_options;
-  donut_options.donut = true;
+   };
 
-  var simple_bar_options = {
-      horizontalBars: true,
-      distributeSeries: true,
-      reverseData: true,
-      // height: 200,
-      axisX: {
-         showGrid: false,
-         showLabel: false,
+   var plotly_pie_layout = {
+      showlegend: false,
+      margin: {
+         l: 0,
+         r: 0,
+         b: 10,
+         t: 10,
+         pad: 0
+      }
+   };
+
+   var plotly_bar_layout = {
+      margin: {
+         l: 40,
+         r: 10,
+         b: 85,
+         t: 10,
+         pad: 0
       },
-      axisY: {
-         offset: 100,
-         showGrid: false,
+      xaxis: {
+         tickangle: 35
       },
-      plugins: [
-         Chartist.plugins.tooltip()
-      ]
-  }
+   };
+
+   var plotly_config = {
+      displayModeBar: false,
+   };
+
+   var plotlyData = function(raw_data) {
+      $.each(raw_data, function(index, current) {
+         current.textinfo  = 'label';
+         current.hoverinfo = 'label+value';
+         current.insidetextfont = {
+            color: "#FEFEFE"
+         };
+         if (typeof current.marker == "undefined") {
+            current.marker    = {};
+         }
+
+         if (typeof current.palette != 'undefined') {
+            current.marker = {
+               colors: palettes[current.palette],
+            };
+         }
+
+         if (current.type == 'pie') {
+            if (typeof current.hole == "undefined" ) {
+               current.pull = .05;
+            }
+
+            /*current.marker.line = {
+               width: 3,
+               color: 'rgba(255, 255, 255, .1)'
+            };*/
+         }
+      });
+
+      return raw_data;
+   }
 
 
    // # CHARTS DEFINITION #
-
-   // render charts
-   // var php_versions = new Chartist.Line(
-   var php_versions = new Chartist.Bar(
-      '#php_versions',
-      $('#php_versions').data("id"),
-      {
-         axisX: {
-            showGrid: false,
-         },
-         axisY: {
-            showGrid: false,
-            showLabel: false,
-         },
-         plugins: [
-            Chartist.plugins.tooltip()
-         ]
-      }
+   var php_versions = Plotly.newPlot(
+      "php_versions",
+      plotlyData($('#php_versions').data("id")),
+      plotly_bar_layout,
+      plotly_config
    );
 
    data_nb_telemetry_entries = $('#nb_telemetry_entries').data("id")
@@ -65,47 +103,48 @@ $(document).ready(function() {
             data_nb_reference_entries.nb +
             "</div>")
 
-   var glpi_versions = new Chartist.Pie(
-      '#glpi_versions',
-      $('#glpi_versions').data("id"),
-      donut_options
+   var glpi_versions = Plotly.newPlot(
+      "glpi_versions",
+      plotlyData($('#glpi_versions').data("id")),
+      plotly_pie_layout,
+      plotly_config
    );
-   animateDonut(glpi_versions);
 
-   var top_plugins = new Chartist.Bar(
-      '#top_plugins',
-      $('#top_plugins').data("id"),
-      simple_bar_options
+   var top_plugins = new Plotly.newPlot(
+      'top_plugins',
+      plotlyData($('#top_plugins').data("id")),
+      $.extend({}, plotly_bar_layout, {paper_bgcolor: '#529AA5',
+                                       plot_bgcolor: '#529AA5'}),
+      plotly_config
    );
-   animateSimpleBar(top_plugins);
 
-   var os_family = new Chartist.Pie(
-      '#os_family',
-      $('#os_family').data("id"),
-      pie_options
+   var os_family = Plotly.newPlot(
+      "os_family",
+      plotlyData($('#os_family').data("id")),
+      $.extend({}, plotly_pie_layout, {paper_bgcolor: '#E9AA63'}),
+      plotly_config
    );
-   animateDonut(os_family);
 
-   var default_languages = new Chartist.Pie(
-      '#default_languages',
-      $('#default_languages').data("id"),
-      donut_options
+   var default_languages = Plotly.newPlot(
+      "default_languages",
+      plotlyData($('#default_languages').data("id")),
+      plotly_pie_layout,
+      plotly_config
    );
-   animateDonut(default_languages);
 
-   var web_engines = new Chartist.Pie(
-      '#web_engines',
-      $('#web_engines').data("id"),
-      donut_options
+   var web_engines = Plotly.newPlot(
+      "web_engines",
+      plotlyData($('#web_engines').data("id")),
+      $.extend({}, plotly_pie_layout, {paper_bgcolor: '#1A5197'}),
+      plotly_config
    );
-   animateDonut(web_engines);
 
-   var db_engines = new Chartist.Pie(
-      '#db_engines',
-      $('#db_engines').data("id"),
-      donut_options
+   var db_engines = Plotly.newPlot(
+      "db_engines",
+      plotlyData($('#db_engines').data("id")),
+      plotly_pie_layout,
+      plotly_config
    );
-   animateDonut(db_engines);
 
    // # MISC INTERACTIONS #
 
@@ -130,7 +169,6 @@ $(document).ready(function() {
             .height('80vh')
             .find(".card-block:not(.description)")
                .height('calc(80vh - 78px)');
-
       } else {
          // disable full screen
          chart
@@ -145,11 +183,15 @@ $(document).ready(function() {
       $('.dashboard')
          .masonry()
          .one( 'layoutComplete', function() {
+            console.log(chartist)
+
             if (typeof chartist != "undefined") {
                chartist.update();
             } else {
                references_map.invalidateSize();
             }
+
+            //Plotly.Plots.resize(Plotly.d3.select('#glpi_versions').node())
 
             // scroll to the chart
             $('html, body').animate({
@@ -159,66 +201,3 @@ $(document).ready(function() {
    });
 
 });
-
-// # UTILS FUNCTIONS #
-var animateDonut = function (chart) {
-   chart.on('draw', function(data) {
-      if(data.type === 'slice') {
-         // Get the total path length in order to use for dash array animation
-         var pathLength = data.element._node.getTotalLength();
-
-         // Set a dasharray that matches the path length as prerequisite to animate dashoffset
-         data.element.attr({
-            'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-         });
-
-         // Create animation definition while also assigning an ID to the animation for later sync usage
-         var animationDefinition = {
-            'stroke-dashoffset': {
-               id: 'anim' + data.index,
-               dur: 500,
-               from: -pathLength + 'px',
-               to:  '0px',
-               easing: Chartist.Svg.Easing.easeOutQuint,
-               // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
-               fill: 'freeze'
-            }
-         };
-
-         // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
-         if(data.index !== 0) {
-            animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-         }
-
-         // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
-         data.element.attr({
-            'stroke-dashoffset': -pathLength + 'px'
-         });
-
-         // We can't use guided mode as the animations need to rely on setting begin manually
-         // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
-         data.element.animate(animationDefinition, false);
-     }
-   });
-};
-
-var animateSimpleBar = function(chart) {
-   chart.on('draw', function(data) {
-      if(data.type === 'bar') {
-         data.element.animate({
-            y2: {
-            dur: 1000,
-            from: data.y1,
-            to: data.y2,
-            easing: Chartist.Svg.Easing.easeOutQuint
-         },
-         opacity: {
-            dur: 1000,
-            from: 0,
-            to: 1,
-            easing: Chartist.Svg.Easing.easeOutQuint
-         }
-       });
-     }
-   });
-}

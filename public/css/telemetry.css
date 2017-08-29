@@ -118,16 +118,6 @@ stroke: #22727B;
    fill: #4E3C28;
 }
 
-#chart-os_family .ct-series-a .ct-slice-donut {
-   stroke: #D69C5C;
-}
-#chart-os_family .ct-series-b .ct-slice-donut {
-   stroke: #CD8A3F;
-}
-#chart-os_family .ct-series-c .ct-slice-donut {
-   stroke: #BF813C;
-}
-
 #chart-web_engines,
 #chart-web_engines .card-header,
 #chart-web_engines .card-header i {
@@ -138,16 +128,6 @@ stroke: #22727B;
 #chart-web_engines i,
 #chart-web_engines .ct-label {
    fill: #C8E0FF;
-}
-
-#chart-web_engines .ct-series-a .ct-slice-donut {
-   stroke: #2F68B2;
-}
-#chart-web_engines .ct-series-b .ct-slice-donut {
-   stroke: #3E78C3;
-}
-#chart-web_engines .ct-series-c .ct-slice-donut {
-   stroke: #3E78C3#4B85CF;
 }
 
 #chart-references_countries,
