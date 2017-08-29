@@ -37,7 +37,7 @@ class Telemetry  extends ControllerAbstract {
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '2 YEAR'"))
          ->groupBy(DB::raw("month_year, raw_month_year, version"))
-         ->orderBy(DB::raw("version, raw_month_year"), 'ASC')
+         ->orderBy(DB::raw("raw_month_year"), 'ASC')
          ->get()
          ->toArray();
 
