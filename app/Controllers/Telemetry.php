@@ -31,12 +31,13 @@ class Telemetry  extends ControllerAbstract {
       // retrieve php versions
       $raw_php_versions = TelemetryModel::select(
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
+                     date_trunc('month', created_at) as raw_month_year,
                      to_char(date_trunc('month', created_at), 'YYYY MON') as month_year,
                      count(*) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '2 YEAR'"))
-         ->groupBy(DB::raw("month_year, version"))
-         ->orderBy(DB::raw("version, month_year"))
+         ->groupBy(DB::raw("month_year, raw_month_year, version"))
+         ->orderBy(DB::raw("version, raw_month_year"), 'ASC')
          ->get()
          ->toArray();
 
@@ -141,20 +142,14 @@ class Telemetry  extends ControllerAbstract {
          ->get()
          ->toArray();
 
-      // retrieve db engine
+      // retrieve web engine
       $web_engines = TelemetryModel::select(
             DB::raw("web_engine, count(*) as total")
          )
-         //->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
-         ->groupBy(DB::raw("web_engine"))
-         ->get()
-         ->toArray();
-
-      // retrieve agv_* fields
-      $web_engines = TelemetryModel::select(
-            DB::raw("web_engine, count(*) as total")
-         )
-         ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'"))
+         ->where([
+            ['created_at', '>=', DB::raw("NOW() - INTERVAL '1 YEAR'")],
+            ['web_engine', '<>', '']
+         ])
          ->groupBy(DB::raw("web_engine"))
          ->get()
          ->toArray();
