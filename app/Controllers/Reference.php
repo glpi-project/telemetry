@@ -36,6 +36,8 @@ class Reference extends ControllerAbstract {
                                      $_SESSION['reference']['sort'])
                            ->paginate(15);
 
+      $references->setPath($this->container->get('settings')['baseurl']."reference");
+
       // render in twig view
       $this->render('reference.html', [
          'total'      => ReferenceModel::where('is_displayed', true)->count(),

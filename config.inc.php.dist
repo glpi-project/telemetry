@@ -1,6 +1,7 @@
 <?php
 
 return $config = [
+   'baseurl' => 'http://glpi-project.org/telemetry/',
    'db' => [
       'driver'    => "pgsql",
       'host'      => "localhost",
