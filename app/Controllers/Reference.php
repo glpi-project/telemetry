@@ -38,6 +38,7 @@ class Reference extends ControllerAbstract {
 
       // render in twig view
       $this->render('reference.html', [
+         'total'      => ReferenceModel::where('is_displayed', true)->count(),
          'class'      => 'reference',
          'showmodal'  => isset($get['showmodal']),
          'uuid'       => isset($get['uuid']) ? $get['uuid'] : '',
