@@ -44,6 +44,14 @@
    margin: 0 auto;
 }
 
+.not-loaded {
+   visibility: hidden;
+}
+.loading {
+   margin: 0 auto;
+   width: 200px;
+}
+
 .chart {
    width: 350px;
    padding: 5px;

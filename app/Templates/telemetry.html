@@ -25,123 +25,130 @@
 
 {% block content %}
 
-<form class='telemetry_form'>
-   <fieldset class="form-group">
-      <legend><label for="exampleSelect1">Data since</label></legend>
-      <select class="form-control" name="years" onchange='this.form.submit();'>
-         <option value='-1'>always</option>
-         {% for i in 1..20 %}
-         <option value='{{i}}'
-                 {% if form.years == i %} selected="selected"{% endif %}>
-            {{i}} year(s)
-         </option>
-         {% endfor %}
-      </select>
-   </fieldset>
-</form>
+<div class='loading'>
+   <i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+   <span>Loading data...</span>
+</div>
 
-<div class="dashboard">
+<div class='not-loaded'>
+   <form class='telemetry_form'>
+      <fieldset class="form-group">
+         <legend><label for="exampleSelect1">Data since</label></legend>
+         <select class="form-control" name="years" onchange='this.form.submit();'>
+            <option value='-1'>always</option>
+            {% for i in 1..20 %}
+            <option value='{{i}}'
+                    {% if form.years == i %} selected="selected"{% endif %}>
+               {{i}} year(s)
+            </option>
+            {% endfor %}
+         </select>
+      </fieldset>
+   </form>
 
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'nb_telemetry_entries',
-                     'title': '# Telemetry: data sent',
-                     'text':  '',
-                     'data':  nb_telemetry_entries
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
+   <div class="dashboard">
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'nb_telemetry_entries',
+                        'title': '# Telemetry: data sent',
+                        'text':  '',
+                        'data':  nb_telemetry_entries
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'nb_reference_entries',
+                        'title': '# References added',
+                        'text':  '',
+                        'data':  nb_reference_entries
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart chart-2 chart-2h">
+      {% set vars = {'chart': {
+                        'id':    'references_countries',
+                        'title': 'Countries of references',
+                        'text':  '',
+                        'data':  references_countries
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart chart-2">
+      {% set vars = {'chart': {
+                        'id':    'php_versions',
+                        'title': 'PHP versions',
+                        'text':  'Grouped on major versions',
+                        'data':  php_versions
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'glpi_versions',
+                        'title': 'GLPI versions',
+                        'text':  '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to 9.2',
+                        'data':  glpi_versions
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'top_plugins',
+                        'title': 'Top plugins',
+                        'text':  'Only the top 5 is displayed',
+                        'data':  top_plugins
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'os_family',
+                        'title': 'Operating systems',
+                        'text':  'By family',
+                        'data':  os_family
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'web_engines',
+                        'title': 'Web engines',
+                        'text':  '',
+                        'data':  web_engines
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'db_engines',
+                        'title': 'DB engines',
+                        'text':  '',
+                        'data':  db_engines
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'default_languages',
+                        'title': 'Default languages',
+                        'text':  '',
+                        'data':  default_languages
+                     }} %}
+      {% include 'partials/chart.html' with vars %}
+      </div>
+
    </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'nb_reference_entries',
-                     'title': '# References added',
-                     'text':  '',
-                     'data':  nb_reference_entries
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart chart-2 chart-2h">
-   {% set vars = {'chart': {
-                     'id':    'references_countries',
-                     'title': 'Countries of references',
-                     'text':  '',
-                     'data':  references_countries
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart chart-2">
-   {% set vars = {'chart': {
-                     'id':    'php_versions',
-                     'title': 'PHP versions',
-                     'text':  'Grouped on major versions',
-                     'data':  php_versions
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'glpi_versions',
-                     'title': 'GLPI versions',
-                     'text':  '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to 9.2',
-                     'data':  glpi_versions
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'top_plugins',
-                     'title': 'Top plugins',
-                     'text':  'Only the top 5 is displayed',
-                     'data':  top_plugins
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'os_family',
-                     'title': 'Operating systems',
-                     'text':  'By family',
-                     'data':  os_family
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'web_engines',
-                     'title': 'Web engines',
-                     'text':  '',
-                     'data':  web_engines
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'db_engines',
-                     'title': 'DB engines',
-                     'text':  '',
-                     'data':  db_engines
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
-   <div class="chart">
-   {% set vars = {'chart': {
-                     'id':    'default_languages',
-                     'title': 'Default languages',
-                     'text':  '',
-                     'data':  default_languages
-                  }} %}
-   {% include 'partials/chart.html' with vars %}
-   </div>
-
 </div>
 
 <div class="modal fade" id="json_data_example">

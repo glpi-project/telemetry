@@ -71,6 +71,10 @@ $(document).ready(function() {
                layer.bindPopup(feature.properties.name);
             }
          }).addTo(references_map);
+
+         // remove not-loaded
+         $('.not-loaded').removeClass('not-loaded');
+         $('.loading').remove();
       });
    });
 });
