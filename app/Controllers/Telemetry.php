@@ -23,7 +23,7 @@ class Telemetry  extends ControllerAbstract {
       // retrieve nb of telemtry entries
       $raw_nb_tel_entries = TelemetryModel
          ::where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
-         ->count();
+         ->count(DB::raw('DISTINCT glpi_uuid'));
       $nb_tel_entries = [
          'raw' => $raw_nb_tel_entries,
          'nb'  => (string) Number::n($raw_nb_tel_entries)->round(2)->getSuffixNotation()
@@ -43,7 +43,7 @@ class Telemetry  extends ControllerAbstract {
             DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
                      date_trunc('month', created_at) as raw_month_year,
                      to_char(date_trunc('month', created_at), 'YYYY MON') as month_year,
-                     count(*) as total")
+                     count(DISTINCT(glpi_uuid)) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("month_year, raw_month_year, version"))
@@ -109,10 +109,10 @@ class Telemetry  extends ControllerAbstract {
       // retrieve glpi versions
       $glpi_versions = TelemetryModel::select(
             DB::raw("TRIM(trailing '-dev' FROM glpi_version) as version,
-                     count(*) as total")
+                     count(DISTINCT(glpi_uuid)) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
-         ->groupBy(DB::raw("glpi_version"))
+         ->groupBy('version')
          ->get()
          ->toArray();
 
@@ -131,7 +131,7 @@ class Telemetry  extends ControllerAbstract {
 
       // retrieve os
       $os_family = TelemetryModel::select(
-            DB::raw("os_family, count(*) as total")
+            DB::raw("os_family, count(DISTINCT(glpi_uuid)) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("os_family"))
@@ -140,7 +140,7 @@ class Telemetry  extends ControllerAbstract {
 
       // retrieve languages
       $languages = TelemetryModel::select(
-            DB::raw("glpi_default_language, count(*) as total")
+            DB::raw("glpi_default_language, count(DISTINCT(glpi_uuid)) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy(DB::raw("glpi_default_language"))
@@ -154,7 +154,7 @@ class Telemetry  extends ControllerAbstract {
                         WHEN UPPER(db_engine) LIKE 'MYSQL%' THEN 'MySQL'
                         ELSE 'MySQL'
                      END as reduced_db_engine,
-                     count(*) as total")
+                     count(DISTINCT(glpi_uuid)) as total")
          )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->groupBy('reduced_db_engine')
@@ -164,7 +164,7 @@ class Telemetry  extends ControllerAbstract {
 
       // retrieve web engine
       $web_engines = TelemetryModel::select(
-            DB::raw("web_engine, count(*) as total")
+            DB::raw("web_engine, count(DISTINCT(glpi_uuid)) as total")
          )
          ->where([
             ['created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'")],
