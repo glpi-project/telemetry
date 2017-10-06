@@ -25,7 +25,8 @@
         "slim/csrf": "^0.8.1",
         "justinrainbow/json-schema": "^5.2",
         "nicmart/numbers": "^0.1.0",
-        "zendframework/zend-cache": "^2.7"
+        "zendframework/zend-cache": "^2.7",
+        "robmorgan/phinx": "^0.9.1"
     },
     "scripts": {
         "start": "php -S 0.0.0.0:8080 -t public public/index.php"
