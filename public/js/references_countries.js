@@ -12,23 +12,27 @@ $(document).ready(function() {
    })
    .addTo(references_map);
 
-   // add a popup for country hover
-   var references_info = L.control();
-   references_info.onAdd = function (map) {
-      this._div = L.DomUtil.create('div', 'country_info');
-      this.update();
-      return this._div;
-   };
-   references_info.update = function (country) {
-      this._div.innerHTML =
-         (country
-             ? "<b>" + country.name + "<b>:" + country.total
-             : "hover a country");
-   };
-   references_info.addTo(references_map);
+   _loadMapRefs(references_map);
+});
 
+var _loadMapRefs = function(references_map) {
    //retrieve geojson data
+   references_map.spin(true);
    $.getJSON('./telemetry/geojson').done(function(countries_geo) {
+      // add a popup for country hover
+      var references_info = L.control();
+      references_info.onAdd = function (map) {
+         this._div = L.DomUtil.create('div', 'country_info');
+         this.update();
+         return this._div;
+      };
+      references_info.update = function (country) {
+         this._div.innerHTML =
+            (country
+                ? "<b>" + country.name + "<b>:" + country.total
+                : "hover a country");
+      };
+      references_info.addTo(references_map);
 
       // add geo json for each country
       $.each($('#references_countries').data("id"), function(index, value) {
@@ -71,13 +75,26 @@ $(document).ready(function() {
                layer.bindPopup(feature.properties.name);
             }
          }).addTo(references_map);
-
-         // remove not-loaded
-         $('.not-loaded').removeClass('not-loaded');
-         $('.loading').remove();
       });
+   }).fail(function () {
+      // add a popup for country hover
+      var fail_info = L.control();
+      fail_info.onAdd = function (map) {
+         this._div = L.DomUtil.create('div', 'fail_info');
+         this._div.innerHTML = 'An error occured loading data :('
+            + '<br/><span id="reload_data"><i class="fa fa-refresh"></i> Reload</span>';
+         return this._div;
+      };
+      fail_info.addTo(references_map);
+      $('#reload_data').on('click', function() {
+          $('.fail_info').remove();
+         _loadMapRefs(references_map);
+      });
+   }).always(function() {
+      //hide spinner
+      references_map.spin(false);
    });
-});
+}
 
 // leaflet controls
 var getColor = function(d) {

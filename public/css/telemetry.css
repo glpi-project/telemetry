@@ -185,7 +185,9 @@ stroke: #22727B;
    color: #4F4F4F;
 }
 
-#references_countries .country_info {
+#references_countries .country_info,
+#references_countries .fail_info
+{
    padding: 6px 8px;
    background: white;
    background: rgba(255,255,255,0.4);
@@ -193,4 +195,15 @@ stroke: #22727B;
    border-radius: 5px;
 }
 
-#d1d1d1
+#references_countries .fail_info {
+    font-weight: bold;
+    background: red;
+    background-color: rgba(255, 0, 0, .8);
+    color: white;
+}
+
+.fail_info #reload_data {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+}
