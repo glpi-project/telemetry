@@ -176,7 +176,7 @@ class Telemetry  extends ControllerAbstract {
 
       $this->render('telemetry.html', [
          'form' => [
-            'years' => $get['years']
+            'years' => $years
          ],
          'class' => 'telemetry',
          'nb_telemetry_entries' => json_encode($nb_tel_entries),
