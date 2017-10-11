@@ -5,6 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use Illuminate\Pagination\Paginator;
 use Geggleto\Service\Captcha;
 use ReCaptcha\ReCaptcha;
+use Zend\Cache\StorageFactory;
 
 // Start PHP session
 session_start();
@@ -31,7 +32,7 @@ $capsule->bootEloquent();
 // setup monolog
 $container['logger'] = function($c) {
    $logger       = new \Monolog\Logger('telemetry');
-   $file_handler = new \Monolog\Handler\StreamHandler("../data/logs/app.log");
+   $file_handler = new \Monolog\Handler\StreamHandler($c->log_dir . "/app.log");
    $logger->pushHandler($file_handler);
 
    return $logger;
@@ -55,7 +56,7 @@ $container['countries']     = json_decode(file_get_contents($container['countrie
 // setup twig
 $container['view'] = function ($c) {
    $view = new \Slim\Views\Twig('../app/Templates', [
-      'cache' => $c['settings']['debug'] ? false : '../data/cache',
+      'cache' => $c['settings']['debug'] ? false : $c->cache_dir . '/twig',
       'debug' => $c['settings']['debug']
    ]);
 
@@ -126,6 +127,44 @@ $container['errorHandler'] = function ($c) { //CUSTOM Error Handler
       $error = new Slim\Handlers\Error($c['settings']['displayErrorDetails']);
       return $error->__invoke($request, $response, $exception);
    };
+};
+
+$container['data_dir'] = function ($c) {
+    $dir = realpath(__DIR__ . '/../data');
+    if ($dir === false || !is_writeable($dir)) {
+       throw new \RuntimeException('Data directory "' . $dir . '" does not exists or is readonly!');
+    }
+    return $dir;
+};
+
+$container['cache_dir'] = function ($c) {
+    $dir = realpath($c->data_dir . '/cache');
+    if ($dir === false || !is_writeable($dir)) {
+       throw new \RuntimeException('Cache directory "' . $dir . '" does not exists or is readonly!');
+    }
+    return $dir;
+};
+
+$container['log_dir'] = function ($c) {
+    $dir = realpath($c->data_dir . '/logs');
+    if ($dir === false || !is_writeable($dir)) {
+       throw new \RuntimeException('Log directory "' . $dir . '" does not exists or is readonly!');
+    }
+    return $dir;
+};
+
+$container['cache'] = function ($c) {
+    $cache_dir = $c->cache_dir . '/zend';
+    if (!file_exists($cache_dir)) {
+       mkdir($cache_dir);
+    }
+    $cache  = StorageFactory::adapterFactory(
+        'filesystem',
+        [
+            'cache_dir' => $cache_dir
+        ]
+    );
+    return $cache;
 };
 
 // php error handler

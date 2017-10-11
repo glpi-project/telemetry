@@ -323,18 +323,29 @@ class Telemetry  extends ControllerAbstract {
    }
 
    public function geojson(Request $request, Response $response) {
-      $dir = $this->container->countries_dir;
-      $countries_geo = [];
-      foreach (scandir("$dir/data/") as $file) {
-         if (strpos($file, '.geo.json') !== false) {
-            $geo_alpha3 = str_replace('.geo.json', '', $file);
-            $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+      $countries = null;
+
+      $cache = $this->container->cache;
+      if ($cache->hasItem('countries')) {
+        $countries = $cache->getItem('countries');
+      }
+
+      if ($countries === null) {
+         $dir = $this->container->countries_dir;
+         $countries_geo = [];
+         foreach (scandir("$dir/data/") as $file) {
+            if (strpos($file, '.geo.json') !== false) {
+               $geo_alpha3 = str_replace('.geo.json', '', $file);
+               $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+            }
          }
+         $countries = json_encode($countries_geo);
+         $cache->setItem('countries', $countries);
       }
 
       return $response->withStatus(200)
          ->withHeader('Content-Type', 'application/json')
-         ->write(json_encode($countries_geo));
+         ->write($countries);
    }
 
    private function truncate($string, $length) {
