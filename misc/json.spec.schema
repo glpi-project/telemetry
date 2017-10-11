@@ -134,7 +134,7 @@
                                 },
                                 "log_size": {
                                     "id": "/properties/data/properties/system/properties/db/properties/log_size",
-                                    "type": "string"
+                                    "type": ["string", "null"]
                                 },
                                 "size": {
                                     "id": "/properties/data/properties/system/properties/db/properties/size",
