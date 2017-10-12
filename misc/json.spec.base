@@ -1,0 +1,237 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {},
+    "id": "http://example.com/example.json",
+    "properties": {
+        "data": {
+            "properties": {
+                "project": {
+                    "properties": {
+                        "default_language": {
+                            "type": "string"
+                        },
+                        "plugins": {
+                            "items": {
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "version",
+                                    "key"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "usage": {
+                            "properties": {
+                                "avg_changes": {
+                                    "type": "string"
+                                },
+                                "avg_computers": {
+                                    "type": "string"
+                                },
+                                "avg_entities": {
+                                    "type": "string"
+                                },
+                                "avg_groups": {
+                                    "type": "string"
+                                },
+                                "avg_networkequipments": {
+                                    "type": "string"
+                                },
+                                "avg_problems": {
+                                    "type": "string"
+                                },
+                                "avg_projects": {
+                                    "type": "string"
+                                },
+                                "avg_tickets": {
+                                    "type": "string"
+                                },
+                                "avg_users": {
+                                    "type": "string"
+                                },
+                                "ldap_enabled": {
+                                    "type": "boolean"
+                                },
+                                "mailcollector_enabled": {
+                                    "type": "boolean"
+                                },
+                                "notifications_modes": {
+                                    "items": {},
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "avg_networkequipments",
+                                "avg_groups",
+                                "mailcollector_enabled",
+                                "avg_projects",
+                                "avg_entities",
+                                "avg_problems",
+                                "avg_changes",
+                                "avg_computers",
+                                "avg_users",
+                                "ldap_enabled",
+                                "avg_tickets",
+                                "notifications_modes"
+                            ],
+                            "type": "object"
+                        },
+                        "uuid": {
+                            "type": "string"
+                        },
+                        "version": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "usage",
+                        "version",
+                        "default_language",
+                        "uuid",
+                        "plugins"
+                    ],
+                    "type": "object"
+                },
+                "system": {
+                    "properties": {
+                        "db": {
+                            "properties": {
+                                "engine": {
+                                    "type": "string"
+                                },
+                                "log_size": {
+                                    "type": ["string", "null"]
+                                },
+                                "size": {
+                                    "type": "string"
+                                },
+                                "sql_mode": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "engine",
+                                "log_size",
+                                "version",
+                                "sql_mode",
+                                "size"
+                            ],
+                            "type": "object"
+                        },
+                        "os": {
+                            "properties": {
+                                "distribution": {
+                                    "type": "string"
+                                },
+                                "family": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "distribution",
+                                "version",
+                                "family"
+                            ],
+                            "type": "object"
+                        },
+                        "php": {
+                            "properties": {
+                                "modules": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "setup": {
+                                    "properties": {
+                                        "max_execution_time": {
+                                            "type": "string"
+                                        },
+                                        "memory_limit": {
+                                            "type": "string"
+                                        },
+                                        "post_max_size": {
+                                            "type": "string"
+                                        },
+                                        "safe_mode": {
+                                            "type": "boolean"
+                                        },
+                                        "session": {
+                                            "type": "string"
+                                        },
+                                        "upload_max_filesize": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "memory_limit",
+                                        "max_execution_time",
+                                        "upload_max_filesize",
+                                        "session",
+                                        "safe_mode",
+                                        "post_max_size"
+                                    ],
+                                    "type": "object"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "setup",
+                                "version",
+                                "modules"
+                            ],
+                            "type": "object"
+                        },
+                        "web_server": {
+                            "properties": {
+                                "engine": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "engine",
+                                "version"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "os",
+                        "web_server",
+                        "php",
+                        "db"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "project",
+                "system"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "data"
+    ],
+    "type": "object"
+}

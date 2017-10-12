@@ -27,6 +27,8 @@ $app->post('/telemetry', 'App\Controllers\Telemetry:send')
    ->add(new \App\Middleware\JsonCheck($container));
 $app->get('/telemetry/geojson', 'App\Controllers\Telemetry:geojson');
 
+$app->get('/telemetry/schema.json', 'App\Controllers\Telemetry:schema');
+
 // special pages
 $app->get('/ok', function ($request, $response, $args) {
    return $this->view->render($response, 'ok.html', [
