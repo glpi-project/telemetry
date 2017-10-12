@@ -356,4 +356,12 @@ class Telemetry  extends ControllerAbstract {
 
       return $string;
    }
+
+   public function schema(Request $request, Response $response) {
+      $cache = $this->container->settings->get('debug') == true ? null : $this->container->cache;
+      $schema = $this->container->project->getSchema($cache);
+      return $response->withStatus(200)
+         ->withHeader('Content-Type', 'application/json')
+         ->write($schema);
+   }
 }

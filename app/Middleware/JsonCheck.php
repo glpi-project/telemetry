@@ -3,6 +3,9 @@ namespace App\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use JsonSchema\Validator;
+use JsonSchema\Constraints\Factory;
+use JsonSchema\SchemaStorage;
 use JsonSchema\Constraints\Constraint;
 
 class JsonCheck extends Middleware {
@@ -28,12 +31,21 @@ class JsonCheck extends Middleware {
             ]);
       }
 
-      // check json structure
-      $validator = new \JsonSchema\Validator;
-      $validator->validate($json,
-                           (object)['$ref' => 'file://' .
-                                              realpath('../misc/json.spec.schema')],
-                           Constraint::CHECK_MODE_TYPE_CAST);
+       // check json structure
+      $project = $this->container->project;
+      $cache = $this->container->settings->get('debug') == true ? null : $this->container->cache;
+      $schema = json_decode($project->getSchema($cache));
+
+      $storage = new SchemaStorage();
+      $storage->addSchema('file://mySchema', $schema);
+      $validator = new Validator(new Factory($storage));
+
+      $validator->validate(
+          $json,
+          $schema,
+          Constraint::CHECK_MODE_TYPE_CAST
+      );
+
       if (!$validator->isValid()) {
          return $response
             ->withStatus(400)

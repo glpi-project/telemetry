@@ -13,6 +13,14 @@ session_start();
 // include user configuration
 $config = require __DIR__ .  '/../config.inc.php';
 
+//check for required options
+$valid_conf = true;
+if (!isset($config['project']) || empty($config['project'])) {
+    throw new \DomainException('project is mandatory in configuration');
+} elseif (!isset($config['project']['name']) || empty($config['project']['name'])) {
+    throw new \DomainException('project name is mandatory in configuration');
+}
+
 // autoload composer libs
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -20,8 +28,14 @@ require __DIR__ . '/../vendor/autoload.php';
 $app       = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
+$container['project'] = function ($c) use ($config) {
+    $project = new \App\Project($config['project']['name']);
+    $project->setConfig($config['project']);
+    return $project;
+};
+
 // set our json spec in container
-$container['json_spec'] = file_get_contents("../misc/json.spec");
+$container['json_spec'] = file_get_contents("../misc/json-glpi.spec");
 
 // setup db connection
 $capsule = new Illuminate\Database\Capsule\Manager;
@@ -32,7 +46,7 @@ $capsule->bootEloquent();
 // setup monolog
 $container['logger'] = function($c) {
    $logger       = new \Monolog\Logger('telemetry');
-   $file_handler = new \Monolog\Handler\StreamHandler($c->log_dir . "/app.log");
+   $file_handler = new \Monolog\Handler\StreamHandler($c->log_dir . "/app.log", Monolog\Logger::DEBUG);
    $logger->pushHandler($file_handler);
 
    return $logger;

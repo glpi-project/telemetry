@@ -1,6 +1,10 @@
 <?php
 
 return $config = [
+   'project' => [
+       'name'   => 'GLPI',
+       'url'    => 'http://glpi-project.org'
+    ],
    'baseurl' => 'http://glpi-project.org/telemetry/',
    'db' => [
       'driver'    => "pgsql",
