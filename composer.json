@@ -28,6 +28,10 @@
         "zendframework/zend-cache": "^2.7",
         "robmorgan/phinx": "^0.9.1"
     },
+    "require-dev": {
+        "atoum/atoum": "^3.2",
+        "atoum/telemetry-extension": "^1.0"
+    },
     "scripts": {
         "start": "php -S 0.0.0.0:8080 -t public public/index.php"
     }
