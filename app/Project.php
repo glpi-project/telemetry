@@ -122,7 +122,8 @@ class Project
             unset($data->properties->$slug->properties->usage);
             //false means no usage requested
             if (false !== $this->schema_usage) {
-                $data->properties->$slug->properties->usage = [];
+                $usages = new \stdClass();
+                $usages->properties = new \stdClass();
                 $requireds = [];
                 foreach ($this->schema_usage as $usage => $conf) {
                     $object = new \stdClass;
@@ -130,11 +131,12 @@ class Project
                     if ($conf['required']) {
                         $requireds[] = $usage;
                     }
-                    $data->properties->$slug->properties->usage->properties->usage = $object;
+                    $usages->properties->$usage = $object;
                 }
                 if (count($requireds)) {
-                    $data->properties->$slug->properties->usage->required = $requireds;
+                    $usages->required = $requireds;
                 }
+                $data->properties->$slug->properties->usage = $usages;
             } else {
                 $not_required[] = 'usage';
             }
