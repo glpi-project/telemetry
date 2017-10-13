@@ -1,5 +1,11 @@
 {
+    "name": "glpi/telemetry",
+    "description": "Telemetry reports",
+    "license": "MIT",
+    "type": "project",
+    "homepage": "https://github.com/glpi-project/telemetry",
     "config": {
+      "optimize-autoloader": true,
       "platform": {
         "php": "5.6.19"
       }
