@@ -44,12 +44,12 @@ $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
 // setup monolog
-$container['logger'] = function($c) {
-   $logger       = new \Monolog\Logger('telemetry');
-   $file_handler = new \Monolog\Handler\StreamHandler($c->log_dir . "/app.log", Monolog\Logger::DEBUG);
-   $logger->pushHandler($file_handler);
+$container['logger'] = function ($c) {
+    $logger       = new \Monolog\Logger('telemetry');
+    $file_handler = new \Monolog\Handler\StreamHandler($c->log_dir . "/app.log", Monolog\Logger::DEBUG);
+    $logger->pushHandler($file_handler);
 
-   return $logger;
+    return $logger;
 };
 
 //setup flash messages
@@ -59,7 +59,7 @@ $container['flash'] = function () {
 
 //setup Slim\CSRF middleware
 $container['csrf'] = function ($c) {
-   return new \Slim\Csrf\Guard;
+    return new \Slim\Csrf\Guard;
 };
 
 // retrieve countries in json from mledoze/countries package
@@ -69,84 +69,89 @@ $container['countries']     = json_decode(file_get_contents($container['countrie
 
 // setup twig
 $container['view'] = function ($c) {
-   $view = new \Slim\Views\Twig('../app/Templates', [
+    $view = new \Slim\Views\Twig('../app/Templates', [
       'cache' => $c['settings']['debug'] ? false : $c->cache_dir . '/twig',
       'debug' => $c['settings']['debug']
-   ]);
+    ]);
 
    // Instantiate and add Slim specific extension
-   $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
-   $view->addExtension(new Slim\Views\TwigExtension($c['router'], $basePath));
-   $view->addExtension(new Knlv\Slim\Views\TwigMessages(
-      new Slim\Flash\Messages()
-   ));
-   if ($c['settings']['debug']) {
-      $view->addExtension(new Twig_Extension_Debug());
-   }
+    $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $basePath));
+    $view->addExtension(new Knlv\Slim\Views\TwigMessages(
+        new Slim\Flash\Messages()
+    ));
+    if ($c['settings']['debug']) {
+        $view->addExtension(new Twig_Extension_Debug());
+    }
 
    // add some global to view
-   $env = $view->getEnvironment();
+    $env = $view->getEnvironment();
 
    // add recaptcha sitekey
-   $env->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
+    $env->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
 
    // add countries geo data
-   $env->addGlobal('countries', $c['countries'], true);
+    $env->addGlobal('countries', $c['countries'], true);
 
-   return $view;
+    return $view;
 };
 
 //setup recaptcha
 $container[Captcha::class] = function ($c) {
-   return new Captcha($c[ReCaptcha::class]);
+    return new Captcha($c[ReCaptcha::class]);
 };
 $container[ReCaptcha::class] = function ($c) {
-   return new ReCaptcha($c['settings']['recaptcha']['secret']);
+    return new ReCaptcha($c['settings']['recaptcha']['secret']);
 };
 $recaptcha = $app->getContainer()->get(Captcha::class);
 
 
 // system error handling
-$container['errorHandler'] = function ($c) { //CUSTOM Error Handler
-   return function (\Slim\Http\Request $request,
-                    \Slim\Http\Response $response,
-                    \Exception $exception) use ($c) {
+$container['errorHandler'] = function ($c) {
+ //CUSTOM Error Handler
+    return function (
+        \Slim\Http\Request $request,
+        \Slim\Http\Response $response,
+        \Exception $exception
+    ) use ($c) {
 
-      // log error
-      $c->logger->error('error', [$exception->getMessage()]);
+       // log error
+        $c->logger->error('error', [$exception->getMessage()]);
 
-      // return json error
-      if (strpos($request->getContentType(), 'application/json') !== false) {
-         $answer = [
+       // return json error
+        if (strpos($request->getContentType(), 'application/json') !== false) {
+            $answer = [
             'message' => 'Something went wrong!'
-         ];
+            ];
 
-         if ($c['settings']['debug']) {
-            $answer['message'] = $exception->getMessage();
-         }
+            if ($c['settings']['debug']) {
+                $answer['message'] = $exception->getMessage();
+            }
 
-         return $response
+            return $response
             ->withStatus(500)
             ->withHeader('Content-Type', 'application/json')
             ->write(json_encode($answer));
-      }
+        }
 
-      // html error for production env
-      if (!$c['settings']['debug']) {
-         return $c['view']->render($response,
-                                   "errors/server.html");
-      }
+       // html error for production env
+        if (!$c['settings']['debug']) {
+            return $c['view']->render(
+                $response,
+                "errors/server.html"
+            );
+        }
 
-      // if not special case, return slim default handler
-      $error = new Slim\Handlers\Error($c['settings']['displayErrorDetails']);
-      return $error->__invoke($request, $response, $exception);
-   };
+       // if not special case, return slim default handler
+        $error = new Slim\Handlers\Error($c['settings']['displayErrorDetails']);
+        return $error->__invoke($request, $response, $exception);
+    };
 };
 
 $container['data_dir'] = function ($c) {
     $dir = realpath(__DIR__ . '/../data');
     if ($dir === false || !is_writeable($dir)) {
-       throw new \RuntimeException('Data directory "' . $dir . '" does not exists or is readonly!');
+        throw new \RuntimeException('Data directory "' . $dir . '" does not exists or is readonly!');
     }
     return $dir;
 };
@@ -154,7 +159,7 @@ $container['data_dir'] = function ($c) {
 $container['cache_dir'] = function ($c) {
     $dir = realpath($c->data_dir . '/cache');
     if ($dir === false || !is_writeable($dir)) {
-       throw new \RuntimeException('Cache directory "' . $dir . '" does not exists or is readonly!');
+        throw new \RuntimeException('Cache directory "' . $dir . '" does not exists or is readonly!');
     }
     return $dir;
 };
@@ -162,7 +167,7 @@ $container['cache_dir'] = function ($c) {
 $container['log_dir'] = function ($c) {
     $dir = realpath($c->data_dir . '/logs');
     if ($dir === false || !is_writeable($dir)) {
-       throw new \RuntimeException('Log directory "' . $dir . '" does not exists or is readonly!');
+        throw new \RuntimeException('Log directory "' . $dir . '" does not exists or is readonly!');
     }
     return $dir;
 };
@@ -170,7 +175,7 @@ $container['log_dir'] = function ($c) {
 $container['cache'] = function ($c) {
     $cache_dir = $c->cache_dir . '/zend';
     if (!file_exists($cache_dir)) {
-       mkdir($cache_dir);
+        mkdir($cache_dir);
     }
     $cache  = StorageFactory::adapterFactory(
         'filesystem',
@@ -183,25 +188,27 @@ $container['cache'] = function ($c) {
 
 // php error handler
 if (!$config['debug']) {
-   $container['phpErrorHandler'] = function ($c) {
-       return function ($request, $response, $error) use ($c) {
+    $container['phpErrorHandler'] = function ($c) {
+        return function ($request, $response, $error) use ($c) {
             $c->logger->error('error', [$e->getMessage()]);
-            return $c['view']->render($response,
-                                      "errors/server.html");
-       };
-   };
+            return $c['view']->render(
+                $response,
+                "errors/server.html"
+            );
+        };
+    };
 }
 
 
 // manage page parameter for Eloquent Paginator
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php
 Paginator::currentPageResolver(function ($pageName = 'page') {
-   $page = isset($_REQUEST[$pageName]) ? $_REQUEST[$pageName] : 1;
-   return $page;
+    $page = isset($_REQUEST[$pageName]) ? $_REQUEST[$pageName] : 1;
+    return $page;
 });
 
 // Set up a current path resolver so Eloquent paginator can generate proper links
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php
 Paginator::currentPathResolver(function () {
-   return isset($_SERVER['REQUEST_URI']) ? strtok($_SERVER['REQUEST_URI'], '?') : '/';
+    return isset($_SERVER['REQUEST_URI']) ? strtok($_SERVER['REQUEST_URI'], '?') : '/';
 });
