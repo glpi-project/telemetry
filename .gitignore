@@ -6,3 +6,4 @@
 /data/logs/*.log
 /config.inc.php
 /phinx_local.php
+/tests/code-coverage/

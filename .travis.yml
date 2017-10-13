@@ -1,9 +1,11 @@
 before_script:
+  - composer install --optimize-autoloader
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then pear install pear/PHP_CodeSniffer; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then phpenv rehash; fi
 
 script:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" ]]; then phpcs -n -p --standard=PSR2 app/ public/index.php; fi
+  - php vendor/bin/atoum -c tests/telemetry.php -d tests/GLPI/Telemetry
 
 language: php
 
