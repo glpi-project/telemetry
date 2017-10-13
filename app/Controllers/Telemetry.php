@@ -1,14 +1,14 @@
-<?php namespace App\Controllers;
+<?php namespace GLPI\Telemetry\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Illuminate\Database\Capsule\Manager as DB;
 use Numbers\Number;
 
-use App\Models\Telemetry  as TelemetryModel;
-use App\Models\GlpiPlugin as GlpiPluginModel;
-use App\Models\Reference  as ReferenceModel;
-use App\Models\TelemetryGlpiPlugin;
+use GLPI\Telemetry\Models\Telemetry  as TelemetryModel;
+use GLPI\Telemetry\Models\GlpiPlugin as GlpiPluginModel;
+use GLPI\Telemetry\Models\Reference  as ReferenceModel;
+use GLPI\Telemetry\Models\TelemetryGlpiPlugin;
 
 class Telemetry extends ControllerAbstract
 {

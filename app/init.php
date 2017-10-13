@@ -29,7 +29,7 @@ $app       = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 
 $container['project'] = function ($c) use ($config) {
-    $project = new \App\Project($config['project']['name'], $c->logger);
+    $project = new \GLPI\Telemetry\Project($config['project']['name'], $c->logger);
     $project->setConfig($config['project']);
     return $project;
 };

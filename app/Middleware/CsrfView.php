@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace GLPI\Telemetry\Middleware;
 
 class CsrfView extends Middleware
 {

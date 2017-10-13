@@ -1,4 +1,4 @@
-<?php namespace App\Middleware;
+<?php namespace GLPI\Telemetry\Middleware;
 
 class Middleware
 {

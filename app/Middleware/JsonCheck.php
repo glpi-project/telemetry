@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace GLPI\Telemetry\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
