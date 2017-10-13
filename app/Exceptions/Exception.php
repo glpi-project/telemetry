@@ -1,4 +1,4 @@
-<?php namespace App\Exceptions;
+<?php namespace GLPI\Telemetry\Exceptions;
 
 class Handler implements \Illuminate\Contracts\Debug\ExceptionHandler
 {

@@ -1,4 +1,4 @@
-<?php namespace App\Models;
+<?php namespace GLPI\Telemetry\Models;
 
 class TelemetryGlpiPlugin extends \Illuminate\Database\Eloquent\Model
 {

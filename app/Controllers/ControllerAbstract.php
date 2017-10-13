@@ -1,4 +1,4 @@
-<?php namespace App\Controllers;
+<?php namespace GLPI\Telemetry\Controllers;
 
 use Slim\Views\Twig;
 use Slim\Http\Request;

@@ -1,6 +1,6 @@
-<?php namespace App\Controllers;
+<?php namespace GLPI\Telemetry\Controllers;
 
-use App\Controllers\ControllerAbstract;
+use GLPI\Telemetry\Controllers\ControllerAbstract;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

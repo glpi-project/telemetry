@@ -1,7 +1,7 @@
-<?php namespace App\Controllers;
+<?php namespace GLPI\Telemetry\Controllers;
 
-use App\Controllers\ControllerAbstract;
-use App\Models\Reference as ReferenceModel;
+use GLPI\Telemetry\Controllers\ControllerAbstract;
+use GLPI\Telemetry\Models\Reference as ReferenceModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Slim\Http\Request;
 use Slim\Http\Response;
