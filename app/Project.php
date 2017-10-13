@@ -8,6 +8,8 @@ class Project
     private $slug;
     private $url;
     private $schema_usage;
+    private $schema_plugins = true;
+    private $mapping = [];
 
     /**
      * Constructor
@@ -43,6 +45,10 @@ class Project
 
         if (isset($config['schema'])) {
             $this->setSchemaConfig($config['schema']);
+        }
+
+        if (isset($config['mapping'])) {
+            $this->mapping = $config['mapping'];
         }
 
         return $this;
@@ -116,6 +122,7 @@ class Project
             unset($data->properties->$slug->properties->usage);
             //false means no usage requested
             if (false !== $this->schema_usage) {
+                $data->properties->$slug->properties->usage = [];
                 $requireds = [];
                 foreach ($this->schema_usage as $usage => $conf) {
                     $object = new \stdClass;
@@ -123,7 +130,7 @@ class Project
                     if ($conf['required']) {
                         $requireds[] = $usage;
                     }
-                    $data->properties->$slug->properties->usage->properties->$usage = $object;
+                    $data->properties->$slug->properties->usage->properties->usage = $object;
                 }
                 if (count($requireds)) {
                     $data->properties->$slug->properties->usage->required = $requireds;
@@ -151,6 +158,88 @@ class Project
         }
 
         return $schema;
+    }
+
+    /**
+     * Map schema data into model
+     *
+     * @param array $json JSON sent data as array
+     *
+     * @return array
+     */
+    public function mapModel($json)
+    {
+        $slug = $this->getSlug();
+
+        //basic mapping
+        $data = [
+            'glpi_uuid' => $this->truncate($json[$slug]['uuid'], 41),
+            'glpi_version' => $this->truncate($json[$slug]['version'], 25),
+            'glpi_default_language' => $this->truncate($json[$slug]['default_language'], 10),
+            'db_engine' => $this->truncate($json['system']['db']['engine'], 50),
+            'db_version' => $this->truncate($json['system']['db']['version'], 50),
+            'db_size' => (int) $json['system']['db']['size'],
+            'db_log_size' => (int) $json['system']['db']['log_size'],
+            'db_sql_mode' => $json['system']['db']['sql_mode'],
+            'web_engine' => $this->truncate($json['system']['web_server']['engine'], 50),
+            'web_version' => $this->truncate($json['system']['web_server']['version'], 50),
+            'php_version' => $this->truncate($json['system']['php']['version'], 50),
+            'php_modules' => implode(',', $json['system']['php']['modules']),
+            'php_config_max_execution_time' => (int) $json['system']['php']['setup']['max_execution_time'],
+            'php_config_memory_limit' => $this->truncate($json['system']['php']['setup']['memory_limit'], 10),
+            'php_config_post_max_size' => $this->truncate($json['system']['php']['setup']['post_max_size'], 10),
+            'php_config_safe_mode' => (bool) $json['system']['php']['setup']['safe_mode'],
+            'php_config_session' => $json['system']['php']['setup']['session'],
+            'php_config_upload_max_filesize' => $this->truncate($json['system']['php']['setup']['upload_max_filesize'], 10),
+            'os_family' => $this->truncate($json['system']['os']['family'], 50),
+            'os_distribution' => $this->truncate($json['system']['os']['distribution'], 50),
+            'os_version' => $this->truncate($json['system']['os']['version'], 50),
+        ];
+
+        $usage = [];
+        //mapping from schema configuration for usage
+        if (null !== $this->schema_usage) {
+            if (false !== $this->schema_usage) {
+                foreach ($this->mapping as $local => $origin) {
+                    $usage[$origin] = $this->truncate($json[$slug]['usage'][$local], 50);
+                }
+            }
+        } else {
+            $usage = [
+                'glpi_avg_entities' => $this->truncate($json[$slug]['usage']['avg_entities'], 50),
+                'glpi_avg_computers' => $this->truncate($json[$slug]['usage']['avg_computers'], 50),
+                'glpi_avg_networkequipments' => $this->truncate($json[$slug]['usage']['avg_networkequipments'], 50),
+                'glpi_avg_tickets' => $this->truncate($json[$slug]['usage']['avg_tickets'], 25),
+                'glpi_avg_problems' => $this->truncate($json[$slug]['usage']['avg_problems'], 25),
+                'glpi_avg_changes' => $this->truncate($json[$slug]['usage']['avg_changes'], 25),
+                'glpi_avg_projects' => $this->truncate($json[$slug]['usage']['avg_projects'], 25),
+                'glpi_avg_users' => $this->truncate($json[$slug]['usage']['avg_users'], 25),
+                'glpi_avg_groups' => $this->truncate($json[$slug]['usage']['avg_groups'], 25),
+                'glpi_ldap_enabled' => (bool) $json[$slug]['usage']['ldap_enabled'],
+                // 'glpi_smtp_enabled' => (bool) $json[$slug]['usage']['smtp_enabled'],
+                'glpi_mailcollector_enabled' => (bool) $json[$slug]['usage']['mailcollector_enabled']
+            ];
+        }
+
+        return $data + $usage;
+    }
+
+    /**
+     * Truncate a string
+     *
+     * @param string  $string Original string to truncate
+     * @param integer $length String length limit
+     *
+     * @return string
+     */
+    private function truncate($string, $length)
+    {
+        if (mb_strlen($string) > $length) {
+            $this->container->log->warning("String exceed length $length", $string);
+            $string = substr($string, 0, $length);
+        }
+
+        return $string;
     }
 
     /**
