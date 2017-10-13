@@ -24,10 +24,19 @@ class Project
         $this->slug = strtolower(
             trim(
                 preg_replace(
-                    '/[^A-Za-z0-9-]+/',
+                    '~[^0-9a-z]+~i',
                     '-',
-                    $name
-                )
+                    preg_replace(
+                        '~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+                        '$1',
+                        htmlentities(
+                            $name,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        )
+                    )
+                ),
+                ' '
             )
         );
     }
