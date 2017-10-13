@@ -44,12 +44,14 @@ class Project
     /**
      * Set project configuration
      *
-     * @param arra $config Configuration values
+     * @param array $config Configuration values
      *
      * @return Project
      */
     public function setConfig($config)
     {
+        $this->checkConfig($config);
+
         if (isset($config['url'])) {
             $this->url = $config['url'];
         }
@@ -66,6 +68,41 @@ class Project
     }
 
     /**
+     * Check for required options in configuration
+     *
+     * @param array $config Configuration values
+     *
+     * @return boolean
+     */
+    public function checkConfig(array $config)
+    {
+        if (isset($config['schema']['usage'])) {
+            $cusage = $config['schema']['usage'];
+            if (!is_array($cusage) && false !== $cusage) {
+                throw new \UnexpectedValueException('Schema usage must be an array or false if present!');
+            } elseif (is_array($cusage)) {
+                if (!isset($config['mapping'])) {
+                    throw new \DomainException('a mapping is mandatory if you define schema usage');
+                } else {
+                    $ukeys = array_keys($cusage);
+                    sort($ukeys);
+                    $mkeys = array_keys($config['mapping']);
+                    sort($mkeys);
+                    if ($ukeys != $mkeys) {
+                        throw new \UnexpectedValueException('schema usage and mapping keys must fit');
+                    }
+                }
+            }
+        }
+
+        if (isset($config['schema']['plugins'])) {
+            if (false !== $config['schema']['plugins']) {
+                throw new \UnexpectedValueException('Schema plugins must be false if present!');
+            }
+        }
+    }
+
+    /**
      * Set schema configuration
      *
      * @param mixed $config Schema configuration
@@ -77,15 +114,11 @@ class Project
         if (isset($config['usage'])) {
             if (is_array($config['usage']) || false === $config['usage']) {
                 $this->schema_usage = $config['usage'];
-            } else {
-                throw new \UnexpectedValueException('Schema usage must be an array or false if present!');
             }
         }
         if (isset($config['plugins'])) {
             if (false === $config['plugins']) {
                 $this->schema_plugins = false;
-            } else {
-                throw new \UnexpectedValueException('Schema plugins must be false if present!');
             }
         }
     }
@@ -214,7 +247,7 @@ class Project
         if (null !== $this->schema_usage) {
             if (false !== $this->schema_usage) {
                 foreach ($this->mapping as $local => $origin) {
-                    $usage[$origin] = $this->truncate($json[$slug]['usage'][$local], 50);
+                    $usage[$origin] = $this->truncate($json[$slug]['usage'][$local], 25);
                 }
             }
         } else {
