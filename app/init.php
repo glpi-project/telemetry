@@ -69,7 +69,11 @@ $container['countries']     = json_decode(file_get_contents($container['countrie
 
 // setup twig
 $container['view'] = function ($c) {
-    $view = new \Slim\Views\Twig('../app/Templates', [
+    $paths = array_merge(
+        [__DIR__ . '/../app/Templates'],
+        $c->project->getTemplatesPath()
+    );
+    $view = new \Slim\Views\Twig($paths, [
       'cache' => $c['settings']['debug'] ? false : $c->cache_dir . '/twig',
       'debug' => $c['settings']['debug']
     ]);
@@ -84,14 +88,23 @@ $container['view'] = function ($c) {
         $view->addExtension(new Twig_Extension_Debug());
     }
 
-   // add some global to view
+    // add some global to view
     $env = $view->getEnvironment();
 
-   // add recaptcha sitekey
+    // add recaptcha sitekey
     $env->addGlobal('recaptchasitekey', $c['settings']['recaptcha']['sitekey']);
 
-   // add countries geo data
+    // add countries geo data
     $env->addGlobal('countries', $c['countries'], true);
+
+    //Project name
+    $env->addGlobal('project_name', $c->project->getName());
+
+    //enable contact page
+    $env->addGlobal('enable_contact', $c->project->hasContactPage());
+
+    //footer links
+    $env->addGlobal('footer_links', $c->project->getFooterLinks());
 
     return $view;
 };

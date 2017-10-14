@@ -16,8 +16,8 @@ class Reference extends ControllerAbstract
        // default session param for this controller
         if (!isset($_SESSION['reference'])) {
             $_SESSION['reference'] = [
-            "orderby" => 'created_at',
-            "sort"    => "desc"
+                "orderby" => 'created_at',
+                "sort"    => "desc"
             ];
         }
 
@@ -43,7 +43,7 @@ class Reference extends ControllerAbstract
         $references->setPath($this->container->get('settings')['baseurl']."reference");
 
        // render in twig view
-        $this->render('reference.html', [
+        $this->render($this->container->project->pathFor('reference.html'), [
          'total'      => ReferenceModel::where('is_displayed', true)->count(),
          'class'      => 'reference',
          'showmodal'  => isset($get['showmodal']),

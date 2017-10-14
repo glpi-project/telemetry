@@ -8,7 +8,7 @@ class Contact extends ControllerAbstract
 {
     public function view()
     {
-        $this->render('contact.html', [
+        $this->render($this->container->project->pathFor('contact.html'), [
          'class' => 'contact'
         ]);
     }

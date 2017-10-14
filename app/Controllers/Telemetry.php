@@ -181,7 +181,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-        $this->render('telemetry.html', [
+        $this->render($this->container->project->pathFor('telemetry.html'), [
          'form' => [
             'years' => $years
          ],

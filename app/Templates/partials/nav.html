@@ -3,23 +3,25 @@
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="./telemetry">
-         <img src="pics/logo.png" title="GLPI Usage" />
+      <a class="navbar-brand" href="{{path_for("telemetry")}}">
+          <img src="{{path_for('logo')}}" title="{{project_name}} Usage" />
       </a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div class="navbar-nav">
             <a class="nav-item nav-link {{ class == 'telemetry' ? 'active'}}"
-               href="./telemetry">
+               href="{{path_for("telemetry")}}">
                <i class='fa fa-bar-chart'></i>
                Telemetry</a>
             <a class="nav-item nav-link {{ class == 'reference' ? 'active'}}"
-               href="./reference">
+                href="{{path_for('reference')}}">
                <i class='fa fa-users'></i>
                References</a>
+           {% if enable_contact %}
             <a class="nav-item nav-link {{ class == 'contact' ? 'active'}}"
-               href="./contact">
+                href="{{path_for('contact')}}">
                <i class='fa fa-envelope'></i>
                Contact</a>
+           {% endif %}
          </div>
       </div>
    </nav>
