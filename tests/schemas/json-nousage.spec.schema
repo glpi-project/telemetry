@@ -1,0 +1,180 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {},
+    "id": "http://example.com/example.json",
+    "properties": {
+        "data": {
+            "properties": {
+                "system": {
+                    "properties": {
+                        "db": {
+                            "properties": {
+                                "engine": {
+                                    "type": "string"
+                                },
+                                "log_size": {
+                                    "type": ["string", "null"]
+                                },
+                                "size": {
+                                    "type": "string"
+                                },
+                                "sql_mode": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "engine",
+                                "log_size",
+                                "version",
+                                "sql_mode",
+                                "size"
+                            ],
+                            "type": "object"
+                        },
+                        "os": {
+                            "properties": {
+                                "distribution": {
+                                    "type": "string"
+                                },
+                                "family": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "distribution",
+                                "version",
+                                "family"
+                            ],
+                            "type": "object"
+                        },
+                        "php": {
+                            "properties": {
+                                "modules": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "setup": {
+                                    "properties": {
+                                        "max_execution_time": {
+                                            "type": "string"
+                                        },
+                                        "memory_limit": {
+                                            "type": "string"
+                                        },
+                                        "post_max_size": {
+                                            "type": "string"
+                                        },
+                                        "safe_mode": {
+                                            "type": "boolean"
+                                        },
+                                        "session": {
+                                            "type": "string"
+                                        },
+                                        "upload_max_filesize": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "memory_limit",
+                                        "max_execution_time",
+                                        "upload_max_filesize",
+                                        "session",
+                                        "safe_mode",
+                                        "post_max_size"
+                                    ],
+                                    "type": "object"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "setup",
+                                "version",
+                                "modules"
+                            ],
+                            "type": "object"
+                        },
+                        "web_server": {
+                            "properties": {
+                                "engine": {
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "engine",
+                                "version"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "os",
+                        "web_server",
+                        "php",
+                        "db"
+                    ],
+                    "type": "object"
+                },
+                "no-usage": {
+                    "properties": {
+                        "default_language": {
+                            "type": "string"
+                        },
+                        "plugins": {
+                            "items": {
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "version",
+                                    "key"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "uuid": {
+                            "type": "string"
+                        },
+                        "version": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "version",
+                        "default_language",
+                        "uuid",
+                        "plugins"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "no-usage",
+                "system"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "data"
+    ],
+    "type": "object"
+}
