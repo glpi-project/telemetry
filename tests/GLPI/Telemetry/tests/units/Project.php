@@ -183,4 +183,97 @@ class Project extends atoum
                     ->hasMessage('schema usage and mapping keys must fit')
         ;
     }
+
+    /**
+     * Data provider for schemas
+     *
+     * @return array
+     */
+    protected function schemasProvider()
+    {
+        return [
+            [
+                'GLPI',
+                [
+                    'name'  => 'GLPI',
+                    'url'   => 'http://glpi-project.org'
+                ],
+                'json-glpi.spec.schema'
+            ], [
+                'Galette',
+                [
+                    'name'      => 'Galette',
+                    'url'       => 'https://galette.eu',
+                    'schema'    => [
+                        'usage' => [
+                            'avg_members'        => [
+                                'type'      => 'string',
+                                'required'  => true
+                            ],
+                            'avg_contributions'  => [
+                                'type'      => 'string',
+                                'required'  => true
+                            ],
+                            'avg_transactions'   => [
+                                'type'      => 'string',
+                                'required'  => true
+                            ]
+                        ]
+                    ],
+                    'mapping' => [
+                        'avg_members'       => 'avg_entities',
+                        'avg_contributions' => 'avg_computers',
+                        'avg_transactions'  => 'avg_networkequipments'
+                    ]
+                ],
+                'json-galette.spec.schema'
+            ], [
+                'No plugins',
+                [
+                    'name'      => 'No plugins',
+                    'schema'    => [
+                        'plugins' => false
+                    ]
+                ],
+                'json-noplugins.spec.schema'
+            ], [
+                'No usage',
+                [
+                    'name'      => 'No usage',
+                    'schema'    => [
+                        'usage' => false
+                    ]
+                ],
+                'json-nousage.spec.schema'
+            ]
+        ];
+    }
+
+    /**
+     * Test project schema generation
+     *
+     * @dataProvider schemasProvider
+     *
+     * @param string $name     Project name
+     * @param array  $config   Project configuration
+     * @param string $filename Expected file result
+     *
+     * @return void
+     */
+    public function testDynamicSchema($name, $config, $filename)
+    {
+        $filepath = __DIR__ . '/../../../../schemas/' . $filename;
+        $this->boolean(file_exists($filepath))->isTrue();
+        $schema = file_get_contents($filepath);
+        $schema = json_decode($schema);
+
+        $this
+            ->if($this->newTestedInstance($name))
+            ->then
+                ->object($this->testedInstance->setConfig($config))
+                    ->isInstanceOf(get_class($this->testedInstance))
+                ->object(json_decode($this->testedInstance->getSchema(null)))
+                    ->isEqualTo($schema)
+        ;
+    }
 }
