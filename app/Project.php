@@ -136,6 +136,7 @@ class Project
                 if (count($requireds)) {
                     $usages->required = $requireds;
                 }
+                $usages->type = 'object';
                 $data->properties->$slug->properties->usage = $usages;
             } else {
                 $not_required[] = 'usage';
@@ -149,8 +150,7 @@ class Project
                     unset($requireds[$key]);
                 }
             }
-            reset($requireds);
-            $data->properties->$slug->required = $requireds;
+            $data->properties->$slug->required = array_values($requireds);
         }
 
         $schema = json_encode($schema);
