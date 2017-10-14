@@ -10,14 +10,16 @@ class Project
     private $schema_usage;
     private $schema_plugins = true;
     private $mapping = [];
+    private $logger;
 
     /**
      * Constructor
      *
      * @param string $name Project name
      */
-    public function __construct($name)
+    public function __construct($name, $logger = null)
     {
+        $this->logger = $logger;
         $this->name = $name;
         $this->slug = strtolower(
             trim(
@@ -237,8 +239,12 @@ class Project
     private function truncate($string, $length)
     {
         if (mb_strlen($string) > $length) {
-            $this->container->log->warning("String exceed length $length", $string);
-            $string = substr($string, 0, $length);
+            if ($this->logger !== null) {
+                $this->logger->warning("String exceed length $length", $string);
+            } else {
+                trigger_error("String exceed length $length\n$string", E_USER_NOTICE);
+            }
+            $string = mb_substr($string, 0, $length);
         }
 
         return $string;
