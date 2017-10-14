@@ -12,13 +12,14 @@
 {% endblock %}
 
 {% block header %}
+
 {% set myheader= {
-   'title': '<i class="fa fa-bar-chart"></i> Telemetry',
-   'text':  'Since version 9.2 of GLPI, we collect anonymous
+   'title': header_title|default('<i class="fa fa-bar-chart"></i> Telemetry'),
+   'text':  header_text|default('Since version 9.2 of GLPI, we collect anonymous
              <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.
              Here is some representations of these data.
              <br>
-             As we don&apos;t have many data at the moment, the charts will be temporary simple. We&apos;ll complete this page soon.',
+             As we don&apos;t have many data at the moment, the charts will be temporary simple. We&apos;ll complete this page soon.')
 } %}
 {{ parent() }}
 {% endblock %}
@@ -28,8 +29,8 @@
 <div>
    <form class='telemetry_form'>
       <fieldset class="form-group">
-         <legend><label for="exampleSelect1">Data since</label></legend>
-         <select class="form-control" name="years" onchange='this.form.submit();'>
+         <legend><label for="years">Data since</label></legend>
+         <select class="form-control" name="years" id="years" onchange='this.form.submit();'>
             <option value='-1'>always</option>
             {% for i in 1..20 %}
             <option value='{{i}}'
@@ -86,8 +87,8 @@
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'glpi_versions',
-                        'title': 'GLPI versions',
-                        'text':  '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to 9.2',
+                        'title': '%s versions'|format(project_name),
+                        'text':  versionchart_text|default('<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to 9.2'),
                         'data':  glpi_versions
                      }} %}
       {% include 'partials/chart.html' with vars %}

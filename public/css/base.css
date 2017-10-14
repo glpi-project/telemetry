@@ -116,6 +116,10 @@ header.navbar {
    color: #FFF;
 }
 
+.footer-links {
+    padding: 0;
+}
+
 .footer-links li {
    display: inline-block;
 }

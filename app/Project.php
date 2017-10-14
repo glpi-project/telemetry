@@ -11,11 +11,33 @@ class Project
     private $schema_plugins = true;
     private $mapping = [];
     private $logger;
+    private $project_path;
+    private $templates_path;
+    private $enable_contact = true;
+    private $footer_links = [
+        'GLPI project'  => [
+            'faclass'   => 'fa fa-globe',
+            'url'       => 'http://glpi-project.org'
+        ],
+        'Plugins'       => [
+            'faclass'   => 'fa fa-puzzle-piece',
+            'url'       => 'http://plugins.glpi-project.org'
+        ],
+        'Forum'         => [
+            'faclass'   => 'fa fa-comments-o',
+            'url'       => 'http://forum.glpi-project.org'
+        ],
+        'Suggest'       => [
+            'faclass'   => 'fa fa-lightbulb-o',
+            'url'       => 'htt//suggest.glpi-project.org'
+        ]
+    ];
 
     /**
      * Constructor
      *
-     * @param string $name Project name
+     * @param string $name   Project name
+     * @param mixed  $logger Logger
      */
     public function __construct($name, $logger = null)
     {
@@ -39,6 +61,8 @@ class Project
                 ' '
             )
         );
+        $this->project_path = __DIR__ . '/../projects/' . $this->slug;
+        $this->templates_path =  $this->project_path . '/Templates';
     }
 
     /**
@@ -56,12 +80,20 @@ class Project
             $this->url = $config['url'];
         }
 
+        if (isset($config['enable_contact'])) {
+            $this->enable_contact = (bool)$config['enable_contact'];
+        }
+
         if (isset($config['schema'])) {
             $this->setSchemaConfig($config['schema']);
         }
 
         if (isset($config['mapping'])) {
             $this->mapping = $config['mapping'];
+        }
+
+        if (isset($config['footer_links'])) {
+            $this->footer_links = $config['footer_links'];
         }
 
         return $this;
@@ -293,6 +325,35 @@ class Project
     }
 
     /**
+     * Get template path for project
+     *
+     * @return array
+     */
+    public function getTemplatesPath()
+    {
+        if (file_exists($this->templates_path)) {
+            return [$this->templates_path];
+        }
+        return [];
+    }
+
+    /**
+     * Get path for template
+     *
+     * @param string $tpl Template name
+     *
+     * @return string
+     */
+    public function pathFor($tpl)
+    {
+        $slug = 'default';
+        if (file_exists($this->templates_path . '/' . $this->getSlug() . '/' . $tpl)) {
+            $slug = $this->getSlug();
+        }
+        return $slug . '/' . $tpl;
+    }
+
+    /**
      * Get project name
      *
      * @return string
@@ -320,5 +381,39 @@ class Project
     public function getURL()
     {
         return $this->url;
+    }
+
+    /**
+     * Does project provide a logo
+     *
+     * @return boolean
+     */
+    public function getLogo()
+    {
+        $file = __DIR__ . '/../public/pics/logo.png';
+        if (file_exists($this->project_path . '/logo.png')) {
+            $file = $this->project_path . '/logo.png';
+        }
+        return file_get_contents($file);
+    }
+
+    /**
+     * Is contact page active for current project
+     *
+     * @return boolean
+     */
+    public function hasContactPage()
+    {
+        return $this->enable_contact;
+    }
+
+    /**
+     * Get footer links
+     *
+     * @return array
+     */
+    public function getFooterLinks()
+    {
+        return $this->footer_links;
     }
 }

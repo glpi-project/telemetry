@@ -325,4 +325,139 @@ class Project extends atoum
                 ->exists();
         }
     }
+
+    /**
+     * Test getTemplatesPath
+     *
+     * @return void
+     */
+    public function testGetTemplatesPath()
+    {
+        $this->assert('getTemplatesPath')
+            ->given($this->newTestedInstance('test'))
+                ->if($this->function->file_exists = false)
+                    ->then
+                        ->array($this->testedInstance->getTemplatesPath())
+                            ->isIdenticalTo([])
+                ->if($this->function->file_exists = true)
+                    ->then
+                        ->array($this->testedInstance->getTemplatesPath())
+                            ->isIdenticalTo(
+                                [realpath(__DIR__ . '/../../../../../app/') .
+                                '/../projects/' . $this->testedInstance->getSlug() . '/Templates']
+                            )
+        ;
+    }
+
+    /**
+     * Test pathFor
+     *
+     * @return void
+     */
+    public function testPathFor()
+    {
+        $this->assert('pathFor')
+            ->given($this->newTestedInstance('test'))
+                ->if($this->function->file_exists = false)
+                    ->then
+                        ->string($this->testedInstance->pathFor('page.html'))
+                            ->isIdenticalTo('default/page.html')
+                ->if($this->function->file_exists = true)
+                    ->then
+                        ->string($this->testedInstance->pathFor('page.html'))
+                            ->isIdenticalTo($this->testedInstance->getSlug() . '/page.html')
+        ;
+    }
+
+    /**
+     * Test getLogo
+     *
+     * @return void
+     */
+    public function testGetLogo()
+    {
+        $this->assert('pathFor')
+            ->given($this->newTestedInstance('test'))
+                ->if($this->function->file_get_contents = function ($file) {
+                    return $file;
+                })
+                    ->then
+                        ->if($this->function->file_exists = false)
+                            ->then
+                                ->string($this->testedInstance->getLogo())
+                                    ->isIdenticalTo(
+                                        realpath(__DIR__ . '/../../../../../app/') .
+                                        '/../public/pics/logo.png'
+                                    )
+                        ->if($this->function->file_exists = true)
+                            ->then
+                                ->string($this->testedInstance->getLogo())
+                                    ->isIdenticalTo(
+                                        realpath(__DIR__ . '/../../../../../app/') .
+                                        '/../projects/'.$this->testedInstance->getSlug().'/logo.png'
+                                    )
+        ;
+    }
+
+    /**
+     * Test hasContactPage
+     *
+     * @return void
+     */
+    public function testHasContactPage()
+    {
+        $this
+            ->if($this->newTestedInstance('test'))
+            ->then
+                ->object($this->testedInstance->setConfig([
+                    'name' => 'test'
+                ]))
+                    ->isInstanceOf(get_class($this->testedInstance))
+                        ->boolean($this->testedInstance->hasContactPage())
+                            ->isTrue()
+                ->object($this->testedInstance->setConfig([
+                    'name'              => 'test',
+                    'enable_contact'    => true
+                ]))
+                    ->isInstanceOf(get_class($this->testedInstance))
+                        ->boolean($this->testedInstance->hasContactPage())
+                            ->isTrue()
+                ->object($this->testedInstance->setConfig([
+                    'name'              => 'test',
+                    'enable_contact'    => false
+                ]))
+                    ->isInstanceOf(get_class($this->testedInstance))
+                        ->boolean($this->testedInstance->hasContactPage())
+                            ->isFalse()
+        ;
+    }
+
+    /**
+     * Test footer links
+     *
+     * @return void
+     */
+    public function testGetFooterLinks()
+    {
+         $this
+            ->if($this->newTestedInstance('test'))
+            ->then
+                ->object($this->testedInstance->setConfig([
+                    'name' => 'test'
+                ]))
+                ->array($this->testedInstance->getFooterLinks())
+                    ->hasSize(4)
+                    ->hasKeys(['GLPI project', 'Plugins', 'Forum', 'Suggest'])
+                ->object($this->testedInstance->setConfig([
+                    'name'          => 'test',
+                    'footer_links'  => [
+                        'one'   => [],
+                        'two'   => []
+                    ]
+                ]))
+                ->array($this->testedInstance->getFooterLinks())
+                    ->hasSize(2)
+                    ->hasKeys(['one', 'two'])
+        ;
+    }
 }
