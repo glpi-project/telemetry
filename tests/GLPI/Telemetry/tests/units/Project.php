@@ -276,4 +276,53 @@ class Project extends atoum
                     ->isEqualTo($schema)
         ;
     }
+
+    /**
+     * Provider for truncate tests
+     *
+     * @return array
+     */
+    protected function truncateProvider()
+    {
+        return [
+            [
+                'A simple string', 50, false
+            ], [
+                'A simple string', 10, 'A simple s'
+            ], [
+                'éè', 1, 'é'
+            ]
+        ];
+    }
+
+    /**
+     * Test truncate
+     *
+     * @dataProvider truncateProvider
+     *
+     * @param string       $string   String to truncate
+     * @param integer      $length   Maximal lenght
+     * @param string|false $expected Expected return. False means no change (and no error)
+     *
+     * @return void
+     */
+    public function testTruncate($string, $length, $expected)
+    {
+        $this->newTestedInstance('test');
+        $instance = $this->testedInstance;
+
+        if ($expected === false) {
+            $this->string($this->testedInstance->truncate($string, $length))
+                ->isIdenticalTo($expected === false ? $string : $expected);
+        } else {
+            $this->when(
+                function () use ($instance, $string, $length, $expected) {
+                    $this->string($instance->truncate($string, $length))
+                        ->isIdenticalTo($expected);
+                }
+            )->error()
+                ->withMessage("String exceed length $length\n$string")
+                ->exists();
+        }
+    }
 }
