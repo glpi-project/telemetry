@@ -278,7 +278,7 @@ class Project
      *
      * @return string
      */
-    private function truncate($string, $length)
+    public function truncate($string, $length)
     {
         if (mb_strlen($string) > $length) {
             if ($this->logger !== null) {
