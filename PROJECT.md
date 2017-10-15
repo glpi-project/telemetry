@@ -1,7 +1,12 @@
-Set up a PROJECT
+Set up a project
 ================
 
-By default, the Telemetry app is designed to work along with [GLPI](http://glpi-project.org); but it is popssible to tune a bit the JSON schema in order to fit other projects. This can be achieved using the `config.inc.php` file.
+By default, the Telemetry app is designed to work along with [GLPI](http://glpi-project.org); but it is possible to tune it a bit in order to fit other projects.
+
+JSON schema
+-----------
+
+JSON schema and some mappings can be overrided using the `config.inc.php` file
 
 In the `$config` array; there is a `project` key you can customize. Here is an example for the [Galette](https://galette.eu) project:
 
@@ -12,6 +17,7 @@ return $config = [
     'project' => [
         'name'   => 'Galette',
         'url'    => 'https://galette.eu',
+        'enable_contact' => false,
         'schema' => [
             'usage' => [
                 'avg_members'        => [
@@ -46,4 +52,75 @@ If you provide an array into the `usage` key; its keys will become the propertie
 
 The actual database was designed using GLPI fields; and names are hardcoded. So, if you change `usage` keys; you'll have to provide a mapping beetween your key and the existing one in the databasebase. This is the goal of the `mapping` entry in the configuration.
 
-When working on schema configuration, make sure to tunr debug to true for the application; generated schema would be cached otherwise, and your changes will not be visible :)
+When working on schema configuration, make sure to turn debug to true for the application; generated schema would be cached otherwise, and your changes will not be visible :)
+
+Finally, note tah the `enable_contact` set to false will entirely disable the embed contact page.
+
+User Interface
+--------------
+
+Some elements on the user interface may be tuned too. This currently includes:
+1- projects logo,
+2- footer links,
+3- templates contents.
+
+Parts of the configuration uses the main configuration file (`config.inc.php`); other rely on the presence of some files in the `projects/{project_slug}` directory (where `{project_slug}` is... Your project slug :)).
+
+### Logo
+
+If you want to display your own logo, just create it as `projects/{project_slug}/logo.png`. Even if the file extension is `PNG`, this should work with any image type.
+
+No controls are done on the logo file; the application will just read it from the filesystem if the file exists.
+
+### Footer links
+
+You may want to provide footers links related to your onw project. Use the `project/footer_links` parameter of the `config.inc.php` file. Each link can be tuned using several properties. Let's take an example, see the following configuration:
+
+```php
+return $config = [
+    'project' => [
+        'name'   => 'My Project',
+        'footer_links' => [
+            'Main website'   => [
+                'faclass'   => 'fa fa-globe',
+                'url'       => 'https://my-project.org'
+            ],
+            'Documentation' => [
+                'faclass'   => 'fa fa-book',
+                'url'       => 'https://doc.my-project.org/'
+            ],
+            'Forums'         => [
+                'faclass'   => 'fa fa-comments-o',
+                'url'       => 'https://forums.my-project.org'
+            ],
+        ],
+    ],
+    //...
+```
+
+This defines 3 different links in the application footer: the main website, project's documentation and forums. The array key will become the dispayed text in the link. The url parameter is the link itself. Both are mandatory.
+The `faclass` parameter is optionnal. When defined, a `<i>` tag will be prepend to the displayed text using the provided class. Refer to [FontAwesome](http://fontawesome.io/) to get the class you want.
+
+### Templates contents
+
+Telemetry application relies on [Twig](https://twig.symfony.com/) to display HTML contents to user. Defaults templates are stored in the `app/Templates/default` directory.
+
+Each of those files can be overrided per project. Just create you own file under `projects/[project_slug}/Templates/{project_slug}` directory and it will be used :)
+
+The easiest way to go is to inherit from the original default file; and only override parts you want. An example `projects/[project_slug}/Templates/{project_slug}/telemetry.html` file should looks like:
+
+```twig
+{% extends "default/telemetry.html" %}
+
+{% block header %}
+{% set header_text = 'Since PROJECT x.y, we collect anonymous
+             <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.'
+%}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+{% set versionchart_text = '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to x.y' %}
+{{ parent() }}
+{% endblock %}
+```
