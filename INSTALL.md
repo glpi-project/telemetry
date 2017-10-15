@@ -37,7 +37,7 @@ Note that the default configuration will use a provided dataset specific to GLPI
 ```php
 <?php
 
-$pconfig['paths']['seeds'] = '%%PHINX_CONFIG_DIR%%/db/my_seeds';
+$pconfig['paths']['seeds'] = '%%PHINX_CONFIG_DIR%%/projects/db/my_seeds';
 ```
 
 This permits to use a different seed directory than the default one. Refer to the phinx documentation to know how to create seeds.
