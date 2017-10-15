@@ -32,6 +32,6 @@ class Contact extends ControllerAbstract
         );
 
        //redirect
-        return $res->withRedirect('./ok');
+        return $res->withRedirect($this->container->router->pathFor('telemetry'));
     }
 }
