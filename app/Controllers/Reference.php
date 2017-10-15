@@ -87,6 +87,6 @@ class Reference extends ControllerAbstract
         );
 
        // redirect to ok page
-        return $res->withRedirect('./ok');
+        return $res->withRedirect($this->container->router->pathFor('reference'));
     }
 }

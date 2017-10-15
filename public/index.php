@@ -44,12 +44,5 @@ $app->get(
     }
 )->setName('logo');
 
-// special pages
-$app->get('/ok', function ($request, $response, $args) {
-    return $this->view->render($response, 'ok.html', [
-      'class' => 'ok'
-    ]);
-});
-
 // run slim
 $app->run();
