@@ -17,7 +17,7 @@ class Contact extends ControllerAbstract
     {
         $post = $req->getParsedBody();
 
-       // prepare mail
+        // prepare mail
         $mail = new \PHPMailer;
         $mail->setFrom($post['email']);
         $mail->addAddress($this->container['settings']['mail_admin']);
@@ -31,7 +31,7 @@ class Contact extends ControllerAbstract
             'Thanks for your message, please wait a bit for our answer !'
         );
 
-       //redirect
+        //redirect
         return $res->withRedirect($this->container->router->pathFor('telemetry'));
     }
 }

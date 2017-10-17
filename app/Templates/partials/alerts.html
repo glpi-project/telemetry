@@ -1,21 +1,22 @@
-<script type="text/javascript">
-
-$(document).ready(function() {
-   {% for alert_type, alerts in flash() %}
-   {% for msg in alerts %}
-   $.notify({
-      icon: getAlertIcon('{{alert_type}}'),
-      message: '{{msg}}'
-   },{
-      // settings
-      type: '{{alert_type}}',
-      delay: getAlertDelay('{{alert_type}}'),
-      placement: {
-         from: 'bottom'
-      }
-   });
-
-   {% endfor %}
-   {% endfor %}
-});
-</script>
+{% set flashMessages = flash() %}
+{% if flashMessages|length > 0%}
+<div class="notify">
+    {% for alert_type, alerts in flash() %}
+        {% set faclass -%}
+            {%- if alert_type == 'success' -%}
+                check
+            {%- elseif alert_type == 'error' -%}
+                exclamation-triangle
+            {%- elseif alert_type == 'warn' -%}
+                exclamation
+            {%- endif -%}
+        {%- endset %}
+        {% for msg in alerts %}
+    <div class="{{alert_type}}">
+        <i class="fa fa-{{faclass}}"></i>
+        {{msg}}
+    </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+{% endif %}

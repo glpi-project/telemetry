@@ -168,3 +168,32 @@ td.sort
    color: #636c72;
    line-height: normal;
 }
+
+/** Messaging */
+.notify {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 0 auto;
+    background: white;
+    z-index: 10;
+    text-align: center;
+    padding: .5em 1em;
+}
+
+.notify > div > i {
+    margin-right: .5em;
+}
+
+.notify > .success {
+    color: green;
+}
+
+.notify > .error {
+    color: red;
+}
+
+.notify > .warn {
+    color: orange;
+}
+/** /Messaging */
