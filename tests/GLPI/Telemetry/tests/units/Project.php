@@ -360,12 +360,12 @@ class Project extends atoum
             ->given($this->newTestedInstance('test'))
                 ->if($this->function->file_exists = false)
                     ->then
-                        ->string($this->testedInstance->pathFor('page.html'))
-                            ->isIdenticalTo('default/page.html')
+                        ->string($this->testedInstance->pathFor('page.html.twig'))
+                            ->isIdenticalTo('default/page.html.twig')
                 ->if($this->function->file_exists = true)
                     ->then
-                        ->string($this->testedInstance->pathFor('page.html'))
-                            ->isIdenticalTo($this->testedInstance->getSlug() . '/page.html')
+                        ->string($this->testedInstance->pathFor('page.html.twig'))
+                            ->isIdenticalTo($this->testedInstance->getSlug() . '/page.html.twig')
         ;
     }
 

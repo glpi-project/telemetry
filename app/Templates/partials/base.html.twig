@@ -16,8 +16,8 @@
       {% endblock %}
    </head>
    <body class="{{ class }}">
-      {% include "partials/alerts.html" %}
-      {% include "partials/nav.html" %}
+      {% include "partials/alerts.html.twig" %}
+      {% include "partials/nav.html.twig" %}
 
       <div id="page">
          {% block header %}
@@ -34,7 +34,7 @@
          </div>
       </div>
 
-      {% include "partials/footer.html" %}
+      {% include "partials/footer.html.twig" %}
 
       <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
