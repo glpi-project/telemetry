@@ -43,7 +43,7 @@ class Reference extends ControllerAbstract
         $references->setPath($this->container->get('settings')['baseurl']."reference");
 
        // render in twig view
-        $this->render($this->container->project->pathFor('reference.html'), [
+        $this->render($this->container->project->pathFor('reference.html.twig'), [
          'total'      => ReferenceModel::where('is_displayed', true)->count(),
          'class'      => 'reference',
          'showmodal'  => isset($get['showmodal']),

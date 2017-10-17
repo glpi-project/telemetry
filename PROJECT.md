@@ -107,10 +107,10 @@ Telemetry application relies on [Twig](https://twig.symfony.com/) to display HTM
 
 Each of those files can be overrided per project. Just create you own file under `projects/[project_slug}/Templates/{project_slug}` directory and it will be used :)
 
-The easiest way to go is to inherit from the original default file; and only override parts you want. An example `projects/[project_slug}/Templates/{project_slug}/telemetry.html` file should looks like:
+The easiest way to go is to inherit from the original default file; and only override parts you want. An example `projects/[project_slug}/Templates/{project_slug}/telemetry.html.twig` file should looks like:
 
 ```twig
-{% extends "default/telemetry.html" %}
+{% extends "default/telemetry.html.twig" %}
 
 {% block header %}
 {% set header_text = 'Since PROJECT x.y, we collect anonymous

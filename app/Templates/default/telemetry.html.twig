@@ -1,4 +1,4 @@
-{% extends "partials/base.html" %}
+{% extends "partials/base.html.twig" %}
 {% block title %}Telemetry{% endblock %}
 {% block head %}
    {{ parent() }}
@@ -51,7 +51,7 @@
                         'text':  '',
                         'data':  nb_telemetry_entries
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -61,7 +61,7 @@
                         'text':  '',
                         'data':  nb_reference_entries
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart chart-2 chart-2h">
@@ -71,7 +71,7 @@
                         'text':  '',
                         'data':  references_countries
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart chart-2">
@@ -81,7 +81,7 @@
                         'text':  'Grouped on major versions',
                         'data':  php_versions
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -91,7 +91,7 @@
                         'text':  versionchart_text|default('<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to 9.2'),
                         'data':  glpi_versions
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -101,7 +101,7 @@
                         'text':  'Only the top 5 is displayed',
                         'data':  top_plugins
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -111,7 +111,7 @@
                         'text':  'By family',
                         'data':  os_family
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -121,7 +121,7 @@
                         'text':  '',
                         'data':  web_engines
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -131,7 +131,7 @@
                         'text':  '',
                         'data':  db_engines
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
       <div class="chart">
@@ -141,7 +141,7 @@
                         'text':  '',
                         'data':  default_languages
                      }} %}
-      {% include 'partials/chart.html' with vars %}
+      {% include 'partials/chart.html.twig' with vars %}
       </div>
 
    </div>
