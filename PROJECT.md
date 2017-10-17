@@ -54,7 +54,7 @@ The actual database was designed using GLPI fields; and names are hardcoded. So,
 
 When working on schema configuration, make sure to turn debug to true for the application; generated schema would be cached otherwise, and your changes will not be visible :)
 
-Finally, note tah the `enable_contact` set to false will entirely disable the embed contact page.
+Finally, note that the `enable_contact` set to false will entirely disable the embed contact page.
 
 User Interface
 --------------
