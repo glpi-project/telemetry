@@ -37,6 +37,7 @@ $(document).ready(function() {
    };
 
    var plotly_bar_layout = {
+      showlegend: true,
       margin: {
          l: 40,
          r: 10,
