@@ -11,6 +11,10 @@ $(document).ready(function() {
       .addClass('page-item')
       .children("a, span")
          .addClass('page-link');
+
+    setTimeout(function() {
+        $('.notify .success').fadeOut('fast');
+    }, 10000);
 });
 
 /**
