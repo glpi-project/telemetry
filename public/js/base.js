@@ -12,10 +12,34 @@ $(document).ready(function() {
       .children("a, span")
          .addClass('page-link');
 
-    setTimeout(function() {
-        $('.notify .success').fadeOut('fast');
-    }, 10000);
+    var _notify = $('.notify');
+    if (_notify.length) {
+        _notify.hide();
+        buildModal('Messages', _notify.html(), 'notify');
+    }
 });
+
+var buildModal = function(title, body, extrabodyclass) {
+    var html = '<div class="modal fade">' +
+        '<div class="modal-dialog" role="document">' +
+        '<div class="modal-content">' +
+        '<div class="modal-header">' +
+        '<h5 class="modal-title">' + title + '</h5>' +
+        '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        '</div>' +
+        '<div class="modal-body ' + extrabodyclass + '">' +
+        body +
+        '</div>' +
+        '<div class="modal-footer">' +
+        '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+    var modal = $(html);
+    modal.modal("show");
+}
 
 /**
  * format select2 options (type state) with flags

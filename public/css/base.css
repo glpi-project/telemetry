@@ -171,12 +171,7 @@ td.sort
 
 /** Messaging */
 .notify {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin: 0 auto;
     background: white;
-    z-index: 10;
     text-align: center;
     padding: .5em 1em;
 }
