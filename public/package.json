@@ -1,9 +1,0 @@
-{
-  "name": "public",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "country-flags-sass": "^0.0.2"
-  }
-}
