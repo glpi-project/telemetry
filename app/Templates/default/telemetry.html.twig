@@ -4,7 +4,8 @@
    {{ parent() }}
    <link rel="stylesheet"
          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css" />
-   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" />
+   <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+   <link rel="stylesheet" href="libs/prism/prism.css" />
 
    <link rel="stylesheet" href="css/chart-palette.css" />
    <link rel="stylesheet" href="css/telemetry.css" />
@@ -167,13 +168,12 @@
 {% block userscripts %}
 {{ parent() }}
 
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-json.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.Spin/1.1.0/leaflet.spin.min.js"></script>
+<script src="libs/plotly/plotly.min.js"></script>
+<script src="libs/masonry.pkgd/masonry.pkgd.min.js"></script>
+<script src="libs/leaflet/leaflet.js"></script>
+<script src="libs/prism/prism.js"></script>
+<script src="libs/spin.js/spin.min.js"></script>
+<script src="libs/leaflet.spin/leaflet.spin.min.js"></script>
 
 <script src="js/references_countries.js"></script>
 <script src="js/telemetry.js"></script>
