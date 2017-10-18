@@ -32,6 +32,16 @@ class Project
             'url'       => 'htt//suggest.glpi-project.org'
         ]
     ];
+    private $dyn_references = [
+        'num_assets'    => [
+            'label'         => 'Number of assets',
+            'short_label'   => '# assets'
+        ],
+        'num_helpdesk'  => [
+            'label'         => 'Number of helpdesk',
+            'short_label'   => '# helpdesk'
+        ]
+    ];
 
     /**
      * Constructor
@@ -96,6 +106,10 @@ class Project
             $this->footer_links = $config['footer_links'];
         }
 
+        if (isset($config['dyn_references'])) {
+            $this->dyn_references = $config['dyn_references'];
+        }
+
         return $this;
     }
 
@@ -130,6 +144,12 @@ class Project
         if (isset($config['schema']['plugins'])) {
             if (false !== $config['schema']['plugins']) {
                 throw new \UnexpectedValueException('Schema plugins must be false if present!');
+            }
+        }
+
+        if (isset($config['dyn_references'])) {
+            if (!is_array($config['dyn_references']) && $config['dyn_references'] !== false) {
+                throw new \UnexpectedValueException('Dynamic references configuration must be an array or false');
             }
         }
     }
@@ -415,5 +435,15 @@ class Project
     public function getFooterLinks()
     {
         return $this->footer_links;
+    }
+
+    /**
+     * Get dynamic references
+     *
+     * @return array|false
+     */
+    public function getDynamicReferences()
+    {
+        return $this->dyn_references;
     }
 }

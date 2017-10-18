@@ -124,3 +124,26 @@ The easiest way to go is to inherit from the original default file; and only ove
 {{ parent() }}
 {% endblock %}
 ```
+
+### Dynamic references
+
+In the references pages, along with traditionnal informations (company, referent, ...); you can add your own related data; such as estimations of main object used by your application. For something like GLPI, we'll want to know the number of assets and helpdesk entries. For something like Galette, we'll be interested in number of members...
+
+In order to achieve that; you can add a `references` key in the config file:
+```php
+return $config = [
+    'project' => [
+        'name'   => 'My Project',
+        'references' => [
+            'num_whatuwant' => [
+                'label'         => 'Number of what you want',
+                'short_label'   => '#wyw'
+            ]
+        ]
+        //[...]
+    ]
+];
+```
+
+This will add a dynamic reference `num_whatuwant` (will be used in the database)  with the long label `Number of what you want` (used in fom) and the sort label `#wyw` (used in array list).
+Doing so implies a table named `{project_slug}_references` exists. See INSTALL.md to know how to configure your own migration files.
