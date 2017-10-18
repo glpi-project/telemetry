@@ -41,3 +41,11 @@ $pconfig['paths']['seeds'] = '%%PHINX_CONFIG_DIR%%/projects/db/my_seeds';
 ```
 
 This permits to use a different seed directory than the default one. Refer to the phinx documentation to know how to create seeds.
+
+You also can define your own migrations script by adding you path:
+
+```php
+<?php
+
+$pconfig['paths']['migrations'][] = '%%PHINX_CONFIG_DIR%%/projects/db/my_migrations';
+```

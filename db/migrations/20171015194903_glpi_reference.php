@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class DynamicReference extends AbstractMigration
+class GlpiReference extends AbstractMigration
 {
     /**
      * Up method
@@ -12,19 +12,19 @@ class DynamicReference extends AbstractMigration
      */
     public function up()
     {
-        $table = $this->table('dynamic_reference');
+        $table = $this->table('glpi_reference');
         $table
             ->addColumn('reference_id', integer)
             ->addForeignKey(
                 'reference_id',
                 'reference',
                 'id',
-                ['constraint' => 'telemetry_dynamic_reference_reference_id_fkey']
+                ['constraint' => 'telemetry_glpi_reference_reference_id_fkey']
             )
-            ->addColumn('name', 'string', ['length' => 50])
-            ->addColumn('value', 'string', ['length' => 50])
+            ->addColumn('num_assets', 'integer', ['null' => true])
+            ->addColumn('num_helpdesk', 'integer', ['null' => true])
             ->addTimestamps()
-            ->addIndex(['reference_id', 'name'], ['unique' => true])
+            ->addIndex(['reference_id'], ['unique' => true])
             ->create()
         ;
 
@@ -32,24 +32,15 @@ class DynamicReference extends AbstractMigration
         $rows = $this->fetchAll('SELECT id, num_assets, num_helpdesk FROM reference');
         $news = [];
         foreach ($rows as $row) {
-            if ((int)$row['num_assets'] > 0) {
-                $news[] = [
-                    'reference_id'  => $row['id'],
-                    'name'          => 'num_assets',
-                    'value'         => $row['num_assets']
-                ];
-            }
-            if ((int)$row['num_helpdesk'] > 0) {
-                $news[] = [
-                    'reference_id'  => $row['id'],
-                    'name'          => 'num_helpdesk',
-                    'value'         => $row['num_helpdesk']
-                ];
-            }
+            $news[] = [
+                'reference_id'  => $row['id'],
+                'num_assets'    => $row['num_assets'],
+                'num_helpdesk'    => $row['num_helpdesk']
+            ];
         }
 
         if (count($news)) {
-            $this->insert('dynamic_reference', $news);
+            $this->insert('glpi_reference', $news);
         }
 
         $table = $this->table('reference');
@@ -76,6 +67,6 @@ class DynamicReference extends AbstractMigration
 
         //no down for data; sorry!
 
-        $this->dropTable('dynamic_reference');
+        $this->dropTable('glpi_reference');
     }
 }

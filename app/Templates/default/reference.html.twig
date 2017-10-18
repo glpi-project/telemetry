@@ -31,14 +31,14 @@
                {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
                <a href='./reference?orderby=country'>Country</a>
             </td>
+    {% if dyn_refs|length > 0 %}
+        {% for key, labels in dyn_refs %}
             <td>
-               {% if orderby == 'num_assets' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='./reference?orderby=num_assets'># assets</a>
+               {% if orderby == key %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href='./reference?orderby={{key}}'>{{labels.short_label}}</a>
             </td>
-            <td>
-               {% if orderby == 'num_helpdesk' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='./reference?orderby=num_helpdesk'># helpdesk</a>
-            </td>
+        {% endfor %}
+    {% endif %}
             <td>
                {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
                <a href='./reference?orderby=created_at'>Registration date</a>
@@ -55,9 +55,12 @@
             <td>
                <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
             </td>
-            <td>{{reference.num_assets}}</td>
-            <td>{{reference.num_helpdesk}}</td>
-            <td>{{reference.created_at}}</td>
+    {% if dyn_refs|length > 0 %}
+        {% for key in dyn_refs|keys %}
+            <td>{{reference[key]}}</td>
+        {% endfor %}
+    {% endif %}
+            <td>{{reference.created_at|date("Y-m-d") }}</td>
             <td>
                <div class="elipsis" title="{{reference.comment}}">
                   {{reference.comment}}
@@ -135,19 +138,17 @@
                          placeholder="Referent name">
                </div>
 
+    {% if dyn_refs|length > 0 %}
+        {% for key, labels in dyn_refs %}
                <div class="form-group">
-                  <label class="sr-only" for="num_assets">Number of asset</label>
+                  <label class="sr-only" for="{{key}}">{{labels.label}}</label>
                   <input class="form-control form-control-sm" type="number"
-                         name="num_assets"
-                         placeholder="Number of asset">
+                         name="{{key}}"
+                         min="0"
+                         placeholder="{{labels.label}}">
                </div>
-
-               <div class="form-group">
-                  <label class="sr-only" for="num_helpdesk">Number of helpdesk entries</label>
-                  <input class="form-control form-control-sm" type="number"
-                         name="num_helpdesk"
-                         placeholder="Number of helpdesk entries">
-               </div>
+        {% endfor %}
+    {% endif %}
 
                <div class="form-group">
                   <label class="sr-only" for="comment">Comment</label>
