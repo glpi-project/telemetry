@@ -32,26 +32,24 @@ class Reference extends ControllerAbstract
             $_SESSION['reference']['orderby'] = $get['orderby'];
         }
 
-       // retrieve data from model
-        $references = ReferenceModel::where('is_displayed', true)
-                           ->orderBy(
-                               $_SESSION['reference']['orderby'],
-                               $_SESSION['reference']['sort']
-                           )
-                           ->paginate(15);
+        // retrieve data from model
+        $references = ReferenceModel::active()->orderBy(
+            $_SESSION['reference']['orderby'],
+            $_SESSION['reference']['sort']
+        )->paginate(15);
 
         $references->setPath($this->container->get('settings')['baseurl']."reference");
 
        // render in twig view
         $this->render($this->container->project->pathFor('reference.html.twig'), [
-         'total'      => ReferenceModel::where('is_displayed', true)->count(),
-         'class'      => 'reference',
-         'showmodal'  => isset($get['showmodal']),
-         'uuid'       => isset($get['uuid']) ? $get['uuid'] : '',
-         'references' => $references,
-         'pagination' => $references->appends($_GET)->render(),
-         'orderby'    => $_SESSION['reference']['orderby'],
-         'sort'       => $_SESSION['reference']['sort']
+            'total'         => ReferenceModel::active()->count(),
+            'class'         => 'reference',
+            'showmodal'     => isset($get['showmodal']),
+            'uuid'          => isset($get['uuid']) ? $get['uuid'] : '',
+            'references'    => $references,
+            'pagination'    => $references->appends($_GET)->render(),
+            'orderby'       => $_SESSION['reference']['orderby'],
+            'sort'          => $_SESSION['reference']['sort']
         ]);
     }
 
