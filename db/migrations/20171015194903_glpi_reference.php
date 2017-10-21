@@ -14,7 +14,7 @@ class GlpiReference extends AbstractMigration
     {
         $table = $this->table('glpi_reference');
         $table
-            ->addColumn('reference_id', integer)
+            ->addColumn('reference_id', 'integer')
             ->addForeignKey(
                 'reference_id',
                 'reference',
