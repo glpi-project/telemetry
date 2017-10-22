@@ -118,7 +118,8 @@ $(document).ready(function() {
       'top_plugins',
       plotlyData($('#top_plugins').data("id")),
       $.extend({}, plotly_bar_layout, {paper_bgcolor: '#529AA5',
-                                       plot_bgcolor: '#529AA5'}),
+                                       plot_bgcolor: '#529AA5',
+                                       showlegend: false}),
       plotly_config
    );
 
