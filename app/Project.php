@@ -398,6 +398,20 @@ class Project
     }
 
     /**
+     * Get JSON example data
+     *
+     * @return string
+     */
+    public function getExampleData()
+    {
+        $file = __DIR__ . '/../misc/json-glpi.spec';
+        if (file_exists($this->project_path . '/json-' . $this->getSlug() . '.spec')) {
+            $file = $this->project_path . '/json-' . $this->getSlug() . '.spec';
+        }
+        return file_get_contents($file);
+    }
+
+    /**
      * Is contact page active for current project
      *
      * @return boolean

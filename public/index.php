@@ -44,5 +44,12 @@ $app->get(
     }
 )->setName('logo');
 
+$app->get(
+    '/json-data-example',
+    function ($request, $response) {
+        $response->getBody()->write($this->project->getExampleData());
+        return $response;
+    }
+)->setName('jsonExemple');
 // run slim
 $app->run();
