@@ -64,6 +64,7 @@ class Reference extends ControllerAbstract
                         )
                     )
                 );
+                $model->where('is_displayed', '=', true);
                 $model->orderBy(
                     $order_table . '.' . $order_field,
                     $_SESSION['reference']['sort']
