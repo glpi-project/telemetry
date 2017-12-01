@@ -44,7 +44,7 @@ return $config = [
 ];
 ```
 
-What you can see here, is that the project name and URL have been customized. Both thos values will be used to generate the JSON schema file we validate against. You can review the generated schema file using `http://telemetry.yoursite.com/telemetry/schema.json`.
+What you can see here, is that the project name and URL have been customized. Both those values will be used to generate the JSON schema file we validate against. You can review the generated schema file using `http://telemetry.yoursite.com/telemetry/schema.json`.
 
 The `schema` key permit to make changes in the schema itself. For now, you can disable `plugins` (if your project do not have plugins) and you can disable or change `usage` (the average counts). To disable one of those two properties, just the the key to false (`'usage' => false`).
 
@@ -71,6 +71,24 @@ Parts of the configuration uses the main configuration file (`config.inc.php`); 
 If you want to display your own logo, just create it as `projects/{project_slug}/logo.png`. Even if the file extension is `PNG`, this should work with any image type.
 
 No controls are done on the logo file; the application will just read it from the filesystem if the file exists.
+
+### Dashboard
+
+It is not possible yet to customize dashboard on a per configuration basis; but you can disable some featues you do no use. In order to achive that, add a `dashboard` entry to your project's configuration array and set to false unused entries.
+
+```php
+return $config = [
+    'project' => [
+        'name'   => 'My Project',
+        'dashboard' => [
+            'install_modes' => false,
+            'references_countries' => false
+        ],
+    ],
+    //...
+```
+
+On the above example, the map with countries from referencs and the installation modes part will not be shown.
 
 ### Footer links
 

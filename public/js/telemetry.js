@@ -88,85 +88,121 @@ $(document).ready(function() {
 
 
    // # CHARTS DEFINITION #
-   var php_versions = Plotly.newPlot(
-      "php_versions",
-      plotlyData($('#php_versions').data("id")),
-      plotly_bar_layout,
-      plotly_config
-   );
-
-   data_nb_telemetry_entries = $('#nb_telemetry_entries').data("id")
-   var nb_telemetry_entries = $('#nb_telemetry_entries')
-      .html("<div class='big-number' title='"+ data_nb_telemetry_entries.raw +"'>" +
-            data_nb_telemetry_entries.nb +
-            "</div>")
-
-   data_nb_reference_entries = $('#nb_reference_entries').data("id")
-   var nb_reference_entries = $('#nb_reference_entries')
-      .html("<div class='big-number' title='"+ data_nb_reference_entries.raw +"'>" +
-            data_nb_reference_entries.nb +
-            "</div>")
-
-   var glpi_versions = Plotly.newPlot(
-      "glpi_versions",
-      plotlyData($('#glpi_versions').data("id")),
-      plotly_pie_layout,
-      plotly_config
-   );
-
-   var top_plugins = new Plotly.newPlot(
-      'top_plugins',
-      plotlyData($('#top_plugins').data("id")),
-      $.extend({}, plotly_bar_layout, {paper_bgcolor: '#529AA5',
-                                       plot_bgcolor: '#529AA5',
-                                       showlegend: false}),
-      plotly_config
-   );
-
-   var os_family = Plotly.newPlot(
-      "os_family",
-      plotlyData($('#os_family').data("id")),
-      $.extend({}, plotly_pie_layout, {paper_bgcolor: '#E9AA63'}),
-      plotly_config
-   );
-
-   var default_languages = Plotly.newPlot(
-      "default_languages",
-      plotlyData($('#default_languages').data("id")),
-      plotly_pie_layout,
-      plotly_config
-   );
-
-   var web_engines = Plotly.newPlot(
-      "web_engines",
-      plotlyData($('#web_engines').data("id")),
-      $.extend({}, plotly_pie_layout, {paper_bgcolor: '#1A5197'}),
-      plotly_config
-   );
-
-   var db_engines = Plotly.newPlot(
-      "db_engines",
-      plotlyData($('#db_engines').data("id")),
-      plotly_pie_layout,
-      plotly_config
-   );
-
-   var install_modes = Plotly.newPlot(
-      "install_modes",
-      plotlyData($('#install_modes').data("id")),
-      $.extend({}, plotly_pie_layout, {paper_bgcolor: '#1A5197'}),
-      plotly_config
-   );
 
 
-   // # MISC INTERACTIONS #
+    var php_versions = $('#php_versions');
+    if (php_versions.length > 0) {
+        Plotly.newPlot(
+            "php_versions",
+            plotlyData(php_versions.data("id")),
+            plotly_bar_layout,
+            plotly_config
+        );
+    }
 
-   // masonry on dashboard
-   $('.dashboard').masonry({
-     itemSelector: '.chart',
-     columnWidth: 350,
-     fitWidth: true
-   });
+    var nb_telemetry_entries = $('#nb_telemetry_entries');
+    if (nb_telemetry_entries.length > 0) {
+        data_nb_telemetry_entries = nb_telemetry_entries.data("id")
+        nb_telemetry_entries.html(
+            "<div class='big-number' title='"+ data_nb_telemetry_entries.raw +"'>" +
+            data_nb_telemetry_entries.nb + "</div>"
+        );
+    }
+
+    var nb_reference_entries = $('#nb_reference_entries');
+    if (nb_reference_entries.length > 0) {
+        data_nb_reference_entries = nb_reference_entries.data("id")
+        nb_reference_entries.html(
+            "<div class='big-number' title='"+ data_nb_reference_entries.raw +"'>" +
+            data_nb_reference_entries.nb + "</div>"
+        );
+    }
+
+    var glpi_versions = $('#glpi_versions');
+    if (glpi_versions.length > 0) {
+        Plotly.newPlot(
+            "glpi_versions",
+            plotlyData(glpi_versions.data("id")),
+            plotly_pie_layout,
+            plotly_config
+        );
+    }
+
+    var top_plugins = $('#top_plugins');
+    if (top_plugins.length > 0) {
+        new Plotly.newPlot(
+            'top_plugins',
+            plotlyData(top_plugins.data("id")),
+            $.extend(
+                {},
+                plotly_bar_layout, {
+                    paper_bgcolor: '#529AA5',
+                    plot_bgcolor: '#529AA5',
+                    showlegend: false
+                }
+            ),
+            plotly_config
+        );
+    }
+
+    var os_family = $('#os_family');
+    if (os_family.length > 0) {
+        Plotly.newPlot(
+            "os_family",
+            plotlyData(os_family.data("id")),
+            $.extend({}, plotly_pie_layout, {paper_bgcolor: '#E9AA63'}),
+            plotly_config
+        );
+    }
+
+    var default_languages = $('#default_languages');
+    if (default_languages.length > 0) {
+        Plotly.newPlot(
+            "default_languages",
+            plotlyData(default_languages.data("id")),
+            plotly_pie_layout,
+            plotly_config
+        );
+    }
+
+    var web_engines = $('#web_engines');
+    if (web_engines.length > 0) {
+        Plotly.newPlot(
+            "web_engines",
+            plotlyData(web_engines.data("id")),
+            $.extend({}, plotly_pie_layout, {paper_bgcolor: '#1A5197'}),
+            plotly_config
+        );
+    }
+
+    var db_engines = $('#db_engines');
+    if (db_engines.length > 0) {
+        Plotly.newPlot(
+            "db_engines",
+            plotlyData(db_engines.data("id")),
+            plotly_pie_layout,
+            plotly_config
+        );
+    }
+
+    var install_modes = $('#install_modes');
+    if (install_modes.length > 0) {
+        Plotly.newPlot(
+            "install_modes",
+            plotlyData(install_modes.data("id")),
+            $.extend({}, plotly_pie_layout, {paper_bgcolor: '#1A5197'}),
+            plotly_config
+        );
+    }
+
+    // # MISC INTERACTIONS #
+
+    // masonry on dashboard
+    $('.dashboard').masonry({
+        itemSelector: '.chart',
+        columnWidth: 350,
+        fitWidth: true
+    });
 
    // permits to expand chart cards
    $(".chart .expand").click(function() {

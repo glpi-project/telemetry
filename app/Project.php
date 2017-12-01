@@ -41,6 +41,19 @@ class Project
             'label'         => 'Number of helpdesk',
             'short_label'   => '# helpdesk'
         ]
+     ];
+    private $dashboard = [
+       'nb_telemetry_entries' => true,
+       'nb_reference_entries' => true,
+       'php_versions'         => true,
+       'glpi_versions'        => true,
+       'top_plugins'          => true,
+       'os_family'            => true,
+       'default_languages'    => true,
+       'db_engines'           => true,
+       'web_engines'          => true,
+       'install_modes'        => true,
+       'references_countries' => true
     ];
 
     /**
@@ -108,6 +121,13 @@ class Project
 
         if (isset($config['dyn_references'])) {
             $this->dyn_references = $config['dyn_references'];
+        }
+
+        if (isset($config['dashboard'])) {
+            $this->dashboard = array_merge(
+                $this->dashboard,
+                $config['dashboard']
+            );
         }
 
         return $this;
@@ -460,5 +480,18 @@ class Project
     public function getDynamicReferences()
     {
         return $this->dyn_references;
+    }
+
+    /**
+     * Get dashboard configuration
+     *
+     * @return array
+     */
+    public function getDashboardConfig()
+    {
+        if (false === $this->schema_plugins) {
+            $this->dashboard['top_plugins'] = false;
+        }
+        return $this->dashboard;
     }
 }
