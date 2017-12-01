@@ -31,9 +31,8 @@ class Telemetry extends ControllerAbstract
         ];
 
         // retrieve nb of reference entries
-        $raw_nb_ref_entries = ReferenceModel::active()
-            ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
-            ->count();
+        $raw_nb_ref_entries = ReferenceModel::where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+            ->active()->count();
         $nb_ref_entries = [
          'raw' => $raw_nb_ref_entries,
          'nb'  => (string) Number::n($raw_nb_ref_entries)->round(2)->getSuffixNotation()
@@ -89,10 +88,11 @@ class Telemetry extends ControllerAbstract
         // TODO
 
         // retrieve reference country
-        $references_countries = ReferenceModel::active()->select(
+        $references_countries = ReferenceModel::select(
             DB::raw("country as cca2, count(*) as total")
         )
          ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+         ->active()
          ->groupBy(DB::raw("country"))
          ->orderBy('total', 'desc')
          ->get()
