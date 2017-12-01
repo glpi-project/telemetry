@@ -43,6 +43,7 @@
 
    <div class="dashboard">
 
+    {% if nb_telemetry_entries %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'nb_telemetry_entries',
@@ -52,7 +53,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if nb_reference_entries %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'nb_reference_entries',
@@ -62,7 +65,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if references_countries %}
       <div class="chart chart-2 chart-2h">
       {% set vars = {'chart': {
                         'id':    'references_countries',
@@ -72,7 +77,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if php_versions %}
       <div class="chart chart-2">
       {% set vars = {'chart': {
                         'id':    'php_versions',
@@ -82,7 +89,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if glpi_versions %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'glpi_versions',
@@ -92,7 +101,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if top_plugins %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'top_plugins',
@@ -102,7 +113,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if os_family %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'os_family',
@@ -112,7 +125,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if web_engines %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'web_engines',
@@ -122,7 +137,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if db_engines %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'db_engines',
@@ -132,7 +149,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if default_languages %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'default_languages',
@@ -142,7 +161,9 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
+    {% endif %}
 
+    {% if install_modes %}
       <div class="chart">
       {% set vars = {'chart': {
                         'id':    'install_modes',
@@ -152,7 +173,7 @@
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
-
+    {% endif %}
 
    </div>
 </div>
@@ -184,7 +205,9 @@
 <script src="libs/spin.js/spin.min.js"></script>
 <script src="libs/leaflet.spin/leaflet.spin.min.js"></script>
 
+{% if references_countries %}
 <script src="js/references_countries.js"></script>
+{% endif %}
 <script src="js/telemetry.js"></script>
 
 {% endblock %}
