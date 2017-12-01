@@ -168,7 +168,6 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-
        // retrieve web engine
         $web_engines = TelemetryModel::select(
             DB::raw("web_engine, count(DISTINCT(glpi_uuid)) as total")
@@ -180,6 +179,16 @@ class Telemetry extends ControllerAbstract
          ->groupBy(DB::raw("web_engine"))
          ->get()
          ->toArray();
+
+        $install_modes = TelemetryModel::select(
+            DB::raw("install_mode, count(DISTINCT(glpi_uuid)) as total")
+        )->where([
+            ['created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'")],
+            ['install_mode', '<>', '']
+        ])
+            ->groupBy(DB::raw("install_mode"))
+            ->get()
+            ->toArray();
 
         $this->render($this->container->project->pathFor('telemetry.html.twig'), [
          'form' => [
@@ -228,6 +237,13 @@ class Telemetry extends ControllerAbstract
             'palette' => 'bluestone',
             'labels'  => array_column($web_engines, 'web_engine'),
             'values'  => array_column($web_engines, 'total')
+         ]]),
+         'install_modes' => json_encode([[
+            'type'   => 'pie',
+            'hole'   => .4,
+            'palette'=> 'nivo',
+            'labels' => array_column($install_modes, 'install_mode'),
+            'values' => array_column($install_modes, 'total')
          ]]),
          'references_countries' => json_encode($references_countries),
          'json_data_example' => $this->container['json_spec']

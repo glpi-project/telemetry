@@ -13,6 +13,10 @@
                             "id": "/properties/data/properties/glpi/properties/default_language",
                             "type": "string"
                         },
+                        "install_mode': {
+                            "id": "/properties/data/properties/glpi/properties/install_mode",
+                            "type": "string"
+                        },
                         "plugins": {
                             "id": "/properties/data/properties/glpi/properties/plugins",
                             "items": {

@@ -274,6 +274,7 @@ class Project
             'glpi_uuid' => $this->truncate($json[$slug]['uuid'], 41),
             'glpi_version' => $this->truncate($json[$slug]['version'], 25),
             'glpi_default_language' => $this->truncate($json[$slug]['default_language'], 10),
+            'install_mode' => $this->truncate($json[$slug]['install_mode'], 50),
             'db_engine' => $this->truncate($json['system']['db']['engine'], 50),
             'db_version' => $this->truncate($json['system']['db']['version'], 50),
             'db_size' => (int) $json['system']['db']['size'],

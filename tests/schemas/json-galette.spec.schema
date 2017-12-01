@@ -132,6 +132,9 @@
                         "default_language": {
                             "type": "string"
                         },
+                        "install_mode": {
+                            "type": "string"
+                        },
                         "plugins": {
                             "items": {
                                 "properties": {
