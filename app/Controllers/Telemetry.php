@@ -21,7 +21,7 @@ class Telemetry extends ControllerAbstract
             $years = $get['years'];
         }
 
-       // retrieve nb of telemtry entries
+        // retrieve nb of telemtry entries
         $raw_nb_tel_entries = TelemetryModel
          ::where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
          ->count(DB::raw('DISTINCT glpi_uuid'));
@@ -52,7 +52,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-       // start reconstruct data
+        // start reconstruct data
         $php_versions = [];
         $php_versions_legend = [];
         $php_versions_labels = [];
@@ -64,7 +64,7 @@ class Telemetry extends ControllerAbstract
                       [$data['month_year']]
                         = $data['total'];
         }
-       // prepare final data
+        // prepare final data
         $php_versions_legend = array_unique($php_versions_legend);
         $php_versions_labels = array_unique($php_versions_labels);
         foreach ($php_versions as $version_name => $version) {
@@ -85,10 +85,10 @@ class Telemetry extends ControllerAbstract
             ];
         }
 
-       // retrieve avg usage
-       // TODO
+        // retrieve avg usage
+        // TODO
 
-       // retrieve reference country
+        // retrieve reference country
         $references_countries = ReferenceModel::active()->select(
             DB::raw("country as cca2, count(*) as total")
         )
@@ -107,7 +107,7 @@ class Telemetry extends ControllerAbstract
             unset($ctry['cca2']);
         }
 
-       // retrieve glpi versions
+        // retrieve glpi versions
         $glpi_versions = TelemetryModel::select(
             DB::raw("TRIM(trailing '-dev' FROM glpi_version) as version,
                      count(DISTINCT(glpi_uuid)) as total")
@@ -117,7 +117,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-       // retrieve top 5 plugins
+        // retrieve top 5 plugins
         $top_plugins = GlpiPluginModel::join(
             'telemetry_glpi_plugin',
             'glpi_plugin.id',
@@ -136,7 +136,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-       // retrieve os
+        // retrieve os
         $os_family = TelemetryModel::select(
             DB::raw("os_family, count(DISTINCT(glpi_uuid)) as total")
         )
@@ -145,7 +145,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-       // retrieve languages
+        // retrieve languages
         $languages = TelemetryModel::select(
             DB::raw("glpi_default_language, count(DISTINCT(glpi_uuid)) as total")
         )
@@ -154,7 +154,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-       // retrieve db engine
+        // retrieve db engine
         $db_engines = TelemetryModel::select(
             DB::raw("CASE
                         WHEN UPPER(db_engine) LIKE 'MARIA%' THEN 'MariaDB'
@@ -168,7 +168,7 @@ class Telemetry extends ControllerAbstract
          ->get()
          ->toArray();
 
-       // retrieve web engine
+        // retrieve web engine
         $web_engines = TelemetryModel::select(
             DB::raw("web_engine, count(DISTINCT(glpi_uuid)) as total")
         )
@@ -260,21 +260,21 @@ class Telemetry extends ControllerAbstract
         $data = $project->mapModel($json);
         $telemetry_m = TelemetryModel::create($data);
 
-       // manage plugins
+        // manage plugins
         foreach ($json[$project->getSlug()]['plugins'] as $plugin) {
             $plugin_m = GlpiPluginModel::firstOrCreate(['pkey' => $plugin['key']]);
 
             TelemetryGlpiPlugin::create([
-            'telemetry_entry_id' => $telemetry_m->id,
-            'glpi_plugin_id'     => $plugin_m->id,
-            'version'            => $plugin['version']
+                'telemetry_entry_id' => $telemetry_m->id,
+                'glpi_plugin_id'     => $plugin_m->id,
+                'version'            => $plugin['version']
             ]);
         }
 
         return $response
-         ->withJson([
-            'message' => 'OK'
-         ]);
+            ->withJson([
+                'message' => 'OK'
+            ]);
     }
 
     public function geojson(Request $request, Response $response)
