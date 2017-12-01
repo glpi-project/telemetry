@@ -1,10 +1,16 @@
+{% set expandable = true %}
+{% if chart.expandable is defined and chart.expandable == false %}
+    {% set expandable = false %}
+{% endif %}
 <div class="card" id="chart-{{chart.id}}">
    <div class="card-header">
       <h3>
          {{chart.title}}
+    {% if expandable %}
          <button type="button" class="close expand hidden-sm-down" data-dismiss="modal" aria-label="Expand">
             <i class="fa fa-expand"></i>
          </button>
+    {% endif %}
       </h3>
    <div class="card-block description">
       <p class="card-text">{{chart.text | raw}}</p>
