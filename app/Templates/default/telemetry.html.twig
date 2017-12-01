@@ -49,7 +49,8 @@
                         'id':    'nb_telemetry_entries',
                         'title': '# Telemetry: data sent',
                         'text':  '',
-                        'data':  nb_telemetry_entries
+                        'data':  nb_telemetry_entries,
+                        'expandable': false
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
@@ -61,7 +62,8 @@
                         'id':    'nb_reference_entries',
                         'title': '# References added',
                         'text':  '',
-                        'data':  nb_reference_entries
+                        'data':  nb_reference_entries,
+                        'expandable': false
                      }} %}
       {% include 'partials/chart.html.twig' with vars %}
       </div>
