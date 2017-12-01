@@ -151,6 +151,14 @@ $(document).ready(function() {
       plotly_config
    );
 
+   var install_modes = Plotly.newPlot(
+      "install_modes",
+      plotlyData($('#install_modes').data("id")),
+      $.extend({}, plotly_pie_layout, {paper_bgcolor: '#1A5197'}),
+      plotly_config
+   );
+
+
    // # MISC INTERACTIONS #
 
    // masonry on dashboard

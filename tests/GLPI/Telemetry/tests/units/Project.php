@@ -20,7 +20,7 @@ class Project extends atoum
             ['GLPI', [], 'glpi', null, ['glpi_avg_computers']],
             ['Any Project', ['url' => 'http://perdu.com'], 'any-project', 'http://perdu.com', ['glpi_avg_computers']],
             ['é_è', [], 'e-e', null, ['glpi_avg_computers']],
-            ['TEST', ['schema' => ['usage' => false]], 'test', null, [], 21],
+            ['TEST', ['schema' => ['usage' => false]], 'test', null, [], 22],
             [
                 'Schema usage',
                 [
@@ -30,7 +30,7 @@ class Project extends atoum
                 'schema-usage',
                 null,
                 ['glpi_avg_entities'],
-                22
+                23
             ]
         ];
     }
@@ -49,13 +49,14 @@ class Project extends atoum
      *
      * @return void
      */
-    public function testGetInfos($name, $config, $slug, $url, $map, $mapcount = 32)
+    public function testGetInfos($name, $config, $slug, $url, $map, $mapcount = 33)
     {
         $json = [
             $slug       => [
                 'uuid'              => '',
                 'version'           => '',
-                'default_language'  => ''
+                'default_language'  => '',
+                'install_mode'      => ''
             ],
             'system'    => [
                 'db'            => [

@@ -18,6 +18,7 @@
             }
          ],
          "default_language": "fr_FR",
+         "install_mode": "TARBALL",
          "usage": {
             "avg_entities": "0-500",
             "avg_computers": "1000-2500",

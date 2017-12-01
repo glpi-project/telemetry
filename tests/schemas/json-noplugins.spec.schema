@@ -10,6 +10,9 @@
                         "default_language": {
                             "type": "string"
                         },
+                        "install_mode": {
+                            "type": "string"
+                        },
                         "usage": {
                             "properties": {
                                 "avg_changes": {

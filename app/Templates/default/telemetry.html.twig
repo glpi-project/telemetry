@@ -143,6 +143,17 @@
       {% include 'partials/chart.html.twig' with vars %}
       </div>
 
+      <div class="chart">
+      {% set vars = {'chart': {
+                        'id':    'install_modes',
+                        'title': 'Installation modes',
+                        'text':  '',
+                        'data':  install_modes
+                     }} %}
+      {% include 'partials/chart.html.twig' with vars %}
+      </div>
+
+
    </div>
 </div>
 
