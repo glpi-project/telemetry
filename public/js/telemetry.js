@@ -1,95 +1,128 @@
-$(document).ready(function() {
-   // # OPTIONS FOR CHARTS #
-   var palettes = {
-      'belize11': [
-         "#5cbae6","#b6d957","#fac364","#8cd3ff","#d998cb","#f2d249",
-         "#93b9c6","#ccc5a8","#52bacc","#dbdb46","#98aafb"
-      ],
-      'test6': [
-         "#063951", "#0d95bc", "#a2b969", "#ebcb38", "#f36f13", "#c13018"
-      ],
-      'fall6': [
-         "#7C5B37", "#B37A3B", "#E29138", "#DBA365",
-      ],
-      'bluestone': [
-         "#29384B", "#2B486D", "#2E5D98", "#276ABE", "#277EEB"
-      ],
-      'combo': [
-         "#006495", "#004C70", "#0093D1", "#F2635F", "#F4D00C", "#E0A025"
-      ],
-      'icecream': [
-         "#FFEC94", "#FFAEAE", "#FFF0AA", "#B0E57C", "#B4D8E7", "#56BAEC"
-      ],
-      'nivo': [
-         "#E8C1A0", "#F47560", "#F1E15B", "#E8A838", "#61CDBB", "#97E3D5"
-      ]
-   };
+// # OPTIONS FOR CHARTS #
+var palettes = {
+    'belize11': [
+        "#5cbae6","#b6d957","#fac364","#8cd3ff","#d998cb","#f2d249",
+        "#93b9c6","#ccc5a8","#52bacc","#dbdb46","#98aafb"
+    ],
+    'test6': [
+        "#063951", "#0d95bc", "#a2b969", "#ebcb38", "#f36f13", "#c13018"
+    ],
+    'fall6': [
+        "#7C5B37", "#B37A3B", "#E29138", "#DBA365",
+    ],
+    'bluestone': [
+        "#29384B", "#2B486D", "#2E5D98", "#276ABE", "#277EEB"
+    ],
+    'combo': [
+        "#006495", "#004C70", "#0093D1", "#F2635F", "#F4D00C", "#E0A025"
+    ],
+    'icecream': [
+        "#FFEC94", "#FFAEAE", "#FFF0AA", "#B0E57C", "#B4D8E7", "#56BAEC"
+    ],
+    'nivo': [
+        "#E8C1A0", "#F47560", "#F1E15B", "#E8A838", "#61CDBB", "#97E3D5"
+    ]
+};
 
-   var plotly_pie_layout = {
-      showlegend: false,
-      margin: {
-         l: 0,
-         r: 0,
-         b: 10,
-         t: 10,
-         pad: 0
-      }
-   };
+var plotly_pie_layout = {
+    showlegend: false,
+    margin: {
+        l: 0,
+        r: 0,
+        b: 10,
+        t: 10,
+        pad: 0
+    }
+};
 
-   var plotly_bar_layout = {
-      showlegend: true,
-      margin: {
-         l: 40,
-         r: 10,
-         b: 85,
-         t: 10,
-         pad: 0
-      },
-      xaxis: {
-         tickangle: 35
-      },
-   };
+var plotly_bar_layout = {
+    showlegend: true,
+    margin: {
+        l: 40,
+        r: 10,
+        b: 85,
+        t: 10,
+        pad: 0
+    },
+    xaxis: {
+        tickangle: 35
+    },
+};
 
-   var plotly_config = {
-      displayModeBar: false,
-   };
+var plotly_config = {
+    displayModeBar: false,
+};
 
-   var plotlyData = function(raw_data) {
-      $.each(raw_data, function(index, current) {
-         current.textinfo  = 'label';
-         current.hoverinfo = 'label+value';
-         current.insidetextfont = {
-            color: "#FEFEFE"
-         };
-         if (typeof current.marker == "undefined") {
-            current.marker    = {};
-         }
+var plotlyData = function(raw_data) {
+    $.each(raw_data, function(index, current) {
+        current.textinfo  = 'label';
+        current.hoverinfo = 'label+value';
+        current.insidetextfont = {
+        color: "#FEFEFE"
+        };
+        if (typeof current.marker == "undefined") {
+        current.marker    = {};
+        }
 
-         if (typeof current.palette != 'undefined') {
-            current.marker = {
-               colors: palettes[current.palette],
-            };
-         }
+        if (typeof current.palette != 'undefined') {
+        current.marker = {
+            colors: palettes[current.palette],
+        };
+        }
 
-         if (current.type == 'pie') {
+        if (current.type == 'pie') {
             if (typeof current.hole == "undefined" ) {
-               current.pull = .05;
+                current.pull = .05;
             }
+        }
+    });
 
-            /*current.marker.line = {
-               width: 3,
-               color: 'rgba(255, 255, 255, .1)'
-            };*/
-         }
-      });
-
-      return raw_data;
-   }
+    return raw_data;
+}
 
 
-   // # CHARTS DEFINITION #
 
+var _plugins_contents;
+var _plugins_title;
 
+var pluginsExpanded = function(chart_id, chart) {
+    var _chart = $('#' + chart_id);
+    var _title = chart.find('.card-text');
+
+    if (typeof _plugins_contents == 'undefined') {
+        _plugins_contents = _chart.html();
+        _plugins_title = _title.text();
+    }
+
+    if (chart.hasClass('chart-max')) {
+        $.ajax(
+            _allPluginsURL, {
+                success: function(data) {
+                    _title.text(_plugins_title.replace(/5/, data[0]['x'].length));
+                    new Plotly.newPlot(
+                        'top_plugins',
+                        plotlyData(data),
+                        $.extend(
+                            {},
+                            plotly_bar_layout, {
+                                paper_bgcolor: '#529AA5',
+                                plot_bgcolor: '#529AA5',
+                                showlegend: false
+                            }
+                        ),
+                        plotly_config
+                    );
+                }
+            }
+        );
+    } else {
+        _chart.html(_plugins_contents);
+        _title.html(_plugins_title);
+    }
+};
+
+$(document).ready(function() {
+    // # CHARTS DEFINITION #
     var php_versions = $('#php_versions');
     if (php_versions.length > 0) {
         Plotly.newPlot(
@@ -207,7 +240,8 @@ $(document).ready(function() {
    // permits to expand chart cards
    $(".chart .expand").click(function() {
       var e_button = $(this);
-      var chart_id = e_button.parents(".card").find(".ct-chart").attr('id');
+      var card = e_button.parents('.card');
+      var chart_id = card.find(".ct-chart").attr('id');
       var chart    = e_button.parents(".chart");
       var plotly = chart.find(".plotly");
 
@@ -227,6 +261,12 @@ $(document).ready(function() {
             .height("")
             .find(".card-block:not(.description)")
                .height("");
+      }
+
+      //execute callback if defined
+      var callback = chart.data('expand-callback');
+      if (typeof callback != 'undefined') {
+        window[callback](chart_id, chart);
       }
 
       // redraw chart

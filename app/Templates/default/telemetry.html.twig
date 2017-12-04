@@ -106,7 +106,10 @@
     {% endif %}
 
     {% if top_plugins %}
-      <div class="chart">
+        <script type="text/javascript">
+            var _allPluginsURL = '{{ path_for('allPlugins') }}';
+        </script>
+      <div class="chart" data-expand-callback="pluginsExpanded">
       {% set vars = {'chart': {
                         'id':    'top_plugins',
                         'title': 'Top plugins',
