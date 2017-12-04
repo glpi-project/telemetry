@@ -51,5 +51,11 @@ $app->get(
         return $response;
     }
 )->setName('jsonExemple');
+
+$app->get(
+    '/telemetry/plugins/all',
+    'GLPI\Telemetry\Controllers\Telemetry:allPlugins'
+)->setName('allPlugins');
+
 // run slim
 $app->run();

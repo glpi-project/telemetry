@@ -341,4 +341,38 @@ class Telemetry extends ControllerAbstract
          ->withHeader('Content-Type', 'application/json')
          ->write($schema);
     }
+
+    public function allPlugins(Request $request, Response $response)
+    {
+        $years = 99;
+        if (isset($get['years']) && $get['years'] != -1) {
+            $years = $get['years'];
+        }
+
+        $top_plugins = GlpiPluginModel::join(
+            'telemetry_glpi_plugin',
+            'glpi_plugin.id',
+            '=',
+            'telemetry_glpi_plugin.glpi_plugin_id'
+        )
+            ->select(DB::raw("glpi_plugin.pkey, count(telemetry_glpi_plugin.*) as total"))
+            ->where(
+                'telemetry_glpi_plugin.created_at',
+                '>=',
+                DB::raw("NOW() - INTERVAL '$years YEAR'")
+            )
+            ->orderBy('total', 'desc')
+            ->groupBy(DB::raw("glpi_plugin.pkey"))
+            ->limit(30)
+            ->get()
+            ->toArray();
+
+        return $response
+            ->withJson([[
+                'type'   => 'bar',
+                'marker' => ['color' => "#22727B"],
+                'x'      => array_column($top_plugins, 'pkey'),
+                'y'      => array_column($top_plugins, 'total')
+            ]]);
+    }
 }
