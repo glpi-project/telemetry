@@ -51,7 +51,13 @@
       <tbody>
          {% for reference in references %}
          <tr>
-            <td>{{reference.name}}</td>
+             <td>
+                 {% if reference.url %}
+                     <a href="{{reference.url}}" target="_blank">{{reference.name}}</a>
+                 {% else %}
+                     {{reference.name}}
+                 {% endif %}
+            </td>
             <td>
                <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
             </td>
