@@ -1,17 +1,9 @@
 var references_map;
 
 $(document).ready(function() {
-
    // leaflet map for references countries
    references_map = L.map('references_countries').setView([0.0, 0.0], 2);
-
-   // get tile
-   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      id: 'mapbox.light',
-      accessToken: 'pk.eyJ1Ijoib3J0aGFnaCIsImEiOiJjajRoNjMybXkwMDFxMzJtN3AwNzJtMWh3In0.3rhNEAzgXke91gHLvlW3Vg'
-   })
-   .addTo(references_map);
-
+   L.tileLayer.provider(map_provider, map_provider_conf).addTo(references_map);
    _loadMapRefs(references_map);
 });
 

@@ -3,7 +3,12 @@
 return $config = [
    'project' => [
        'name'   => 'GLPI',
-       'url'    => 'http://glpi-project.org'
+       'url'    => 'http://glpi-project.org',
+       'dashboard' => [
+          'leaflet' => [
+             'provider'  => 'OpenStreetMap.BlackAndWhite'
+          ]
+       ]
     ],
    'baseurl' => 'http://glpi-project.org/telemetry/',
    'db' => [

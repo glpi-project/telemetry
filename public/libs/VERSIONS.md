@@ -8,7 +8,9 @@
 | [Leaflet](http://leafletjs.com/) | 1.2.0 |
 | [Spin.js](http://spin.js.org/) | 2.3.2 |
 | [Leaflet.spin](https://github.com/makinacorpus/Leaflet.Spin) | 1.1.0 |
+| [leaflet-providers](https://github.com/leaflet-extras/leaflet-providers) | git@de17d84772580c6aa72020a8703d57800544f7bc |
 | [country-flags-sass](https://github.com/yhnavein/country-flags-sass) | no release |
 | [prismjs](http://prismjs.com/) | not specified :/ |
 | [tether](http://tether.io/) | 1.4.0 |
 | [Bootstrap](http://getbootstrap.com/) | 4.0.0-alpha.6 |
+

@@ -124,6 +124,14 @@ class Telemetry extends ControllerAbstract
                 unset($ctry['cca2']);
             }
             $dashboard['references_countries'] = json_encode($references_countries);
+            $dashboard['leafletprovider'] = [
+                'name'  => $dashboard['leaflet']['provider']
+            ];
+            $mapconf = [];
+            if (isset($dashboard['leaflet']['config'])) {
+                $mapconf = $dashboard['leaflet']['config'];
+            }
+            $dashboard['leafletprovider']['config'] = json_encode($mapconf);
         }
 
         if ($dashboard['glpi_versions']) {
