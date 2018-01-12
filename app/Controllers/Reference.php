@@ -48,7 +48,8 @@ class Reference extends ControllerAbstract
                 $order_field = $_SESSION['reference']['orderby'];
                 $order_table = (in_array($order_field, $dyn_refs) ? $join_table : 'reference');
                 // retrieve data from model
-                $model = ReferenceModel::newInstance();
+                $ref = new ReferenceModel();
+                $model = $ref->newInstance();
                 $model = call_user_func_array(
                     [
                         $model,
@@ -140,7 +141,8 @@ class Reference extends ControllerAbstract
         }
 
         if (false !== $dyn_ref) {
-            $dynamics = DynamicReference::newInstance();
+            $dref = new DynamicReference();
+            $dynamics = $dref->newInstance();
             $dynamics->setTable($this->container->project->getSlug() . '_reference');
 
             $exists = $dynamics->where('reference_id', $reference['id'])->get();
