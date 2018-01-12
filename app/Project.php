@@ -29,7 +29,7 @@ class Project
         ],
         'Suggest'       => [
             'faclass'   => 'fa fa-lightbulb-o',
-            'url'       => 'htt//suggest.glpi-project.org'
+            'url'       => 'http://suggest.glpi-project.org'
         ]
     ];
     private $dyn_references = [
