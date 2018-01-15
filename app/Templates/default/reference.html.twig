@@ -2,8 +2,8 @@
 {% block title %}References{% endblock %}
 {% block head %}
     {{ parent() }}
-    <link rel="stylesheet" href="libs/country-flags-sass/flags.css" />
-    <link rel="stylesheet" href="libs/select2/css/select2.min.css"
+    <link rel="stylesheet" href="{{base_url()}}/libs/country-flags-sass/flags.css" />
+    <link rel="stylesheet" href="{{base_url()}}/libs/select2/css/select2.min.css" />
 {% endblock %}
 
 {% block header %}
@@ -182,7 +182,7 @@
 {{ parent() }}
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<script src="libs/select2/js/select2.min.js"></script>
+<script src="{{base_url()}}/libs/select2/js/select2.min.js"></script>
 
 <script type="text/javascript">
 

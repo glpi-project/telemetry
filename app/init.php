@@ -27,6 +27,7 @@ require __DIR__ . '/../vendor/autoload.php';
 // init slim
 $app       = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
+$app->add(new RKA\Middleware\SchemeAndHost());
 
 $container['project'] = function ($c) use ($config) {
     $project = new \GLPI\Telemetry\Project($config['project']['name'], $c->logger);
@@ -80,9 +81,8 @@ $container['view'] = function ($c) {
       'debug' => $c['settings']['debug']
     ]);
 
-   // Instantiate and add Slim specific extension
-    $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
-    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $basePath));
+    // Instantiate and add Slim specific extension
+    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $c['request']->getUri()));
     $view->addExtension(new Knlv\Slim\Views\TwigMessages(
         new Slim\Flash\Messages()
     ));

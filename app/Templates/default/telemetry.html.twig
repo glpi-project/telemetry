@@ -2,11 +2,11 @@
 {% block title %}Telemetry{% endblock %}
 {% block head %}
    {{ parent() }}
-   <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
-   <link rel="stylesheet" href="libs/prism/prism.css" />
+   <link rel="stylesheet" href="{{base_url()}}/libs/leaflet/leaflet.css" />
+   <link rel="stylesheet" href="{{base_url()}}/libs/prism/prism.css" />
 
-   <link rel="stylesheet" href="css/chart-palette.css" />
-   <link rel="stylesheet" href="css/telemetry.css" />
+   <link rel="stylesheet" href="{{base_url()}}/css/chart-palette.css" />
+   <link rel="stylesheet" href="{{base_url()}}/css/telemetry.css" />
 
 {% endblock %}
 
@@ -203,16 +203,16 @@
 {% block userscripts %}
 {{ parent() }}
 
-<script src="libs/plotly/plotly.min.js"></script>
-<script src="libs/masonry.pkgd/masonry.pkgd.min.js"></script>
-<script src="libs/leaflet/leaflet.js"></script>
-<script src="libs/prism/prism.js"></script>
-<script src="libs/spin.js/spin.min.js"></script>
-<script src="libs/leaflet.spin/leaflet.spin.min.js"></script>
+<script src="{{base_url()}}/libs/plotly/plotly.min.js"></script>
+<script src="{{base_url()}}/libs/masonry.pkgd/masonry.pkgd.min.js"></script>
+<script src="{{base_url()}}/libs/leaflet/leaflet.js"></script>
+<script src="{{base_url()}}/libs/prism/prism.js"></script>
+<script src="{{base_url()}}/libs/spin.js/spin.min.js"></script>
+<script src="{{base_url()}}/libs/leaflet.spin/leaflet.spin.min.js"></script>
 
 {% if references_countries %}
-<script src="js/references_countries.js"></script>
+<script src="{{base_url()}}/js/references_countries.js"></script>
 {% endif %}
-<script src="js/telemetry.js"></script>
+<script src="{{base_url()}}/js/telemetry.js"></script>
 
 {% endblock %}
