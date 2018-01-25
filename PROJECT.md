@@ -3,6 +3,15 @@ Set up a project
 
 By default, the Telemetry app is designed to work along with [GLPI](http://glpi-project.org); but it is possible to tune it a bit in order to fit other projects.
 
+
+* [JSON schema](#json-schema)
+* [User Interface](#user-interface)
+  * [Logo](#logo)
+  * [Dashboard](#dashboard)
+  * [Footer links](#footer-links)
+  * [Templates contents](#templates-contents)
+  * [Dynamic references](#dynamic-references)
+
 JSON schema
 -----------
 
