@@ -128,19 +128,19 @@ Each of those files can be overrided per project. Just create you own file under
 The easiest way to go is to inherit from the original default file; and only override parts you want. An example `projects/[project_slug}/Templates/{project_slug}/telemetry.html.twig` file should looks like:
 
 ```twig
-{% extends "default/telemetry.html.twig" %}
+{{ '{% extends "default/telemetry.html.twig" '}}%}
 
-{% block header %}
-{% set header_text = 'Since PROJECT x.y, we collect anonymous
-             <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.'
-%}
-{{ parent() }}
-{% endblock %}
+{{ '{% block header '}}%}
+{{ "{% set header_text = 'Since PROJECT x.y, we collect anonymous
+             <a id='register' href='#' data-toggle='modal' data-target='#json_data_example'>data</a> from instance of voluntary users.'
+"}}%}
+{{ '{{ parent() ' }}}}
+{{ '{% endblock '}}%}
 
-{% block content %}
-{% set versionchart_text = '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to x.y' %}
-{{ parent() }}
-{% endblock %}
+{{ '{% block content '}}%}
+{{ "{% set versionchart_text = '<i class='fa fa-exclamation-circle'></i> we don&apos;t have any data for versions prior to x.y' "}}%}
+{{ '{{ parent() ' }}}}
+{{ '{% endblock '}}%}
 ```
 
 ### Dynamic references
