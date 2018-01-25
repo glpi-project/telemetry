@@ -46,7 +46,7 @@ class Reference extends ControllerAbstract
             try {
                 $join_table = $this->container->project->getSlug() . '_reference';
                 $order_field = $_SESSION['reference']['orderby'];
-                $order_table = (in_array($order_field, $dyn_refs) ? $join_table : 'reference');
+                $order_table = (isset($dyn_refs[$order_field]) ? $join_table : 'reference');
                 // retrieve data from model
                 $ref = new ReferenceModel();
                 $model = $ref->newInstance();
