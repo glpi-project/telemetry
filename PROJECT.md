@@ -127,41 +127,38 @@ Each of those files can be overrided per project. Just create you own file under
 
 The easiest way to go is to inherit from the original default file; and only override parts you want. An example `projects/[project_slug}/Templates/{project_slug}/telemetry.html.twig` file should looks like:
 
-```twig
-{% extends "default/telemetry.html.twig" %}
+    {% extends "default/telemetry.html.twig" %}
 
-{% block header %}
-{% set header_text = 'Since PROJECT x.y, we collect anonymous
-             <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.'
-%}
-{{ parent() }}
-{% endblock %}
+    {% block header %}
+    {% set header_text = 'Since PROJECT x.y, we collect anonymous
+                <a id="register" href="#" data-toggle="modal" data-target="#json_data_example">data</a> from instance of voluntary users.'
+    %}
+    {{ parent() }}
+    {% endblock %}
 
-{% block content %}
-{% set versionchart_text = '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to x.y' %}
-{{ parent() }}
-{% endblock %}
-```
+    {% block content %}
+    {% set versionchart_text = '<i class="fa fa-exclamation-circle"></i> we don&apos;t have any data for versions prior to x.y' %}
+    {{ parent() }}
+    {% endblock %}
 
 ### Dynamic references
 
 In the references pages, along with traditionnal informations (company, referent, ...); you can add your own related data; such as estimations of main object used by your application. For something like GLPI, we'll want to know the number of assets and helpdesk entries. For something like Galette, we'll be interested in number of members...
 
 In order to achieve that; you can add a `references` key in the config file:
-```php
-return $config = [
-    'project' => [
-        'name'   => 'My Project',
-        'references' => [
-            'num_whatuwant' => [
-                'label'         => 'Number of what you want',
-                'short_label'   => '#wyw'
+
+    return $config = [
+        'project' => [
+            'name'   => 'My Project',
+            'references' => [
+                'num_whatuwant' => [
+                    'label'         => 'Number of what you want',
+                    'short_label'   => '#wyw'
+                ]
             ]
+            //[...]
         ]
-        //[...]
-    ]
-];
-```
+    ];
 
 This will add a dynamic reference `num_whatuwant` (will be used in the database)  with the long label `Number of what you want` (used in fom) and the sort label `#wyw` (used in array list).
 Doing so implies a table named `{project_slug}_references` exists. See INSTALL.md to know how to configure your own migration files.
