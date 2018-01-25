@@ -141,13 +141,20 @@ The easiest way to go is to inherit from the original default file; and only ove
 
 {{ '{% block header '}}%}
 {{ "{% set header_text = 'Since PROJECT x.y, we collect anonymous
-             <a id='register' href='#' data-toggle='modal' data-target='#json_data_example'>data</a> from instance of voluntary users.'
+             <a
+                id='register'
+                href='#'
+                data-toggle='modal'
+                data-target='#json_data_example'>
+                    data
+            </a> from instance of voluntary users.'
 "}}%}
 {{ '{{ parent() ' }}}}
 {{ '{% endblock '}}%}
 
 {{ '{% block content '}}%}
-{{ "{% set versionchart_text = '<i class='fa fa-exclamation-circle'></i> we don&apos;t have any data for versions prior to x.y' "}}%}
+{{ "{% set versionchart_text = '<i class='fa fa-exclamation-circle'></i>
+                    we don&apos;t have any data for versions prior to x.y' "}}%}
 {{ '{{ parent() ' }}}}
 {{ '{% endblock '}}%}
 ```
