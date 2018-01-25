@@ -2,3 +2,5 @@ theme: jekyll-theme-architect
 title: Telemetry PHP application
 description: Telemetry & references for your projects
 show_downloads: true
+plugins:
+  - jekyll-sitemap
