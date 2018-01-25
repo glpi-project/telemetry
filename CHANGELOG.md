@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.0.2] - 2018-01-25
 
+Fix CSS and JS URLs
 Fix sort issue on reference fields
+Changes to get path fixed for glpi-project
 
 ## [1.0.1] - 2018-01-11
 
