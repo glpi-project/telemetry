@@ -1,3 +1,4 @@
 theme: jekyll-theme-architect
 title: Telemetry PHP application
 description: Store Telemetry informations form your project and references
+show_downloads: true
