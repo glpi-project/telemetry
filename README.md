@@ -3,9 +3,9 @@
 PHP application that stores some Telemetry informations sent from your project and display charts based on it.
 It is also able to store references :)
 
-Telemetry has been developped for the [GLPI Project](http://glpi-project.org/) needs; but you can also [configure Telemetry application to suits your project's needs](PROJECT.md).
+Telemetry has been developped for the [GLPI Project](http://glpi-project.org/) needs; but you can also [configure Telemetry application to suits your project's needs](project.md).
 
-Check [installation instructions](INSTALL.md) to know how to run it.
+Check [installation instructions](install.md) to know how to run it.
 
 ## Running instances
 

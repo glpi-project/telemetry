@@ -173,4 +173,4 @@ return $config = [
 ```
 
 This will add a dynamic reference `num_whatuwant` (will be used in the database)  with the long label `Number of what you want` (used in fom) and the sort label `#wyw` (used in array list).
-Doing so implies a table named `{project_slug}_references` exists. See INSTALL.md to know how to configure your own migration files.
+Doing so implies a table named `{project_slug}_references` exists. See [installation instructions](install.md) to know how to configure your own migration files.
