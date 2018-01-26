@@ -11,6 +11,7 @@ By default, the Telemetry app is designed to work along with [GLPI](http://glpi-
   * [Footer links](#footer-links)
   * [Templates contents](#templates-contents)
   * [Dynamic references](#dynamic-references)
+* [Database adaptation](#database-adaptation)
 
 JSON schema
 -----------
@@ -55,7 +56,11 @@ return $config = [
 
 What you can see here, is that the project name and URL have been customized. Both those values will be used to generate the JSON schema file we validate against. You can review the generated schema file using `http://telemetry.yoursite.com/telemetry/schema.json`.
 
-The `schema` key permit to make changes in the schema itself. For now, you can disable `plugins` (if your project do not have plugins) and you can disable or change `usage` (the average counts). To disable one of those two properties, just the the key to false (`'usage' => false`).
+The `schema` key permit to make changes in the schema itself. For now, you can:
+* disable `plugins` (if your project do not have plugins),
+* disable or change `usage` (the average counts).
+
+To disable one of those two properties, just set the key to false (`'usage' => false`).
 
 If you provide an array into the `usage` key; its keys will become the properties names in the schema; and you can define their types and if they're mandatory or not. Refer to the [JSON Schema](http://json-schema.org/) specification if you want to know more.
 
@@ -181,3 +186,12 @@ return $config = [
 
 This will add a dynamic reference `num_whatuwant` (will be used in the database)  with the long label `Number of what you want` (used in fom) and the sort label `#wyw` (used in array list).
 Doing so implies a table named `{project_slug}_references` exists. See [installation instructions](install.md) to know how to configure your own migration files.
+
+Database adaptation
+-------------------
+
+Telemetry informations themselves are mapped from your configuration; there is no need to customize the database, but for references, you may want some adaptations.
+
+First of all, you have to create a `phinx_local.php` file; and set the path to your migration files (see [installation instructions](install.md#setup); and then refer to [phinx documantation about migrations](http://docs.phinx.org/en/latest/migrations.html).
+
+Keep in mind your project's migrations will be played along with main ones.
