@@ -8,3 +8,8 @@
 /phinx_local.php
 /tests/code-coverage/
 /projects/
+_site/
+.sass-cache/
+.buildpath
+.project
+.settings/

@@ -1,18 +1,11 @@
 # Telemetry
 
-PHP application that stores some Telemetry informations sent from your project and display charts based on it.
+PHP application that aims to store some [Telemetry informations](https://glpi-project.github.io/telemetry) sent from your project and display charts based on it.
 It is also able to store references :)
 
-Telemetry has been developped for the [GLPI Project](http://glpi-project.org/) needs; but you can also [configure Telemetry application to suits your project's needs](PROJECT.md).
+Telemetry has been developped for the [GLPI Project](http://glpi-project.org/) needs; but you can also [configure Telemetry application to suits your project's needs](https://glpi-project.github.io/telemetry/project.html).
 
-Check [installation instructions](INSTALL.md) to know how to run it.
-
-## Running instances
-
-Known running instances (feel free to open a pull request to add your own):
-
-* [GLPI Telemetry website](http://glpi-project.org/telemetry),
-* [Galette Telemetry website](https://telemetry.galette.eu)
+Check [installation instructions](https://glpi-project.github.io/telemetry/install.html) to know how to run it.
 
 ## Under the hood
 
