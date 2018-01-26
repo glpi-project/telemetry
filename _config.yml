@@ -1,6 +1,6 @@
 theme: jekyll-theme-architect
 title: Telemetry
 description: Telemetry & references for your projects
-show_downloads: true
+show_downloads: false
 plugins:
   - jekyll-sitemap
