@@ -2,7 +2,7 @@ theme: jekyll-theme-architect
 title: Telemetry
 description: Telemetry & references for your projects
 show_downloads: true
-zip_url: https://github.com/glpi-project/telemetry/zipball/master
-tar_url: https://github.com/glpi-project/telemetry/tarball/master
+source:
+    branch: master
 plugins:
   - jekyll-sitemap
