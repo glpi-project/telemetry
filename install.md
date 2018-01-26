@@ -16,6 +16,9 @@ $ createuser -P username
 $ createdb -O username databasename
 ```
 
+Setup
+-----
+
 Copy the `config.inc.php.dist` to `config.inc.php` and adapt it to fit your installation.
 
 Once done, use [phinx](https://phinx.org/) to create the database:
@@ -26,13 +29,24 @@ $ ./vendor/bin/phinx migrate
 
 This will create tables in the database.
 
-You can also import a default dataset with phinx seeds, this is not mandatory:
+You also can define your own migrations script by adding your path in a `phinx_local.php`:
+
+```php
+<?php
+
+$pconfig['paths']['migrations'][] = '%%PHINX_CONFIG_DIR%%/projects/db/my_migrations';
+```
+
+Example dataset
+---------------
+
+You can also import a default dataset with phinx seeds (this is not mandatory):
 
 ```
 $ ./vendor/bin/phinx seed:run
 ```
 
-Note that the default configuration will use a provided dataset specific to GLPI. If you want to get your own seeds, create a `phinx_local.php` file with the following content:
+Here again, you can define your own seeds by adding your path in the `phinx_local.php`:
 
 ```php
 <?php
@@ -40,12 +54,5 @@ Note that the default configuration will use a provided dataset specific to GLPI
 $pconfig['paths']['seeds'] = '%%PHINX_CONFIG_DIR%%/projects/db/my_seeds';
 ```
 
-This permits to use a different seed directory than the default one. Refer to the phinx documentation to know how to create seeds.
-
-You also can define your own migrations script by adding you path:
-
-```php
-<?php
-
-$pconfig['paths']['migrations'][] = '%%PHINX_CONFIG_DIR%%/projects/db/my_migrations';
-```
+This permits to use a different seed directory than the default one; it will not be used anymore.
+Refer to the [phinx documentation to know how to create seeds](http://docs.phinx.org/en/latest/seeding.html).
