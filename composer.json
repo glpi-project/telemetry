@@ -32,7 +32,8 @@
         "justinrainbow/json-schema": "^5.2",
         "nicmart/numbers": "^0.1.0",
         "zendframework/zend-cache": "^2.7",
-        "robmorgan/phinx": "^0.9.1"
+        "robmorgan/phinx": "^0.9.1",
+        "akrabat/rka-scheme-and-host-detection-middleware": "^0.3.0"
     },
     "require-dev": {
         "atoum/atoum": "^3.2",

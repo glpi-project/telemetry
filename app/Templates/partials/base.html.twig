@@ -5,9 +5,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta http-equiv="Cache-control" content="no-cache">
 
-      <link rel="stylesheet" href="libs/fontawesome/css/font-awesome.min.css" />
-      <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css" />
-      <link rel="stylesheet" href="css/base.css" />
+      <link rel="stylesheet" href="{{base_url()}}/libs/fontawesome/css/font-awesome.min.css" />
+      <link rel="stylesheet" href="{{base_url()}}/libs/bootstrap/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="{{base_url()}}/css/base.css" />
 
       {% block head %}
         <title>{{project_name}} Telemetry - {% block title %}{% endblock %}</title>
@@ -34,10 +34,10 @@
 
       {% include "partials/footer.html.twig" %}
 
-      <script src="libs/jquery/jquery.min.js"></script>
-      <script src="libs/tether/tether.min.js"></script>
-      <script src="libs/bootstrap/js/bootstrap.min.js"></script>
-      <script src="js/base.js"></script>
+      <script src="{{base_url()}}/libs/jquery/jquery.min.js"></script>
+      <script src="{{base_url()}}/libs/tether/tether.min.js"></script>
+      <script src="{{base_url()}}/libs/bootstrap/js/bootstrap.min.js"></script>
+      <script src="{{base_url()}}/js/base.js"></script>
       {% block userscripts %}{% endblock %}
     </body>
 </html>
