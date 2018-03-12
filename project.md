@@ -195,3 +195,24 @@ Telemetry informations themselves are mapped from your configuration; there is n
 First of all, you have to create a `phinx_local.php` file; and set the path to your migration files (see [installation instructions](install.md#setup); and then refer to [phinx documantation about migrations](http://docs.phinx.org/en/latest/migrations.html).
 
 Keep in mind your project's migrations will be played along with main ones.
+
+### Map configuration
+
+Each projet can setup map tiles, based on [Leaflet providers plugin](https://github.com/leaflet-extras/leaflet-providers). To achieve that, use the `dashboard`, `leaflet` key in configuration file. You can define a provider name, and an array of options for those who support or require extra config:
+
+```php
+return $config = [
+    'project' => [
+        'name'   => 'My Project',
+        'dashboard' => [
+            'leaflet' => [
+                'provider'  => 'MapBox',
+                'config'    => [
+                    'id'            => 'mapbox.light',
+                    'accessToken'   => 'YOUR TOKEN'
+                ]
+            ]
+        ]
+    ]
+];
+```
