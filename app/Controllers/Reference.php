@@ -87,7 +87,7 @@ class Reference extends ControllerAbstract
             }
         }
 
-        $references->setPath($this->container->get('settings')['baseurl']."reference");
+        $references->setPath($this->container->router->pathFor('reference'));
 
         // render in twig view
         $this->render($this->container->project->pathFor('reference.html.twig'), [
