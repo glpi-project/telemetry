@@ -128,7 +128,12 @@ $(document).ready(function() {
         Plotly.newPlot(
             "php_versions",
             plotlyData(php_versions.data("id")),
-            plotly_bar_layout,
+            $.extend(
+                {},
+                plotly_bar_layout, {
+                    showlegend: false
+                }
+            ),
             plotly_config
         );
     }
