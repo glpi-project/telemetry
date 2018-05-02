@@ -10,7 +10,7 @@ use Slim\Http\Response;
 class Reference extends ControllerAbstract
 {
 
-    public function view(Request $req, Response $res)
+    public function view(Request $req, Response $res, array $args)
     {
         $get = $req->getQueryParams();
 
@@ -174,6 +174,24 @@ class Reference extends ControllerAbstract
         );
 
         // redirect to ok page
+        return $res->withRedirect($this->container->router->pathFor('reference'));
+    }
+
+    public function filter(Request $req, Response $res, array $args)
+    {
+        $get = $req->getQueryParams();
+
+        // manage sorting
+        if (isset($args['orderby'])) {
+            if ($_SESSION['reference']['orderby'] == $args['orderby']) {
+               // toggle sort if orderby requested on the same column
+                $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
+                                                ? "asc"
+                                                : "desc");
+            }
+            $_SESSION['reference']['orderby'] = $args['orderby'];
+        }
+
         return $res->withRedirect($this->container->router->pathFor('reference'));
     }
 }
