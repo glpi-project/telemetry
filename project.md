@@ -102,7 +102,9 @@ return $config = [
     //...
 ```
 
-On the above example, the map with countries from referencs and the installation modes part will not be shown.
+On the above example, the map with countries from references and the installation modes part will not be shown.
+
+All the dashboard configuration parameters rely on a boolean value, expect `php_versions`. For this one, you can also set the valueto `bar` if you just want a bar graph of the PHP versions.
 
 ### Footer links
 
