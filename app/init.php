@@ -82,7 +82,12 @@ $container['view'] = function ($c) {
     ]);
 
     // Instantiate and add Slim specific extension
-    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $c['request']->getUri()));
+    $uri = str_replace(
+        'index.php',
+        '',
+        $c['request']->getUri()->getBaseUrl()
+    );
+    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $uri));
     $view->addExtension(new Knlv\Slim\Views\TwigMessages(
         new Slim\Flash\Messages()
     ));
