@@ -25,23 +25,23 @@
          <tr>
             <td>
                {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='./reference?orderby=name'>Name</a>
+               <a href="{{ path_for('filterReferences', {'orderby': 'name'}) }}">Name</a>
             </td>
             <td>
                {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='./reference?orderby=country'>Country</a>
+               <a href="{{ path_for('filterReferences', {'orderby': 'country'}) }}">Country</a>
             </td>
     {% if dyn_refs|length > 0 %}
         {% for key, labels in dyn_refs %}
             <td>
                {% if orderby == key %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='./reference?orderby={{key}}'>{{labels.short_label}}</a>
+               <a href="{{ path_for('filterReferences', {'orderby': key}) }}">{{labels.short_label}}</a>
             </td>
         {% endfor %}
     {% endif %}
             <td>
                {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href='./reference?orderby=created_at'>Registration date</a>
+               <a href="{{ path_for('filterReferences', {'orderby': 'created_at'}) }}">Registration date</a>
             </td>
             <td>
                Comment
