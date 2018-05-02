@@ -83,6 +83,7 @@ class Telemetry extends ControllerAbstract
                         count(DISTINCT(glpi_uuid)) as total")
             )
                 ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+                ->where('created_at', '<', date('Y-m-01'))
                 ->groupBy(DB::raw("month_year, raw_month_year, version"))
                 ->orderBy(DB::raw("raw_month_year"), 'ASC')
                 ->get()
