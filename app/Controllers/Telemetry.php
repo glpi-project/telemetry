@@ -51,8 +51,31 @@ class Telemetry extends ControllerAbstract
             $dashboard['nb_reference_entries'] = json_encode($nb_ref_entries);
         }
 
-        if ($dashboard['php_versions']) {
-            // retrieve php versions
+        if ($dashboard['php_versions'] === 'bar') {
+            // retrieve php versions -- bar
+            $raw_php_versions = TelemetryModel::select(
+                DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
+                        count(DISTINCT(glpi_uuid)) as total")
+            )
+                ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+                ->groupBy(DB::raw("version"))
+                ->orderBy(DB::raw("version"), 'ASC')
+                ->get()
+                ->toArray();
+
+            $php_versions_series = [
+                'y'    => [],
+                'x'    => [],
+                'type' => 'bar',
+            ];
+
+            foreach ($raw_php_versions as $php_version) {
+                $php_versions_series['x'][] = 'PHP ' . $php_version['version'];
+                $php_versions_series['y'][] = $php_version['total'];
+            }
+            $dashboard['php_versions'] = json_encode([$php_versions_series]);
+        } elseif ($dashboard['php_versions']) {
+            // retrieve php versions - histo
             $raw_php_versions = TelemetryModel::select(
                 DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
                         date_trunc('month', created_at) as raw_month_year,
