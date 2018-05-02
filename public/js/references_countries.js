@@ -2,7 +2,7 @@ var references_map;
 
 $(document).ready(function() {
    // leaflet map for references countries
-   references_map = L.map('references_countries').setView([0.0, 0.0], 2);
+   references_map = L.map('references_countries', {zoomSnap: 0.1}).setView([0.0, 0.0], 2);
    L.tileLayer.provider(map_provider, map_provider_conf).addTo(references_map);
    _loadMapRefs(references_map);
 });
@@ -27,6 +27,7 @@ var _loadMapRefs = function(references_map) {
       references_info.addTo(references_map);
 
       // add geo json for each country
+      var group = new L.featureGroup;
       $.each($('#references_countries').data("id"), function(index, value) {
          var current_geojson = countries_geo[value['cca3']];
          for (var attr in value) {
@@ -67,7 +68,9 @@ var _loadMapRefs = function(references_map) {
                layer.bindPopup(feature.properties.name);
             }
          }).addTo(references_map);
+         group.addLayer(geojson);
       });
+      references_map.fitBounds(group.getBounds());
    }).fail(function () {
       // add a popup for country hover
       var fail_info = L.control();
