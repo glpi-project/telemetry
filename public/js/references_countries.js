@@ -10,7 +10,7 @@ $(document).ready(function() {
 var _loadMapRefs = function(references_map) {
    //retrieve geojson data
    references_map.spin(true);
-   $.getJSON('./telemetry/geojson').done(function(countries_geo) {
+   $.getJSON(geojson_path).done(function(countries_geo) {
       // add a popup for country hover
       var references_info = L.control();
       references_info.onAdd = function (map) {

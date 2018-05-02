@@ -209,6 +209,7 @@
 {% if references_countries %}
 {# Get map provider from configuration #}
 <script type="text/javascript">
+    var geojson_path = '{{ path_for('geojson') }}';
     var map_provider = '{{ leafletprovider.name }}';
     var map_provider_conf = {{ leafletprovider.config|raw }};
 </script>
