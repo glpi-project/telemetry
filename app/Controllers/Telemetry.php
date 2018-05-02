@@ -324,12 +324,32 @@ class Telemetry extends ControllerAbstract
         }
 
         if ($countries === null) {
+            $references_countries = ReferenceModel::select(
+                DB::raw("country as cca2, count(*) as total")
+            )
+                ->active()
+                ->groupBy(DB::raw("country"))
+                ->orderBy('total', 'desc')
+                ->get()
+                ->toArray();
+            $all_cca2 = array_column($this->container->countries, 'cca2');
+            $db_countries = [];
+            foreach ($references_countries as &$ctry) {
+                //replace alpha2 by alpha3 codes
+                $cca2 = strtoupper($ctry['cca2']);
+                $idx  = array_search($cca2, $all_cca2);
+                $cca3 = strtolower($this->container->countries[$idx]['cca3']);
+                $db_countries[] = $cca3;
+            }
+
             $dir = $this->container->countries_dir;
             $countries_geo = [];
             foreach (scandir("$dir/data/") as $file) {
                 if (strpos($file, '.geo.json') !== false) {
                     $geo_alpha3 = str_replace('.geo.json', '', $file);
-                    $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+                    if (in_array($geo_alpha3, $db_countries)) {
+                        $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+                    }
                 }
             }
             $countries = json_encode($countries_geo);
