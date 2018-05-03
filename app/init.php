@@ -82,7 +82,12 @@ $container['view'] = function ($c) {
     ]);
 
     // Instantiate and add Slim specific extension
-    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $c['request']->getUri()));
+    $uri = str_replace(
+        'index.php',
+        '',
+        $c['request']->getUri()->getBaseUrl()
+    );
+    $view->addExtension(new Slim\Views\TwigExtension($c['router'], $uri));
     $view->addExtension(new Knlv\Slim\Views\TwigMessages(
         new Slim\Flash\Messages()
     ));
@@ -226,4 +231,25 @@ Paginator::currentPageResolver(function ($pageName = 'page') {
 // @see https://github.com/mattstauffer/Torch/blob/master/components/pagination/index.php
 Paginator::currentPathResolver(function () {
     return isset($_SERVER['REQUEST_URI']) ? strtok($_SERVER['REQUEST_URI'], '?') : '/';
+});
+
+/**
+ * Trailing slash middleware
+ */
+$app->add(function ($request, $response, $next) {
+    $uri = $request->getUri();
+    $path = $uri->getPath();
+    if ($path != '/' && substr($path, -1) == '/') {
+        // permanently redirect paths with a trailing slash
+        // to their non-trailing counterpart
+        $uri = $uri->withPath(substr($path, 0, -1));
+
+        if ($request->getMethod() == 'GET') {
+            return $response->withRedirect((string)$uri, 301);
+        } else {
+            return $next($request->withUri($uri), $response);
+        }
+    }
+
+    return $next($request, $response);
 });

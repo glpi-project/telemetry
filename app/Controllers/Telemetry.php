@@ -51,8 +51,31 @@ class Telemetry extends ControllerAbstract
             $dashboard['nb_reference_entries'] = json_encode($nb_ref_entries);
         }
 
-        if ($dashboard['php_versions']) {
-            // retrieve php versions
+        if ($dashboard['php_versions'] === 'bar') {
+            // retrieve php versions -- bar
+            $raw_php_versions = TelemetryModel::select(
+                DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
+                        count(DISTINCT(glpi_uuid)) as total")
+            )
+                ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+                ->groupBy(DB::raw("version"))
+                ->orderBy(DB::raw("version"), 'ASC')
+                ->get()
+                ->toArray();
+
+            $php_versions_series = [
+                'y'    => [],
+                'x'    => [],
+                'type' => 'bar',
+            ];
+
+            foreach ($raw_php_versions as $php_version) {
+                $php_versions_series['x'][] = 'PHP ' . $php_version['version'];
+                $php_versions_series['y'][] = $php_version['total'];
+            }
+            $dashboard['php_versions'] = json_encode([$php_versions_series]);
+        } elseif ($dashboard['php_versions']) {
+            // retrieve php versions - histo
             $raw_php_versions = TelemetryModel::select(
                 DB::raw("split_part(php_version, '.', 1) || '.' || split_part(php_version, '.', 2) as version,
                         date_trunc('month', created_at) as raw_month_year,
@@ -60,6 +83,7 @@ class Telemetry extends ControllerAbstract
                         count(DISTINCT(glpi_uuid)) as total")
             )
                 ->where('created_at', '>=', DB::raw("NOW() - INTERVAL '$years YEAR'"))
+                ->where('created_at', '<', date('Y-m-01'))
                 ->groupBy(DB::raw("month_year, raw_month_year, version"))
                 ->orderBy(DB::raw("raw_month_year"), 'ASC')
                 ->get()
@@ -124,6 +148,14 @@ class Telemetry extends ControllerAbstract
                 unset($ctry['cca2']);
             }
             $dashboard['references_countries'] = json_encode($references_countries);
+            $dashboard['leafletprovider'] = [
+                'name'  => $dashboard['leaflet']['provider']
+            ];
+            $mapconf = [];
+            if (isset($dashboard['leaflet']['config'])) {
+                $mapconf = $dashboard['leaflet']['config'];
+            }
+            $dashboard['leafletprovider']['config'] = json_encode($mapconf);
         }
 
         if ($dashboard['glpi_versions']) {
@@ -316,12 +348,32 @@ class Telemetry extends ControllerAbstract
         }
 
         if ($countries === null) {
+            $references_countries = ReferenceModel::select(
+                DB::raw("country as cca2, count(*) as total")
+            )
+                ->active()
+                ->groupBy(DB::raw("country"))
+                ->orderBy('total', 'desc')
+                ->get()
+                ->toArray();
+            $all_cca2 = array_column($this->container->countries, 'cca2');
+            $db_countries = [];
+            foreach ($references_countries as &$ctry) {
+                //replace alpha2 by alpha3 codes
+                $cca2 = strtoupper($ctry['cca2']);
+                $idx  = array_search($cca2, $all_cca2);
+                $cca3 = strtolower($this->container->countries[$idx]['cca3']);
+                $db_countries[] = $cca3;
+            }
+
             $dir = $this->container->countries_dir;
             $countries_geo = [];
             foreach (scandir("$dir/data/") as $file) {
                 if (strpos($file, '.geo.json') !== false) {
                     $geo_alpha3 = str_replace('.geo.json', '', $file);
-                    $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+                    if (in_array($geo_alpha3, $db_countries)) {
+                        $countries_geo[$geo_alpha3] = json_decode(file_get_contents("$dir/data/$file"), true);
+                    }
                 }
             }
             $countries = json_encode($countries_geo);

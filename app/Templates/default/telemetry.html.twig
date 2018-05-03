@@ -205,12 +205,18 @@
 
 <script src="{{base_url()}}/libs/plotly/plotly.min.js"></script>
 <script src="{{base_url()}}/libs/masonry.pkgd/masonry.pkgd.min.js"></script>
-<script src="{{base_url()}}/libs/leaflet/leaflet.js"></script>
 <script src="{{base_url()}}/libs/prism/prism.js"></script>
+{% if references_countries %}
+{# Get map provider from configuration #}
+<script type="text/javascript">
+    var geojson_path = '{{ path_for('geojson') }}';
+    var map_provider = '{{ leafletprovider.name }}';
+    var map_provider_conf = {{ leafletprovider.config|raw }};
+</script>
+<script src="{{base_url()}}/libs/leaflet/leaflet.js"></script>
 <script src="{{base_url()}}/libs/spin.js/spin.min.js"></script>
 <script src="{{base_url()}}/libs/leaflet.spin/leaflet.spin.min.js"></script>
-
-{% if references_countries %}
+<script src="{{base_url()}}/libs/leaflet-providers/leaflet-providers.js"></script>
 <script src="{{base_url()}}/js/references_countries.js"></script>
 {% endif %}
 <script src="{{base_url()}}/js/telemetry.js"></script>

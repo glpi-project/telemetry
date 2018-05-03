@@ -17,15 +17,30 @@ if ($container->project->hasContactPage()) {
         ->add($container['csrf'])
         ->setName('sendContact');
 }
-// reference
-$app->get('/reference', 'GLPI\Telemetry\Controllers\Reference:view')
+
+/** References */
+//References list
+$app->get('/reference[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Reference:view')
    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
    ->add($container['csrf'])
    ->setName('reference');
+
+//References filtering
+$app->map(
+    ['get', 'post'],
+    '/reference/filter[/order/{orderby}]',
+    'GLPI\Telemetry\Controllers\Reference:filter'
+)
+   ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+   ->add($container['csrf'])
+   ->setName('filterReferences');
+
+//Reference registration
 $app->post('/reference', 'GLPI\Telemetry\Controllers\Reference:register')
    ->add($recaptcha)
    ->add($container['csrf'])
    ->setName('registerReference');
+/** /References */
 
 // telemetry
 $app->get('/telemetry', 'GLPI\Telemetry\Controllers\Telemetry:view');
