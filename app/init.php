@@ -110,6 +110,9 @@ $container['view'] = function ($c) {
     //enable contact page
     $env->addGlobal('enable_contact', $c->project->hasContactPage());
 
+    //enable connection page
+    $env->addGlobal('enable_connection', $c->project->hasConnectionPage());
+
     //footer links
     $env->addGlobal('footer_links', $c->project->getFooterLinks());
 

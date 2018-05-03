@@ -14,6 +14,7 @@ class Project
     private $project_path;
     private $templates_path;
     private $enable_contact = true;
+    private $enable_connection = true;
     private $footer_links = [
         'GLPI project'  => [
             'faclass'   => 'fa fa-globe',
@@ -105,6 +106,10 @@ class Project
 
         if (isset($config['enable_contact'])) {
             $this->enable_contact = (bool)$config['enable_contact'];
+        }
+
+        if (isset($config['enable_connection'])) {
+            $this->enable_connection = (bool)$config['enable_connection'];
         }
 
         if (isset($config['schema'])) {
@@ -460,6 +465,16 @@ class Project
     public function hasContactPage()
     {
         return $this->enable_contact;
+    }
+
+    /**
+     * Is connection page active for current project
+     *
+     * @return boolean
+     */
+    public function hasConnectionPage()
+    {
+        return $this->enable_connection;
     }
 
     /**

@@ -19,11 +19,23 @@ if ($container->project->hasContactPage()) {
 }
 
 /** References */
+
+// connection
+$app->get('/connection', 'GLPI\Telemetry\Controllers\Connection:view')
+    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+    ->add($container['csrf'])
+    ->setName('connection');
+$app->post('/connection', 'GLPI\Telemetry\Controllers\Connection:send')
+    ->add($recaptcha)
+    ->add($container['csrf'])
+    ->setName('sendConnection');
+
+
 //References list
 $app->get('/reference[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Reference:view')
-   ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
-   ->add($container['csrf'])
-   ->setName('reference');
+    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+    ->add($container['csrf'])
+    ->setName('reference');
 
 //References filtering
 $app->map(
