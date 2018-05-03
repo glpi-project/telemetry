@@ -1,0 +1,45 @@
+{% extends "partials/base.html.twig" %}
+{% block title %}Register{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-address-book "></i> Register',
+   'text':  'Register to manage json flows entries',
+} %}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+   <form method="post">
+      <div class="form-group">
+         <label for="username">Username</label>
+         <input class="form-control" name="username" type="text" required="required">
+      </div>
+
+      <div class="form-group">
+         <label for="password">Password</label>
+         <input class="form-control" name="password" type="password" required="required">
+      </div>
+
+      <div class="form-group">
+         <label for="mail">Password</label>
+         <input class="form-control" name="mail" type="mail" required="required">
+      </div>
+
+      <button type="submit" class="btn btn-outline-primary">Register</button>
+
+      {{ csrf.field | raw }}
+   </form>
+
+</div>
+{% endblock %}
+
+{% block userscripts %}
+{{ parent() }}
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+{% endblock %}
+

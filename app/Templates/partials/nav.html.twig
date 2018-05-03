@@ -28,6 +28,12 @@
                <i class='fa fa-user-circle'></i>
                Connection</a>
            {% endif %}
+           {% if enable_register %}
+            <a class="nav-item nav-link {{ class == 'register' ? 'active'}}"
+                href="{{path_for('register')}}">
+               <i class='fa fa-address-book'></i>
+               Register</a>
+           {% endif %}
          </div>
       </div>
    </nav>

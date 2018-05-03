@@ -15,6 +15,7 @@ class Project
     private $templates_path;
     private $enable_contact = true;
     private $enable_connection = true;
+    private $enable_register = true;
     private $footer_links = [
         'GLPI project'  => [
             'faclass'   => 'fa fa-globe',
@@ -110,6 +111,10 @@ class Project
 
         if (isset($config['enable_connection'])) {
             $this->enable_connection = (bool)$config['enable_connection'];
+        }
+
+        if (isset($config['enable_register'])) {
+            $this->enable_register = (bool)$config['enable_register'];
         }
 
         if (isset($config['schema'])) {
@@ -475,6 +480,16 @@ class Project
     public function hasConnectionPage()
     {
         return $this->enable_connection;
+    }
+
+    /**
+     * Is register page active for current project
+     *
+     * @return boolean
+     */
+    public function hasRegisterPage()
+    {
+        return $this->enable_register;
     }
 
     /**
