@@ -113,6 +113,9 @@ $container['view'] = function ($c) {
     //enable connection page
     $env->addGlobal('enable_connection', $c->project->hasConnectionPage());
 
+    //enable register page
+    $env->addGlobal('enable_connection', $c->project->hasRegisterPage());
+
     //footer links
     $env->addGlobal('footer_links', $c->project->getFooterLinks());
 

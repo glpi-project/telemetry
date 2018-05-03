@@ -18,19 +18,30 @@ if ($container->project->hasContactPage()) {
         ->setName('sendContact');
 }
 
+
+if ($container->project->hasConnectionPage()) {
+    // connection
+    $app->get('/connection', 'GLPI\Telemetry\Controllers\Connection:view')
+        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+        ->add($container['csrf'])
+        ->setName('connection');
+    $app->post('/connection', 'GLPI\Telemetry\Controllers\Connection:send')
+        ->add($container['csrf'])
+        ->setName('sendConnection');
+}
+
+if ($container->project->hasRegisterPage()) {
+    // register
+    $app->get('/register', 'GLPI\Telemetry\Controllers\Register:view')
+        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+        ->add($container['csrf'])
+        ->setName('register');
+    $app->post('/register', 'GLPI\Telemetry\Controllers\Register:send')
+        ->add($container['csrf'])
+        ->setName('sendRegister');
+}
+
 /** References */
-
-// connection
-$app->get('/connection', 'GLPI\Telemetry\Controllers\Connection:view')
-    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
-    ->add($container['csrf'])
-    ->setName('connection');
-$app->post('/connection', 'GLPI\Telemetry\Controllers\Connection:send')
-    ->add($recaptcha)
-    ->add($container['csrf'])
-    ->setName('sendConnection');
-
-
 //References list
 $app->get('/reference[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Reference:view')
     ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
