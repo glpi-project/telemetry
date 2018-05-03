@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d91050cb80d88b2d0c10ae4dd0acaff",
+    "hash": "a9e2740ee32b27904a2ab86a8af58adb",
+    "content-hash": "a8befddd36b71349805413f72e03e887",
     "packages": [
         {
             "name": "akrabat/rka-scheme-and-host-detection-middleware",
@@ -52,7 +53,7 @@
                 "middleware",
                 "psr7"
             ],
-            "time": "2016-11-13T11:55:26+00:00"
+            "time": "2016-11-13 11:55:26"
         },
         {
             "name": "container-interop/container-interop",
@@ -83,7 +84,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14T19:40:03+00:00"
+            "time": "2017-02-14 19:40:03"
         },
         {
             "name": "doctrine/inflector",
@@ -150,7 +151,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06T14:35:42+00:00"
+            "time": "2015-11-06 14:35:42"
         },
         {
             "name": "geggleto/psr7-recaptcha",
@@ -195,7 +196,7 @@
                 "middleware",
                 "slim"
             ],
-            "time": "2015-11-16T15:35:16+00:00"
+            "time": "2015-11-16 15:35:16"
         },
         {
             "name": "google/recaptcha",
@@ -240,7 +241,7 @@
                 "recaptcha",
                 "spam"
             ],
-            "time": "2017-03-09T18:44:34+00:00"
+            "time": "2017-03-09 18:44:34"
         },
         {
             "name": "illuminate/container",
@@ -283,7 +284,7 @@
             ],
             "description": "The Illuminate Container package.",
             "homepage": "http://laravel.com",
-            "time": "2016-08-01T13:49:14+00:00"
+            "time": "2016-08-01 13:49:14"
         },
         {
             "name": "illuminate/contracts",
@@ -325,7 +326,7 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "http://laravel.com",
-            "time": "2016-08-08T11:46:08+00:00"
+            "time": "2016-08-08 11:46:08"
         },
         {
             "name": "illuminate/database",
@@ -385,7 +386,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2016-08-25T07:01:20+00:00"
+            "time": "2016-08-25 07:01:20"
         },
         {
             "name": "illuminate/pagination",
@@ -429,7 +430,7 @@
             ],
             "description": "The Illuminate Pagination package.",
             "homepage": "http://laravel.com",
-            "time": "2016-08-01T13:49:14+00:00"
+            "time": "2016-08-01 13:49:14"
         },
         {
             "name": "illuminate/support",
@@ -488,7 +489,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2016-08-05T14:49:58+00:00"
+            "time": "2016-08-05 14:49:58"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -554,7 +555,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2017-10-10T13:22:37+00:00"
+            "time": "2017-10-10 13:22:37"
         },
         {
             "name": "kanellov/slim-twig-flash",
@@ -609,7 +610,7 @@
                 "twig",
                 "view"
             ],
-            "time": "2016-12-29T22:07:19+00:00"
+            "time": "2016-12-29 22:07:19"
         },
         {
             "name": "mledoze/countries",
@@ -655,7 +656,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2016-09-01T09:41:00+00:00"
+            "time": "2016-09-01 09:41:00"
         },
         {
             "name": "monolog/monolog",
@@ -733,7 +734,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19T01:22:40+00:00"
+            "time": "2017-06-19 01:22:40"
         },
         {
             "name": "nesbot/carbon",
@@ -786,7 +787,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-01-16T07:55:07+00:00"
+            "time": "2017-01-16 07:55:07"
         },
         {
             "name": "nicmart/numbers",
@@ -827,7 +828,7 @@
                 }
             ],
             "description": "Format numbers in various formats, like scientific notation or unit-suffix notation",
-            "time": "2013-09-15T19:12:52+00:00"
+            "time": "2013-09-15 19:12:52"
         },
         {
             "name": "nikic/fast-route",
@@ -870,7 +871,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2017-01-19T11:35:12+00:00"
+            "time": "2017-01-19 11:35:12"
         },
         {
             "name": "paragonie/random_compat",
@@ -918,7 +919,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:22:52+00:00"
+            "time": "2017-03-13 16:22:52"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -995,7 +996,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2017-08-28T11:12:07+00:00"
+            "time": "2017-08-28 11:12:07"
         },
         {
             "name": "pimple/pimple",
@@ -1045,7 +1046,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2017-07-23T07:32:15+00:00"
+            "time": "2017-07-23 07:32:15"
         },
         {
             "name": "psr/container",
@@ -1094,7 +1095,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2017-02-14 16:28:37"
         },
         {
             "name": "psr/http-message",
@@ -1144,7 +1145,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06T14:39:51+00:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "psr/log",
@@ -1191,7 +1192,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "robmorgan/phinx",
@@ -1261,7 +1262,7 @@
                 "migrations",
                 "phinx"
             ],
-            "time": "2017-09-09T13:54:33+00:00"
+            "time": "2017-09-09 13:54:33"
         },
         {
             "name": "slim/csrf",
@@ -1311,7 +1312,7 @@
                 "middleware",
                 "slim"
             ],
-            "time": "2016-12-20T20:45:43+00:00"
+            "time": "2016-12-20 20:45:43"
         },
         {
             "name": "slim/flash",
@@ -1359,7 +1360,7 @@
                 "provider",
                 "slim"
             ],
-            "time": "2016-11-11T16:29:19+00:00"
+            "time": "2016-11-11 16:29:19"
         },
         {
             "name": "slim/slim",
@@ -1430,7 +1431,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2017-03-19T17:55:20+00:00"
+            "time": "2017-03-19 17:55:20"
         },
         {
             "name": "slim/twig-view",
@@ -1480,7 +1481,7 @@
                 "twig",
                 "view"
             ],
-            "time": "2017-09-20T19:47:37+00:00"
+            "time": "2017-09-20 19:47:37"
         },
         {
             "name": "symfony/config",
@@ -1542,7 +1543,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-04T18:56:58+00:00"
+            "time": "2017-10-04 18:56:58"
         },
         {
             "name": "symfony/console",
@@ -1610,7 +1611,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02T06:42:24+00:00"
+            "time": "2017-10-02 06:42:24"
         },
         {
             "name": "symfony/debug",
@@ -1666,7 +1667,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02T06:42:24+00:00"
+            "time": "2017-10-02 06:42:24"
         },
         {
             "name": "symfony/filesystem",
@@ -1715,7 +1716,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-03T13:33:10+00:00"
+            "time": "2017-10-03 13:33:10"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1774,7 +1775,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-06-14 15:44:48"
         },
         {
             "name": "symfony/translation",
@@ -1839,7 +1840,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02T06:42:24+00:00"
+            "time": "2017-10-02 06:42:24"
         },
         {
             "name": "symfony/yaml",
@@ -1894,7 +1895,57 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-05T14:43:42+00:00"
+            "time": "2017-10-05 14:43:42"
+        },
+        {
+            "name": "tuupola/slim-basic-auth",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tuupola/slim-basic-auth.git",
+                "reference": "0015eb872edf4796c71feaa127b3886884bb7ca6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tuupola/slim-basic-auth/zipball/0015eb872edf4796c71feaa127b3886884bb7ca6",
+                "reference": "0015eb872edf4796c71feaa127b3886884bb7ca6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "overtrue/phplint": "^0.2.4",
+                "phpunit/phpunit": "^4.3",
+                "squizlabs/php_codesniffer": "^2.3",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Slim\\Middleware\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mika Tuupola",
+                    "email": "tuupola@appelsiini.net",
+                    "homepage": "http://www.appelsiini.net/"
+                }
+            ],
+            "description": "PSR-7 HTTP Basic Authentication Middleware",
+            "homepage": "http://www.appelsiini.net/projects/slim-basic-auth",
+            "keywords": [
+                "auth",
+                "middleware",
+                "psr-7"
+            ],
+            "time": "2017-09-19 12:46:08"
         },
         {
             "name": "twig/twig",
@@ -1959,7 +2010,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27T18:06:46+00:00"
+            "time": "2017-09-27 18:06:46"
         },
         {
             "name": "zendframework/zend-cache",
@@ -2028,7 +2079,7 @@
                 "cache",
                 "zf2"
             ],
-            "time": "2016-12-16T11:35:47+00:00"
+            "time": "2016-12-16 11:35:47"
         },
         {
             "name": "zendframework/zend-eventmanager",
@@ -2082,7 +2133,7 @@
                 "events",
                 "zf2"
             ],
-            "time": "2017-07-11T19:17:22+00:00"
+            "time": "2017-07-11 19:17:22"
         },
         {
             "name": "zendframework/zend-servicemanager",
@@ -2145,7 +2196,7 @@
                 "servicemanager",
                 "zf"
             ],
-            "time": "2017-03-01T22:08:02+00:00"
+            "time": "2017-03-01 22:08:02"
         },
         {
             "name": "zendframework/zend-stdlib",
@@ -2190,7 +2241,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-09-13T14:38:50+00:00"
+            "time": "2016-09-13 14:38:50"
         }
     ],
     "packages-dev": [
@@ -2275,7 +2326,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2017-09-07T08:27:13+00:00"
+            "time": "2017-09-07 08:27:13"
         },
         {
             "name": "atoum/telemetry-extension",
@@ -2336,7 +2387,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2017-10-02T22:09:26+00:00"
+            "time": "2017-10-02 22:09:26"
         }
     ],
     "aliases": [],
