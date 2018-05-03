@@ -194,7 +194,7 @@ Database adaptation
 
 Telemetry informations themselves are mapped from your configuration; there is no need to customize the database, but for references, you may want some adaptations.
 
-First of all, you have to create a `phinx_local.php` file; and set the path to your migration files (see [installation instructions](install.md#setup); and then refer to [phinx documantation about migrations](http://docs.phinx.org/en/latest/migrations.html).
+First of all, you have to create a `phinx_local.php` file; and set the path to your migration files (see [installation instructions](install.md#setup); and then refer to [phinx documentation about migrations](http://docs.phinx.org/en/latest/migrations.html).
 
 Keep in mind your project's migrations will be played along with main ones.
 
