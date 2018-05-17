@@ -65,7 +65,7 @@ class Reference extends ControllerAbstract
                         )
                     )
                 );
-                $model->where('is_displayed', '=', true);
+                $model->where('status', '=', '2');
                 $model->orderBy(
                     $order_table . '.' . $order_field,
                     $_SESSION['reference']['sort']
@@ -99,7 +99,8 @@ class Reference extends ControllerAbstract
             'pagination'    => $references->appends($_GET)->render(),
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
-            'dyn_refs'      => $dyn_refs
+            'dyn_refs'      => $dyn_refs,
+            'user'          => $_SESSION['user']
         ]);
     }
 
@@ -127,6 +128,11 @@ class Reference extends ControllerAbstract
 
         // alter data
         $ref_data['country'] = strtolower($ref_data['country']);
+        if($_SESSION['user'] != null){
+            $ref_data['user_id'] = $_SESSION['user']['id'];
+        }else{
+            $ref_data['user_id'] = null;
+        }
 
         // create reference in db
         if ('' == $ref_data['uuid']) {
@@ -139,6 +145,8 @@ class Reference extends ControllerAbstract
                 $ref_data
             );
         }
+
+        
 
         if (false !== $dyn_ref) {
             $dref = new DynamicReference();
@@ -175,6 +183,81 @@ class Reference extends ControllerAbstract
 
         // redirect to ok page
         return $res->withRedirect($this->container->router->pathFor('reference'));
+    }
+
+    public function update(Request $req, Response $res)
+    {
+        $post = $req->getParsedBody();
+
+        // clean data
+        unset($post['g-recaptcha-response']);
+        unset($post['csrf_name']);
+        unset($post['csrf_value']);
+
+        $ref_data = $post;
+        $dyn_data = [];
+
+        $dyn_ref = $this->container->project->getDynamicReferences();
+        if (false !== $dyn_ref) {
+            foreach (array_keys($dyn_ref) as $ref) {
+                if (isset($post[$ref])) {
+                    $dyn_data[$ref] = (int)$post[$ref];
+                    unset($ref_data[$ref]);
+                }
+            }
+        }
+
+        // alter data
+        $ref_data['country'] = strtolower($ref_data['country']);
+        $ref_data['status'] = 1;
+        if($_SESSION['user'] != null){
+            $ref_data['user_id'] = $_SESSION['user']['id'];
+        }else{
+            $ref_data['user_id'] = null;
+        }
+
+        //ref
+        $reference = ReferenceModel::updateOrCreate(
+            ['id' => $ref_data['id']],
+            $ref_data
+        );
+
+        $ref = new ReferenceModel();
+        $model = $ref->newInstance();
+        $model->updateStatus($reference['id'], 1);
+
+        //dynamic ref
+        $dref = new DynamicReference();
+        $dynamics = $dref->newInstance();
+        $dynamics->setTable($this->container->project->getSlug() . '_reference');
+
+        $exists = $dynamics->where('reference_id', $reference['id'])->get();
+
+        if(1 === $exists->count()){
+            $dynamics
+                ->where('reference_id', '=', $reference['id'])
+                ->update($dyn_data);
+        }
+
+        // redirect to ok page
+        return $res->withRedirect($this->container->router->pathFor('profile'));
+    }
+
+    public function delete(Request $req, Response $res)
+    {
+        $post = $req->getParsedBody();
+
+        $dref = new DynamicReference();
+        $dynamics = $dref->newInstance();
+        $dynamics->setTable($this->container->project->getSlug() . '_reference');
+        $dynamics->where('reference_id', $post['ref_id'])->forceDelete();
+
+        $ref = new ReferenceModel();
+        $model = $ref->newInstance();
+        $model->where('id', $post['ref_id'])->forceDelete();
+
+        // redirect to ok page
+        return $res->withRedirect($this->container->router->pathFor('profile'));
     }
 
     public function filter(Request $req, Response $res, array $args)
