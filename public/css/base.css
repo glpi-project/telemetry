@@ -143,7 +143,15 @@ table.glpi_references td {
    white-space: nowrap;
 }
 
+.elipsis_normal {
+   white-space: initial;
+}
+
 #register_reference {
+   display: none;
+}
+
+#add_action_comment {
    display: none;
 }
 
@@ -192,3 +200,20 @@ td.sort
     color: orange;
 }
 /** /Messaging */
+
+
+.form-warn {
+  background-color: #ff000f;
+  color: #eeeeee;
+  border-radius: 3px;
+  width: 40%;
+  margin: auto;
+  padding: .2em;
+}
+
+.form-warn ul{
+  padding-left: 1em;
+  margin: auto;
+  text-align: left;
+  list-style: none;
+}
