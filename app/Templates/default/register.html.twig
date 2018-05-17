@@ -12,6 +12,15 @@
 {% block content %}
 <div class="container">
 
+   <div class="form-warn">
+      <ul>
+         <li>Password must be at least 8 characters.</li>
+         <li>Password must have at least one uppercase letter.</li>
+         <li>Password must have at least one lowercase letter.</li>
+         <li>Password must have at least one digit.</li>
+      </ul>
+   </div>
+
    <form method="post">
       <div class="form-group">
          <label for="username">Username</label>
@@ -24,8 +33,8 @@
       </div>
 
       <div class="form-group">
-         <label for="mail">Password</label>
-         <input class="form-control" name="mail" type="mail" required="required">
+         <label for="mail">E-mail</label>
+         <input class="form-control" name="mail" type="email" required="required">
       </div>
 
       <button type="submit" class="btn btn-outline-primary">Register</button>
