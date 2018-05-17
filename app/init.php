@@ -114,13 +114,32 @@ $container['view'] = function ($c) {
     $env->addGlobal('enable_connection', $c->project->hasConnectionPage());
 
     //enable register page
-    $env->addGlobal('enable_connection', $c->project->hasRegisterPage());
+    $env->addGlobal('enable_register', $c->project->hasRegisterPage());
+
+    //enable admin tab
+    $env->addGlobal('enable_admin_tab', $c->project->getEnableAdminTab());
+
+    //enable admin page
+    $env->addGlobal('enable_admin', $c->project->hasAdminPage());
+
+    //enable disconnect tab
+    $env->addGlobal('enable_disconnect_tab', $c->project->getEnableDisconnectTab());
+
+    //enable connection tab
+    $env->addGlobal('enable_connection_tab', $c->project->getEnableConnectionTab());
+
+    //enable register tab
+    $env->addGlobal('enable_register_tab', $c->project->getEnableRegisterTab());
+
+    //enable profile tab
+    $env->addGlobal('enable_profile_tab', $c->project->getEnableProfileTab());
 
     //footer links
     $env->addGlobal('footer_links', $c->project->getFooterLinks());
 
     return $view;
 };
+
 
 //setup recaptcha
 $container[Captcha::class] = function ($c) {
@@ -130,7 +149,6 @@ $container[ReCaptcha::class] = function ($c) {
     return new ReCaptcha($c['settings']['recaptcha']['secret']);
 };
 $recaptcha = $app->getContainer()->get(Captcha::class);
-
 
 // system error handling
 $container['errorHandler'] = function ($c) {
