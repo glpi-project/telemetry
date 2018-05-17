@@ -1,0 +1,187 @@
+{% extends "partials/base.html.twig" %}
+{% block title %}Admin{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{base_url()}}/libs/country-flags-sass/flags.css" />
+    <link rel="stylesheet" href="{{base_url()}}/libs/select2/css/select2.min.css" />
+    <script type="text/javascript" src="{{base_url()}}/js/admin_action.js"></script>
+{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-cog"></i> Admin',
+   'text':  'Manage references',
+} %}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  Sort your result by 
+   <select id="dropdownStatusAdmin" onchange="window.location.href=dropdownStatusAdmin.value">
+      <option id="dropdownStatusDenied" value="{{ path_for('sorterAdmin', {'status': '0'}) }}">Denied</option>
+      <option id="dropdownStatusPending" value="{{ path_for('sorterAdmin', {'status': '1'}) }}">Pending</option>
+      <option id="dropdownStatusAccepted" value="{{ path_for('sorterAdmin', {'status': '2'}) }}">Accepted</option>
+   </select>
+   references ({{ references.total }} loaded).
+
+   <table class="table table-striped glpi_references">
+      <thead>
+         <tr>
+            <td>
+               {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterAdminReferences', {'orderby': 'name'}) }}">Name</a>
+            </td>
+            <td>
+               {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterAdminReferences', {'orderby': 'country'}) }}">Country</a>
+            </td>
+    {% if dyn_refs|length > 0 %}
+        {% for key, labels in dyn_refs %}
+            <td>
+               {% if orderby == key %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterAdminReferences', {'orderby': key}) }}">{{labels.short_label}}</a>
+            </td>
+        {% endfor %}
+    {% endif %}
+            <td>
+               {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterAdminReferences', {'orderby': 'created_at'}) }}">Registration date</a>
+            </td>
+            <td>
+               Comment
+            </td>
+            <td>
+               Status
+            </td>
+            <td>
+               Actions
+            </td>
+         </tr>
+      </thead>
+      <tbody>
+         {% for reference in references %}
+         <tr>
+             <td>
+                 {% if reference.url %}
+                     <a href="{{reference.url}}" target="_blank">{{reference.name}}</a>
+                 {% else %}
+                     {{reference.name}}
+                 {% endif %}
+            </td>
+            <td>
+               <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
+            </td>
+    {% if dyn_refs|length > 0 %}
+        {% for key in dyn_refs|keys %}
+            <td>{{reference[key]}}</td>
+        {% endfor %}
+    {% endif %}
+            <td>{{reference.created_at|date("Y-m-d") }}</td>
+            <td>
+               <div class="elipsis" title="{{reference.comment}}">
+                {{reference.comment}}
+               </div>
+            </td>
+            <td>
+               <div>
+                  {% if reference.status == 1 %} <i class="fa fa-clock-o"></i> Pending {% endif %}
+                  {% if reference.status == 0 %} <i class="fa fa-times"></i> Denied {% endif %}
+                  {% if reference.status == 2 %} <i class="fa fa-check"></i> Accepted {% endif %}
+               </div>
+            </td>
+            <td>
+               <div>
+                  {% if reference.status == 0 %}
+                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 2, {{ ref_user_mails }})"><i class="fa fa-check"></i></a> or 
+                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 1, {{ ref_user_mails }})"><i class="fa fa-clock-o"></i></a>
+                  {% endif %}
+                  {% if reference.status == 1 %}
+                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 2, {{ ref_user_mails }})"><i class="fa fa-check"></i></a> or 
+                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 0, {{ ref_user_mails }})"><i class="fa fa-times"></i></a>
+                  {% endif %}
+                  {% if reference.status == 2 %}
+                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 1, {{ ref_user_mails }})"><i class="fa fa-clock-o"></i></a> or 
+                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 0, {{ ref_user_mails }})"><i class="fa fa-times"></i></a>
+                  {% endif %}
+               </div>
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+
+   <nav aria-label="Page navigation">
+      {{ references.render() |raw }}
+   </nav>
+
+</div>
+
+<form method="post" action="{{ path_for('actionAdminReferencesWithMsg') }}">
+<div class="modal fade" id="add_action_comment">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Manage your action</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+          <p>Please check at least one of these email address.</p>
+            <div class="form-group">
+               <div id="table_mails_action"></div>
+               <label class="sr-only" for="comment">Comment</label>
+               <textarea class="form-control form-control-sm"
+                         name="comment"
+                         rows="6"
+                         placeholder="Your message for the user"></textarea>
+            </div>
+            <input type="hidden" id="ref_id_input_id" name="ref_id_input">
+            <input type="hidden" id="status_input_id" name="status_input">
+         </div>
+         <div class="modal-footer">
+            <button type="submit" id="submitAdminActionForm" onclick="return validateAdminActionForm()" class="btn btn-outline-primary" disabled>Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>
+{{ csrf.field | raw }}
+</form>
+{% endblock %}
+
+
+
+{% block userscripts %}
+{{ parent() }}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="{{base_url()}}/libs/select2/js/select2.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    var countries_s2 = $("#countries_select").select2({
+        templateSelection: formatState,
+        templateResult: formatState,
+        placeholder: "Country",
+        width: '100%',
+        dropdownParent: $('#add_action_comment')
+    });
+
+   getCountryCode.done(function(result) {
+      $("#warning-country").remove();
+      countries_s2
+         .val(result.country_code)
+         .trigger("change")
+   });
+
+   document.getElementById("dropdownStatusAdmin").selectedIndex = {{status_page}};
+
+   // if get parameter showmodal is present, show the corresponding modal
+   {% if showmodal == true %}
+   $("#add_action_comment").modal('show');
+   {% endif %}
+});
+</script>
+{% endblock %}
