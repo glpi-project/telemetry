@@ -22,17 +22,35 @@
                <i class='fa fa-envelope'></i>
                Contact</a>
            {% endif %}
-           {% if enable_connection %}
+           {% if enable_connection and enable_connection_tab %}
             <a class="nav-item nav-link {{ class == 'connection' ? 'active'}}"
                 href="{{path_for('connection')}}">
                <i class='fa fa-user-circle'></i>
                Connection</a>
            {% endif %}
-           {% if enable_register %}
+           {% if enable_register and enable_register_tab %}
             <a class="nav-item nav-link {{ class == 'register' ? 'active'}}"
                 href="{{path_for('register')}}">
                <i class='fa fa-address-book'></i>
                Register</a>
+           {% endif %}
+           {% if enable_profile_tab %}
+            <a class="nav-item nav-link {{ class == 'profile' ? 'active'}}"
+                href="{{path_for('profile')}}">
+               <i class='fa fa-user'></i>
+               Profile</a>
+           {% endif %}
+           {% if enable_admin and enable_admin_tab %}
+            <a class="nav-item nav-link {{ class == 'admin' ? 'active'}}"
+                href="{{path_for('admin')}}">
+               <i class='fa fa-cog'></i>
+               Admin</a>
+           {% endif %}
+           {% if enable_disconnect_tab %}
+            <a class="nav-item nav-link {{ class == 'connection' ? 'active'}}"
+               href="{{path_for('disconnect')}}">
+               <i class='fa fa-sign-out'></i>
+               Disconnect</a>
            {% endif %}
          </div>
       </div>
