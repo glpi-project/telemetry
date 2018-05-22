@@ -14,7 +14,7 @@ class Connection extends ControllerAbstract
         ]);
     }
 
-    public function send(Request $req, Response $res)
+    public function send(Request $req, Response $res, $redirect='telemetry')
     {
         $post = $req->getParsedBody();
         
@@ -30,17 +30,13 @@ class Connection extends ControllerAbstract
 	        );
 	       	$this->container->flash->addMessage(
 	            'success',
-	            'Welcome '.$post['username']
+	            'Welcome '.$post['user']
 	        );
 
-
-	       	$this->setUserSession([
-                    'username' => $post['username'],
-                    'user_info' => $auth->getUserInfo()
-                ]);
+            $_SESSION['user'] = $auth->getUser()['attributes'];
 
 	        //redirect
-        	return $res->withRedirect($this->container->router->pathFor('telemetry'));
+        	return $res->withRedirect($this->container->router->pathFor($redirect));
 
         } else {
        		// store a message for user (displayed after redirect)
@@ -53,16 +49,6 @@ class Connection extends ControllerAbstract
 
         }
 
-    }
-
-    public function setUserSession($tab)
-    {
-    	$_SESSION['user']['id'] = $tab['user_info']['id'];
-        $_SESSION['user']['username'] = $tab['username'];
-        $_SESSION['user']['is_admin'] = $tab['user_info']['is_admin'];
-        $_SESSION['user']['mail'] = $tab['user_info']['mail'];
-        $_SESSION['user']['references'] = $tab['user_info']['references_info'];
-        $_SESSION['user']['references_count'] = $tab['user_info']['references_count'];
     }
 
     public function disconnect(Request $req, Response $res)

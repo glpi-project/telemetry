@@ -211,7 +211,16 @@ td.sort
   padding: .2em;
 }
 
-.form-warn ul{
+.form-warn_profile_user {
+  background-color: #ff000f;
+  color: #eeeeee;
+  border-radius: 3px;
+  width: 100%;
+  margin: auto;
+  padding: .2em;
+}
+
+.form-warn, .form-warn_profile_user ul{
   padding-left: 1em;
   margin: auto;
   text-align: left;

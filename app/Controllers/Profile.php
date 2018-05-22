@@ -2,6 +2,8 @@
 
 use GLPI\Telemetry\Controllers\ControllerAbstract;
 use GLPI\Telemetry\Models\Reference as ReferenceModel;
+use GLPI\Telemetry\Models\User as UserModel;
+use GLPI\Telemetry\Models\Register as RegisterModel;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -36,7 +38,6 @@ class Profile extends ControllerAbstract
         $ref = new ReferenceModel();
         $ref_model = $ref->newInstance();
         $_SESSION['user']['references_count'] = $ref_model->where('user_id', $_SESSION['user']['id'])->get()->count();
-        $_SESSION['user']['references'] = $ref_model->where('user_id', $_SESSION['user']['id'])->get();
 
         // manage sorting
         if (isset($get['orderby'])) {
@@ -136,6 +137,74 @@ class Profile extends ControllerAbstract
             $_SESSION['reference']['orderby'] = $args['orderby'];
         }
 
+        return $res->withRedirect($this->container->router->pathFor('profile'));
+    }
+
+    public function userUpdate(Request $req, Response $res)
+    {
+        $post = $req->getParsedBody();
+
+        $user = htmlentities($post['name']);
+        $mail = htmlentities($post['mail']);
+        $pass = htmlentities($post['new_password']);
+        $confirm_pass = htmlentities($post['confirm_password']);
+
+        $user_ref = new UserModel();
+        $user_model = $user_ref->newInstance();
+
+        $register_ref = new RegisterModel();
+        $register_model = $register_ref->newInstance();
+
+        $tmp = 
+        [
+            'username' => $user,
+            'email' => $mail
+        ];
+
+        if(empty($pass) xor empty($confirm_pass) || $pass !== $confirm_pass || !$register_model->is_valid_password($pass)){
+            // store a message for user (displayed after redirect)
+            $this->container->flash->addMessage(
+                'warn',
+                'There is a problem with your password. Can\'t update your profile'
+            );
+            // redirect to ok page
+            return $res->withRedirect($this->container->router->pathFor('profile'));
+        } elseif(!empty($pass) && !empty($confirm_pass)) {
+            $tmp['hash'] = password_hash($pass, PASSWORD_DEFAULT);
+        }
+
+
+
+        if(!empty($user) && preg_match('/[a-zA-Z]/', $user)){
+
+            if($user_model->usernameExist($user) && $user != $_SESSION['user']['username']){
+                // store a message for user (displayed after redirect)
+                $this->container->flash->addMessage(
+                    'warn',
+                    'This username already exist. Can\'t update your profile'
+                );
+                // redirect to ok page
+                return $res->withRedirect($this->container->router->pathFor('profile'));
+            }
+            $user_model->where('username', '=', $_SESSION['user']['username'])->update($tmp);
+            // store a message for user (displayed after redirect)
+            $this->container->flash->addMessage(
+                'success',
+                'Update done !'
+            );
+
+            //reload user informations
+            $_SESSION['user'] = $user_model->getUser($user)['attributes'];
+
+        } else {
+            // store a message for user (displayed after redirect)
+            $this->container->flash->addMessage(
+                'warn',
+                'You must fill the username field with letters to update your profile.'
+            );
+        }
+
+        // redirect to ok page
         return $res->withRedirect($this->container->router->pathFor('profile'));
     }
 }

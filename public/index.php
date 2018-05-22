@@ -81,6 +81,16 @@ if ($container->project->hasProfilePage()) {
        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
        ->add($container['csrf'])
        ->setName('sorterProfile');
+
+    //Profile user update
+    $app->map(
+        ['get', 'post'],
+        '/profile/user/update',
+        'GLPI\Telemetry\Controllers\Profile:userUpdate'
+    )
+       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+       ->add($container['csrf'])
+       ->setName('actionProfileUserUpdate');
 }
 
 if ($container->project->hasAdminPage()) {

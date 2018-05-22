@@ -26,3 +26,114 @@ function actionProfileForm(ref){
 function actionProfileDelete(ref){
 	document.getElementById('input_form_profile_delete_id').value = ref.id;
 }
+
+function actionProfileUser(user){
+	document.getElementById('input_form_profile_user_id').value = user.id;
+	document.getElementById('input_form_profile_user_name').value = user.username;
+	document.getElementById('input_form_profile_user_mail').value = user.email;
+
+	$('#input_form_profile_user_new_password').keyup(function(){
+		var pass = $(this).val();
+		isAtLeastOneSpecial(pass);
+
+		var lengthPass = isAtLeastLength(8,pass);
+		var uppercasePass = isOneUpper(pass);
+		var lowercasePass = isOneLower(pass);
+		var digitPass = isAtLeastOneDigit(pass);
+
+		var progress = 0;
+
+		if(lengthPass){
+			progress += 25;
+		}
+		if(uppercasePass){
+			progress += 25;
+		}
+		if(lowercasePass){
+			progress += 25;
+		}
+		if(digitPass){
+			progress += 25;
+		}
+
+		divPass = document.getElementById('div_form_profile_user_new_password');
+		divBar = document.getElementById('div_form_profile_user_new_password_progress_bar');
+
+		divBar.style.width = progress + '%';
+
+		if(lengthPass && uppercasePass && lowercasePass && digitPass){
+			divPass.classList.remove('has-warning');
+			divPass.classList.add('has-success');
+		} else {
+			if(pass.length == 0){
+				divBar.classList.add('d-none');
+				divPass.classList.remove('has-warning');
+				divPass.classList.remove('has-success');
+			} else {
+				divBar.classList.remove('d-none');
+				divPass.classList.add('has-warning');
+				divPass.classList.remove('has-success');
+			}
+		}
+	});
+
+	$('#input_form_profile_user_confirm_password').keyup(function(){
+		Pass = document.getElementById('input_form_profile_user_new_password');
+		ConfirmPass = document.getElementById('input_form_profile_user_confirm_password');
+		divPass = document.getElementById('div_form_profile_user_new_password');
+		divConfirmPass = document.getElementById('div_form_profile_user_confirm_password');
+
+		if(Pass.value == ConfirmPass.value){
+			divConfirmPass.classList.remove('has-warning');
+			divConfirmPass.classList.add('has-success');
+			//document.getElementById('submit_profile_user_update').disabled = false;
+		} else {
+			divConfirmPass.classList.add('has-warning');
+			divConfirmPass.classList.remove('has-success');
+		}
+	});
+}
+
+function isAtLeastLength(size, pass) {
+	if(pass.length >= size){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+function isOneUpper(pass) {
+	for (var i=0 ; i < pass.length; i++) {
+	    if (pass.charAt(i) === pass.charAt(i).toUpperCase() && !isAtLeastOneDigit(pass.charAt(i)) && !isAtLeastOneSpecial(pass.charAt(i))) {
+	    	console.log(pass.charAt(i));
+	        return true;
+	    }
+	}
+	return false;
+}
+
+function isOneLower(pass){
+	for (var i=0 ; i < pass.length; i++) {
+	    if (pass.charAt(i) === pass.charAt(i).toLowerCase()) {
+	        return true;
+	    }
+	}
+	return false;
+}
+
+function isAtLeastOneDigit(pass) {
+	var hasNumber = /\d/;
+	if(hasNumber.test(pass)){
+		return true;
+	}
+	return false;
+}
+
+function isAtLeastOneSpecial(pass) {
+	var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+	if(hasSpecial.test(pass)){
+		return true;
+	}
+	return false;
+}

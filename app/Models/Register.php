@@ -33,12 +33,12 @@ class Register extends \Illuminate\Database\Eloquent\Model
 
 
 	/**
-	* Length 6 chars
+	* Length 8 chars
 	* At least one lowercase letter
 	* At least one uppercase letter
 	* At least one digit
 	**/
-	private function is_valid_password($password) {
+	public function is_valid_password($password) {
 		return preg_match('#^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#', $password) ? TRUE : FALSE;
 	}
 
@@ -57,7 +57,7 @@ class Register extends \Illuminate\Database\Eloquent\Model
 
         $tmp = 
         	[
-        		'user' => $user,
+        		'username' => $user,
         		'hash' => $hash,
         		'email' => $mail,
         		'is_admin' => $admin

@@ -237,6 +237,18 @@ class Reference extends ControllerAbstract
             $dynamics
                 ->where('reference_id', '=', $reference['id'])
                 ->update($dyn_data);
+
+            // store a message for user (displayed after redirect)
+            $this->container->flash->addMessage(
+                'success',
+                'Update done !'
+            );
+        } else {
+            // store a message for user (displayed after redirect)
+            $this->container->flash->addMessage(
+                'warn',
+                'Can\'t update your reference, please contact an administrator.'
+            );
         }
 
         // redirect to ok page
@@ -255,6 +267,12 @@ class Reference extends ControllerAbstract
         $ref = new ReferenceModel();
         $model = $ref->newInstance();
         $model->where('id', $post['ref_id'])->forceDelete();
+
+        // store a message for user (displayed after redirect)
+        $this->container->flash->addMessage(
+            'success',
+            'Successful deletion !'
+        );
 
         // redirect to ok page
         return $res->withRedirect($this->container->router->pathFor('profile'));
