@@ -36,17 +36,18 @@ class InstallUsers extends AbstractMigration
 
         $table = $this->table('users');
         $table
-            ->addColumn('user', 'string', ['length' => 32, 'null' => true])
+            ->addColumn('username', 'string', ['length' => 255, 'null' => true])
             ->addColumn('hash', 'string', ['length' => 255, 'null' => true])
             ->addColumn('email', 'string', ['length' => 505, 'null' => true])
             ->addColumn('is_admin', 'boolean', ['null' => true])
+            ->addColumn('updated_at', 'timestamp', ['null' => true])
             ->create()
         ;
 
         $this
             ->insert('users',
                 [
-                    'user' => 'admin',
+                    'username' => 'admin',
                     'hash' => password_hash('admin', PASSWORD_DEFAULT),
                     'is_admin' => true,
                     'email' => 'admin@admin.fr'
@@ -71,6 +72,8 @@ class InstallUsers extends AbstractMigration
         ;
 
 
+
+
     }
 
     public function down()
@@ -86,6 +89,11 @@ class InstallUsers extends AbstractMigration
             ->update()
         ;
 
+        $this->table('users')
+        ->dropForeignKey(
+            'telemetry_sessions_reference_id_fkey'
+        )->update();
+        
         $this->dropTable('users');
     }
 }
