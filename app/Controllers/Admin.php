@@ -11,39 +11,8 @@ class Admin extends ControllerAbstract
     {
         $get = $req->getQueryParams();
 
-        /**
-         * if status is not specified in parameter $args :
-         * default -> pending
-         * and if the status is specified in the $_SESSION, we'll take it.
-         * That allow the pagination doesn't specified any status parameter.
-		**/
-        if(!isset($args['status'] )){
-        	$args['status'] = 1;
-        	if($_SESSION['reference']['status_page_admin'] !== null){
-        		$args['status'] = $_SESSION['reference']['status_page_admin'];
-        	}
-        }
-
-        // default session param for this controller
-        if (!isset($_SESSION['reference'])) {
-            $_SESSION['reference'] = [
-                "orderby" => 'created_at',
-                "sort"    => "desc"
-            ];
-        }
-
-        // manage sorting
-        if (isset($get['orderby'])) {
-            if ($_SESSION['reference']['orderby'] == $get['orderby']) {
-               // toggle sort if orderby requested on the same column
-                $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
-                                                ? "asc"
-                                                : "desc");
-            }
-            $_SESSION['reference']['orderby'] = $get['orderby'];
-        }
-        $_SESSION['reference']['pagination'] = 15;
-        $_SESSION['reference']['status_page_admin'] = $args['status'];
+        $diff_filters = ReferenceModel::setDifferentsFilters($get, $args, $_SESSION['reference'], __CLASS__);
+        $_SESSION['reference'] = $diff_filters;
 
         //check for refences presence
         $dyn_refs = $this->container->project->getDynamicReferences();
@@ -76,7 +45,7 @@ class Admin extends ControllerAbstract
                         )
                     )
                 );
-                $model->where('status', '=', $args['status']);
+                $model->where('status', '=', $_SESSION['reference'][__CLASS__]);
                 $model->orderBy(
                     $order_table . '.' . $order_field,
                     $_SESSION['reference']['sort']
@@ -125,7 +94,7 @@ class Admin extends ControllerAbstract
             'sort'          => $_SESSION['reference']['sort'],
             'dyn_refs'      => $dyn_refs,
             'user_session'	=> $_SESSION['user'],
-            'status_page'	=> $args['status'],
+            'status_page'	=> $_SESSION['reference'][__CLASS__],
             'ref_user_mails'=> json_encode($ref_user_mails)	
         ]);
     }

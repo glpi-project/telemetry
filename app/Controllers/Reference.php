@@ -14,25 +14,8 @@ class Reference extends ControllerAbstract
     {
         $get = $req->getQueryParams();
 
-        // default session param for this controller
-        if (!isset($_SESSION['reference'])) {
-            $_SESSION['reference'] = [
-                "orderby" => 'created_at',
-                "sort"    => "desc"
-            ];
-        }
-
-        // manage sorting
-        if (isset($get['orderby'])) {
-            if ($_SESSION['reference']['orderby'] == $get['orderby']) {
-               // toggle sort if orderby requested on the same column
-                $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
-                                                ? "asc"
-                                                : "desc");
-            }
-            $_SESSION['reference']['orderby'] = $get['orderby'];
-        }
-        $_SESSION['reference']['pagination'] = 15;
+        $diff_filters = ReferenceModel::setDifferentsFilters($get, $args, $_SESSION['reference'], __CLASS__, false);
+        $_SESSION['reference'] = $diff_filters;
 
         //check for refences presence
         $dyn_refs = $this->container->project->getDynamicReferences();
