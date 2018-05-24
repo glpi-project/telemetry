@@ -129,8 +129,6 @@ class Reference extends ControllerAbstract
             );
         }
 
-        
-
         if (false !== $dyn_ref) {
             $dref = new DynamicReference();
             $dynamics = $dref->newInstance();
