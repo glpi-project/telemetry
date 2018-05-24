@@ -8,6 +8,9 @@ class Reference extends \Illuminate\Database\Eloquent\Model
     protected $guarded = [
       'status'
     ];
+    const DENIED = 0;
+    const PENDING = 1;
+    const ACCEPTED = 2;
     /**
      * Scope a query to only include references that can be displayed.
      *
@@ -17,7 +20,7 @@ class Reference extends \Illuminate\Database\Eloquent\Model
      */
     public function scopeActive($query)
     {
-        return $query->where('status', '=', 2);
+        return $query->where('status', '=', self::ACCEPTED);
     }
 
     public function updateStatus($id, $status)
@@ -57,11 +60,11 @@ class Reference extends \Illuminate\Database\Eloquent\Model
     public function statusIntToText($status)
     {
         switch($status){
-            case "0" : return "denied";
+            case self::DENIED : return "denied";
             break;
-            case "1" : return "pending";
+            case self::PENDING : return "pending";
             break;
-            case "2" : return "accepted";
+            case self::ACCEPTED : return "accepted";
             break;
             default : return false;
         }

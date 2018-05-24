@@ -48,7 +48,7 @@ class Reference extends ControllerAbstract
                         )
                     )
                 );
-                $model->where('status', '=', '2');
+                $model->where('status', '=', ReferenceModel::ACCEPTED);
                 $model->orderBy(
                     $order_table . '.' . $order_field,
                     $_SESSION['reference']['sort']
