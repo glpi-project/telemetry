@@ -14,15 +14,9 @@ class Project
     private $project_path;
     private $templates_path;
     private $enable_contact = true;
-    private $enable_connection = true;
-    private $enable_register = true;
     private $enable_profile = true;
-    private $enable_admin = true;
-    private $enable_disconnect_tab;
-    private $enable_connection_tab;
-    private $enable_register_tab;
-    private $enable_profile_tab;
-    private $enable_admin_tab;
+    private $enable_connection = true;
+    private $enable_admin = false;
     private $footer_links = [
         'GLPI project'  => [
             'faclass'   => 'fa fa-globe',
@@ -97,23 +91,12 @@ class Project
         $this->templates_path =  $this->project_path . '/Templates';
 
         if(isset($_SESSION['user']['username'])) {
-            $this->enable_disconnect_tab = true;
-            $this->enable_profile_tab = true;
-            $this->enable_register_tab = false;
-            $this->enable_connection_tab = false;
             $this->enable_profile = true;
-            $this->enable_register = false;
             if ($_SESSION['user']['is_admin']) {
                 $this->enable_admin = true;
-                $this->enable_admin_tab = true;
             }
         }else{
-            $this->enable_disconnect_tab = false;
-            $this->enable_profile_tab = false;
-            $this->enable_register_tab = true;
-            $this->enable_connection_tab = true;
             $this->enable_profile = false;
-            $this->enable_admin_tab = false;
             $this->enable_admin = false;
         }
     }
@@ -137,24 +120,16 @@ class Project
             $this->enable_contact = (bool)$config['enable_contact'];
         }
 
-        if (isset($config['enable_connection'])) {
-            $this->enable_connection = (bool)$config['enable_connection'];
-        }
-
-        if (isset($config['enable_register'])) {
-            $this->enable_register = (bool)$config['enable_register'];
-        }
-
         if (isset($config['enable_profile'])) {
             $this->enable_profile = (bool)$config['enable_profile'];
         }
 
-        if (isset($config['enable_admin'])) {
-            $this->enable_admin = (bool)$config['enable_admin'];
+        if (isset($config['enable_connection'])) {
+            $this->enable_connection = (bool)$config['enable_connection'];
         }
 
-        if (isset($config['enable_disconnect_tab'])) {
-            $this->enable_disconnect_tab = (bool)$config['enable_disconnect_tab'];
+        if (isset($config['enable_admin'])) {
+            $this->enable_admin = (bool)$config['enable_admin'];
         }
 
         if (isset($config['schema'])) {
@@ -529,7 +504,7 @@ class Project
      */
     public function hasRegisterPage()
     {
-        return $this->enable_register;
+        return !$this->enable_profile;
     }
 
     /**
@@ -583,55 +558,5 @@ class Project
             $this->dashboard['top_plugins'] = false;
         }
         return $this->dashboard;
-    }
-
-    /**
-     * Get disconnect tab value
-     *
-     * @return array
-     */
-    public function getEnableDisconnectTab()
-    {
-        return $this->enable_disconnect_tab;
-    }
-
-    /**
-     * Get connection tab value
-     *
-     * @return array
-     */
-    public function getEnableConnectionTab()
-    {
-        return $this->enable_connection_tab;
-    }
-
-    /**
-     * Get register tab value
-     *
-     * @return array
-     */
-    public function getEnableRegisterTab()
-    {
-        return $this->enable_register_tab;
-    }
-
-    /**
-     * Get profile tab value
-     *
-     * @return array
-     */
-    public function getEnableProfileTab()
-    {
-        return $this->enable_profile_tab;
-    }
-
-    /**
-     * Get admin tab value
-     *
-     * @return array
-     */
-    public function getEnableAdminTab()
-    {
-        return $this->enable_admin_tab;
     }
 }

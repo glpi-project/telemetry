@@ -110,29 +110,14 @@ $container['view'] = function ($c) {
     //enable contact page
     $env->addGlobal('enable_contact', $c->project->hasContactPage());
 
+    //enable profile page
+    $env->addGlobal('enable_profile', $c->project->hasProfilePage());
+
     //enable connection page
     $env->addGlobal('enable_connection', $c->project->hasConnectionPage());
 
-    //enable register page
-    $env->addGlobal('enable_register', $c->project->hasRegisterPage());
-
-    //enable admin tab
-    $env->addGlobal('enable_admin_tab', $c->project->getEnableAdminTab());
-
     //enable admin page
     $env->addGlobal('enable_admin', $c->project->hasAdminPage());
-
-    //enable disconnect tab
-    $env->addGlobal('enable_disconnect_tab', $c->project->getEnableDisconnectTab());
-
-    //enable connection tab
-    $env->addGlobal('enable_connection_tab', $c->project->getEnableConnectionTab());
-
-    //enable register tab
-    $env->addGlobal('enable_register_tab', $c->project->getEnableRegisterTab());
-
-    //enable profile tab
-    $env->addGlobal('enable_profile_tab', $c->project->getEnableProfileTab());
 
     //footer links
     $env->addGlobal('footer_links', $c->project->getFooterLinks());
