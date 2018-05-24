@@ -1,8 +1,7 @@
 function actionProfileForm(ref){
-	console.log(ref);
-	var modalElement = document.getElementById('modal_body_profile_update');
-	var selectCountry = document.getElementById('countries_select_modal_profile');
-	document.getElementById('ref_id_form_update').value = ref.id;
+	var modalElement = $('#modal_body_profile_update')[0];
+	var selectCountry = $('#countries_select_modal_profile')[0];
+	$('#ref_id_form_update').val(ref.id);
 	for( var i=0 ; i<selectCountry.options.length ; i++){
 		if(selectCountry.item(i).value == ref.country.toUpperCase()){
 			selectCountry.options[i].selected = true;
@@ -24,44 +23,44 @@ function actionProfileForm(ref){
 }
 
 function actionProfileDelete(ref){
-	document.getElementById('input_form_profile_delete_id').value = ref.id;
+	$('#input_form_profile_delete_id').val(ref.id);
 }
 
 function actionProfileUser(user){
-	document.getElementById('input_form_profile_user_id').value = user.id;
-	document.getElementById('input_form_profile_user_name').value = user.username;
-	document.getElementById('input_form_profile_user_mail').value = user.email;
+	$('#input_form_profile_user_id').val(user.id);
+	$('#input_form_profile_user_name').val(user.username);
+	$('#input_form_profile_user_mail').val(user.email);
 
 	$('#input_form_profile_user_new_password').keyup(function(){
 		var pass = $(this).val();
 		isAtLeastOneSpecial(pass);
 
-		var lengthPass = isAtLeastLength(8,pass);
-		var uppercasePass = isOneUpper(pass);
-		var lowercasePass = isOneLower(pass);
-		var digitPass = isAtLeastOneDigit(pass);
+		var size = 8;
+		var hasUpper = /[A-Z]/;
+		var hasLower = /[a-z]/;
+		var hasNumber = /\d/;
 
 		var progress = 0;
 
-		if(lengthPass){
+		if(pass.length >= size){
 			progress += 25;
 		}
-		if(uppercasePass){
+		if(hasUpper.test(pass)){
 			progress += 25;
 		}
-		if(lowercasePass){
+		if(hasLower.test(pass)){
 			progress += 25;
 		}
-		if(digitPass){
+		if(hasNumber.test(pass)){
 			progress += 25;
 		}
 
-		divPass = document.getElementById('div_form_profile_user_new_password');
-		divBar = document.getElementById('div_form_profile_user_new_password_progress_bar');
+		divPass = $('#div_form_profile_user_new_password')[0];
+		divBar = $('#div_form_profile_user_new_password_progress_bar')[0];
 
 		divBar.style.width = progress + '%';
 
-		if(lengthPass && uppercasePass && lowercasePass && digitPass){
+		if(progress == 100){
 			divPass.classList.remove('has-warning');
 			divPass.classList.add('has-success');
 		} else {
@@ -78,62 +77,17 @@ function actionProfileUser(user){
 	});
 
 	$('#input_form_profile_user_confirm_password').keyup(function(){
-		Pass = document.getElementById('input_form_profile_user_new_password');
-		ConfirmPass = document.getElementById('input_form_profile_user_confirm_password');
-		divPass = document.getElementById('div_form_profile_user_new_password');
-		divConfirmPass = document.getElementById('div_form_profile_user_confirm_password');
+		Pass = $('#input_form_profile_user_new_password')[0];
+		ConfirmPass = $('#input_form_profile_user_confirm_password')[0];
+		divPass = $('#div_form_profile_user_new_password')[0];
+		divConfirmPass = $('#div_form_profile_user_confirm_password')[0];
 
 		if(Pass.value == ConfirmPass.value){
 			divConfirmPass.classList.remove('has-warning');
 			divConfirmPass.classList.add('has-success');
-			//document.getElementById('submit_profile_user_update').disabled = false;
 		} else {
 			divConfirmPass.classList.add('has-warning');
 			divConfirmPass.classList.remove('has-success');
 		}
 	});
-}
-
-function isAtLeastLength(size, pass) {
-	if(pass.length >= size){
-		return true;
-	} else {
-		return false;
-	}
-}
-
-
-function isOneUpper(pass) {
-	for (var i=0 ; i < pass.length; i++) {
-	    if (pass.charAt(i) === pass.charAt(i).toUpperCase() && !isAtLeastOneDigit(pass.charAt(i)) && !isAtLeastOneSpecial(pass.charAt(i))) {
-	    	console.log(pass.charAt(i));
-	        return true;
-	    }
-	}
-	return false;
-}
-
-function isOneLower(pass){
-	for (var i=0 ; i < pass.length; i++) {
-	    if (pass.charAt(i) === pass.charAt(i).toLowerCase()) {
-	        return true;
-	    }
-	}
-	return false;
-}
-
-function isAtLeastOneDigit(pass) {
-	var hasNumber = /\d/;
-	if(hasNumber.test(pass)){
-		return true;
-	}
-	return false;
-}
-
-function isAtLeastOneSpecial(pass) {
-	var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
-	if(hasSpecial.test(pass)){
-		return true;
-	}
-	return false;
 }

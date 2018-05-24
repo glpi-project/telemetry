@@ -12,15 +12,6 @@
 {% block content %}
 <div class="container">
 
-   <div class="form-warn">
-      <ul>
-         <li>Password must be at least 8 characters.</li>
-         <li>Password must have at least one uppercase letter.</li>
-         <li>Password must have at least one lowercase letter.</li>
-         <li>Password must have at least one digit.</li>
-      </ul>
-   </div>
-
    <form method="post">
       <div class="form-group">
          <label for="username">Username</label>
@@ -30,6 +21,25 @@
       <div class="form-group">
          <label for="password">Password</label>
          <input class="form-control" name="password" type="password" required="required">
+      </div>
+
+      <div class="form-warn">
+         <table class="table_register_passw_conditions">
+            <tr>
+               <td>
+                  <ul>
+                     <li>Password must be at least 8 characters.</li>
+                     <li>Password must have at least one uppercase letter.</li>
+                  </ul>
+               </td>
+               <td>
+                  <ul>
+                     <li>Password must have at least one lowercase letter.</li>
+                     <li>Password must have at least one digit.</li>
+                  </ul>
+               </td>
+            </tr>
+         </table>
       </div>
 
       <div class="form-group">

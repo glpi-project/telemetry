@@ -6,27 +6,27 @@ function actionInfoToForm(ref_id, status, mails){
 
 
  function renderSubmitButtonAdminActionForm(){
- 	ck1 = document.getElementById('checkboxAdminActionForm1') ;
-	ck2 = document.getElementById('checkboxAdminActionForm2');
-	ck3 = document.getElementById('checkboxAdminActionForm3');
+ 	ck1 = $('#checkboxAdminActionForm1')[0] ;
+	ck2 = $('#checkboxAdminActionForm2')[0];
+	ck3 = $('#checkboxAdminActionForm3')[0];
 
 	if (ck1!=null && ck1.checked || ck2!=null && ck2.checked || ck3!=null && ck3.checked) {
-		document.getElementById('submitAdminActionForm').disabled = false;
+		$('#submitAdminActionForm')[0].disabled = false;
 	}else{
-		document.getElementById('submitAdminActionForm').disabled = true;
+		$('#submitAdminActionForm')[0].disabled = true;
 	}
 
 	if(ck3!=null && ck3.checked){
-		document.getElementById('inputrow3col2id').disabled = false;
+		$('#inputrow3col2id')[0].disabled = false;
 	}else{
-		document.getElementById('inputrow3col2id').disabled = true;
+		$('#inputrow3col2id')[0].disabled = true;
 	}
  }
 
 function createTable(mails_obj) {
 
     // Create table.
-    var el = document.getElementById('tableFormActionAdmin');
+    var el = $('#tableFormActionAdmin')[0];
     if(el != null){
     	el.remove();
     }
@@ -103,9 +103,9 @@ function createTable(mails_obj) {
 
 
 function validateAdminActionForm(){
-	ck1 = document.getElementById('checkboxAdminActionForm1');
-	ck2 = document.getElementById('checkboxAdminActionForm2');
-	ck3 = document.getElementById('checkboxAdminActionForm3');
+	ck1 = $('#checkboxAdminActionForm1')[0];
+	ck2 = $('#checkboxAdminActionForm2')[0];
+	ck3 = $('#checkboxAdminActionForm3')[0];
 
 	if (ck1!=null && !ck1.checked && ck2!=null && !ck2.checked && ck3!=null && !ck3.checked) {
 		return false;

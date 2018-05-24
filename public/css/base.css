@@ -202,27 +202,24 @@ td.sort
 /** /Messaging */
 
 
-.form-warn {
-  background-color: #ff000f;
-  color: #eeeeee;
-  border-radius: 3px;
-  width: 40%;
-  margin: auto;
-  padding: .2em;
-}
-
-.form-warn_profile_user {
-  background-color: #ff000f;
+.form-warn, .form-warn_profile_user {
+  background-color: #D9534F;
   color: #eeeeee;
   border-radius: 3px;
   width: 100%;
   margin: auto;
   padding: .2em;
+  margin-bottom: .5em;
 }
 
-.form-warn, .form-warn_profile_user ul{
+.form-warn ul, .form-warn_profile_user ul{
   padding-left: 1em;
   margin: auto;
   text-align: left;
-  list-style: none;
+  list-style: ;
+}
+
+.table_register_passw_conditions {
+  margin: auto;
+  width: 100%;
 }
