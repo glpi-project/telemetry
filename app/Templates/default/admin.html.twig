@@ -17,6 +17,7 @@
 
 {% block content %}
 <div class="container">
+  <div><a href="{{ path_for('adminTest') }}">Admin test</a></div>
   Sort your result by 
    <select id="dropdownStatusAdmin" onchange="window.location.href=dropdownStatusAdmin.value">
       <option id="dropdownStatusDenied" value="{{ path_for('sorterAdmin', {'status': '0'}) }}">Denied</option>

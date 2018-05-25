@@ -7,6 +7,13 @@ use Slim\Http\Response;
 
 class Admin extends PageAbstract
 {
+    public function view2(Request $req, Response $res, array $args)
+    {
+        $this->render($this->container->project->pathFor('adminManageUsers.html.twig'), [
+         'class' => 'admin'
+        ]);
+    }
+
     public function view(Request $req, Response $res, array $args)
     {
         $get = $req->getQueryParams();

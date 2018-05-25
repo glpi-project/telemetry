@@ -1,0 +1,25 @@
+{% extends "partials/base.html.twig" %}
+{% block title %}Admin{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-cog"></i> Admin',
+   'text':  'Manage users',
+} %}
+{{ parent() }}
+{% include('partials/adminNav.html.twig') %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+coucou
+
+</div>
+{% endblock %}
+
+{% block userscripts %}
+{{ parent() }}
+
+
+{% endblock %}

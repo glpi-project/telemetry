@@ -100,6 +100,16 @@ if ($container->project->hasAdminPage()) {
         ->add($container['csrf'])
         ->setName('admin');
 
+    //Admin test
+    $app->map(
+        ['get', 'post'],
+        '/admin/view2',
+        'GLPI\Telemetry\Controllers\Admin:view2'
+    )
+       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+       ->add($container['csrf'])
+       ->setName('adminTest');
+
     //Admin denied
     $app->map(
         ['get', 'post'],
