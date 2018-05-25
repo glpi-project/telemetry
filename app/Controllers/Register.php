@@ -16,14 +16,14 @@ class Register extends ControllerAbstract
 
     public function send(Request $req, Response $res)
     {
-    	$post = $req->getParsedBody();
+        $post = $req->getParsedBody();
 
         $register_ref = new RegisterModel;
         $register_model = $register_ref->newInstance();
 
         $tab = $register_model->checkRegister($post);
 
-        if($tab['status'] === '200'){
+        if ($tab['status'] === '200') {
             $type = 'success';
             $redirect = 'connection';
         } else {
@@ -38,7 +38,7 @@ class Register extends ControllerAbstract
         );
 
 
-		//redirect
+        //redirect
         return $res->withRedirect($this->container->router->pathFor($redirect));
     }
 }

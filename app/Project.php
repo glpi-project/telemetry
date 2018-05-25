@@ -90,12 +90,12 @@ class Project
         $this->project_path = __DIR__ . '/../projects/' . $this->slug;
         $this->templates_path =  $this->project_path . '/Templates';
 
-        if(isset($_SESSION['user']['username'])) {
+        if (isset($_SESSION['user']['username'])) {
             $this->enable_profile = true;
             if ($_SESSION['user']['is_admin']) {
                 $this->enable_admin = true;
             }
-        }else{
+        } else {
             $this->enable_profile = false;
             $this->enable_admin = false;
         }

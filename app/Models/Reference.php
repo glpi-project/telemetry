@@ -49,9 +49,9 @@ class Reference extends \Illuminate\Database\Eloquent\Model
         $res_user = $user::where('id', '=', $ref_user_id)->first();
         $user_mail = $res_user->attributes['email'];
 
-        return 
+        return
         [
-            'user_mail' => $user_mail, 
+            'user_mail' => $user_mail,
             'ref_mail' => $ref_mail
         ];
     }
@@ -59,14 +59,18 @@ class Reference extends \Illuminate\Database\Eloquent\Model
 
     public function statusIntToText($status)
     {
-        switch($status){
-            case self::DENIED : return "denied";
+        switch ($status) {
+            case self::DENIED:
+                return "denied";
             break;
-            case self::PENDING : return "pending";
+            case self::PENDING:
+                return "pending";
             break;
-            case self::ACCEPTED : return "accepted";
+            case self::ACCEPTED:
+                return "accepted";
             break;
-            default : return false;
+            default:
+                return false;
         }
     }
 }

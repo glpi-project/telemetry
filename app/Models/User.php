@@ -20,7 +20,7 @@ class User extends \Illuminate\Database\Eloquent\Model
 
     public function getUserInfo()
     {
-        return 
+        return
             [
                 'id' => $this->id,
                 'username' => $this->username,
@@ -44,9 +44,9 @@ class User extends \Illuminate\Database\Eloquent\Model
     //return true if user exist
     public function usernameExist($username)
     {
-        if(! is_null($this->where('username', '=', $username)->first())){
+        if (! is_null($this->where('username', '=', $username)->first())) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

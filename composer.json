@@ -34,7 +34,8 @@
         "zendframework/zend-cache": "^2.7",
         "robmorgan/phinx": "^0.9.1",
         "akrabat/rka-scheme-and-host-detection-middleware": "^0.3.0",
-        "tuupola/slim-basic-auth": "^2.3"
+        "tuupola/slim-basic-auth": "^2.3",
+        "squizlabs/php_codesniffer": "*"
     },
     "require-dev": {
         "atoum/atoum": "^3.2",

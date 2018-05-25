@@ -35,7 +35,7 @@ class Profile extends PageAbstract
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
             'dyn_refs'      => $dyn_refs,
-            'user_session'	=> $_SESSION['user'],
+            'user_session'  => $_SESSION['user'],
             'status_page'   => $_SESSION['reference'][__CLASS__]
         ]);
     }
@@ -73,13 +73,13 @@ class Profile extends PageAbstract
         $register_ref = new RegisterModel();
         $register_model = $register_ref->newInstance();
 
-        $tmp = 
+        $tmp =
         [
             'username' => $user,
             'email' => $mail
         ];
 
-        if(empty($pass) xor empty($confirm_pass) || $pass !== $confirm_pass || !$register_model->is_valid_password($pass)){
+        if (empty($pass) xor empty($confirm_pass) || $pass !== $confirm_pass || !$register_model->is_valid_password($pass)) {
             // store a message for user (displayed after redirect)
             $this->container->flash->addMessage(
                 'warn',
@@ -87,15 +87,14 @@ class Profile extends PageAbstract
             );
             // redirect to ok page
             return $res->withRedirect($this->container->router->pathFor('profile'));
-        } elseif(!empty($pass) && !empty($confirm_pass)) {
+        } elseif (!empty($pass) && !empty($confirm_pass)) {
             $tmp['hash'] = password_hash($pass, PASSWORD_DEFAULT);
         }
 
 
 
-        if(!empty($user) && preg_match('/[a-zA-Z]/', $user)){
-
-            if($user_model->usernameExist($user) && $user != $_SESSION['user']['username']){
+        if (!empty($user) && preg_match('/[a-zA-Z]/', $user)) {
+            if ($user_model->usernameExist($user) && $user != $_SESSION['user']['username']) {
                 // store a message for user (displayed after redirect)
                 $this->container->flash->addMessage(
                     'warn',
@@ -113,7 +112,6 @@ class Profile extends PageAbstract
 
             //reload user informations
             $_SESSION['user'] = $user_model->getUser($user)['attributes'];
-
         } else {
             // store a message for user (displayed after redirect)
             $this->container->flash->addMessage(

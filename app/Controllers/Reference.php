@@ -61,9 +61,9 @@ class Reference extends PageAbstract
 
         // alter data
         $ref_data['country'] = strtolower($ref_data['country']);
-        if($_SESSION['user'] != null){
+        if ($_SESSION['user'] != null) {
             $ref_data['user_id'] = $_SESSION['user']['id'];
-        }else{
+        } else {
             $ref_data['user_id'] = null;
         }
 
@@ -141,9 +141,9 @@ class Reference extends PageAbstract
         // alter data
         $ref_data['country'] = strtolower($ref_data['country']);
         $ref_data['status'] = 1;
-        if($_SESSION['user'] != null){
+        if ($_SESSION['user'] != null) {
             $ref_data['user_id'] = $_SESSION['user']['id'];
-        }else{
+        } else {
             $ref_data['user_id'] = null;
         }
 
@@ -164,7 +164,7 @@ class Reference extends PageAbstract
 
         $exists = $dynamics->where('reference_id', $reference['id'])->get();
 
-        if(1 === $exists->count()){
+        if (1 === $exists->count()) {
             $dynamics
                 ->where('reference_id', '=', $reference['id'])
                 ->update($dyn_data);

@@ -20,8 +20,8 @@ abstract class PageAbstract extends ControllerAbstract
     **/
     public function setDifferentsFilters(array $get, array $args, $status_filter = true)
     {
-    	$session_ref = $_SESSION['reference'];
-    	$page = get_class($this);
+        $session_ref = $_SESSION['reference'];
+        $page = get_class($this);
 
         // default session param for this controller
         if (!isset($session_ref)) {
@@ -37,9 +37,9 @@ abstract class PageAbstract extends ControllerAbstract
         **/
 
         if ($status_filter) {
-            if(!isset($args['status'] )){
+            if (!isset($args['status'])) {
                 $args['status'] = 1;
-                if($session_ref[$page] !== null){
+                if ($session_ref[$page] !== null) {
                     $args['status'] = $session_ref[$page];
                 }
             }
@@ -62,15 +62,15 @@ abstract class PageAbstract extends ControllerAbstract
     }
 
 
-	/**
-	 * This function load references and dynamics references
-	 * @param $bool_user to specify if the function will have to load references for a user
-	 * @param $status to specify if the function will have to load references for a specific status
-	 * @return array ['references', 'dyn_refs'] to return references and dynamics references
-	 **/
-    public function load_refs($bool_user = false, $status = NULL)
+    /**
+     * This function load references and dynamics references
+     * @param $bool_user to specify if the function will have to load references for a user
+     * @param $status to specify if the function will have to load references for a specific status
+     * @return array ['references', 'dyn_refs'] to return references and dynamics references
+     **/
+    public function load_refs($bool_user = false, $status = null)
     {
-    	$status = ($status === null) ? $_SESSION['reference'][get_class($this)] : $status;
+        $status = ($status === null) ? $_SESSION['reference'][get_class($this)] : $status;
 
         //check for refences presence
         $dyn_refs = $this->container->project->getDynamicReferences();
@@ -105,7 +105,7 @@ abstract class PageAbstract extends ControllerAbstract
                 );
                 $model->where('status', '=', $status);
                 if ($bool_user) {
-                	$model->where('user_id', '=', $_SESSION['user']['id']);
+                    $model->where('user_id', '=', $_SESSION['user']['id']);
                 }
                 $model->orderBy(
                     $order_table . '.' . $order_field,

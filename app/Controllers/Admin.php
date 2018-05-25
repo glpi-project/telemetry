@@ -20,12 +20,12 @@ class Admin extends PageAbstract
         $ref_ref = new ReferenceModel;
         $ref = $ref_ref->newInstance();
         foreach ($references as $reference) {
-        	$mails = $ref->findMails($reference['attributes']['id']);
-        	if($mails !== false){
-        		$ref_user_mails[$reference['attributes']['id']] = $mails;
-        	}else{
-        		$ref_user_mails[$reference['attributes']['id']] = null;
-        	}
+            $mails = $ref->findMails($reference['attributes']['id']);
+            if ($mails !== false) {
+                $ref_user_mails[$reference['attributes']['id']] = $mails;
+            } else {
+                $ref_user_mails[$reference['attributes']['id']] = null;
+            }
         }
 
         $references->setPath($this->container->router->pathFor('admin'));
@@ -40,9 +40,9 @@ class Admin extends PageAbstract
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
             'dyn_refs'      => $dyn_refs,
-            'user_session'	=> $_SESSION['user'],
-            'status_page'	=> $_SESSION['reference'][__CLASS__],
-            'ref_user_mails'=> json_encode($ref_user_mails)	
+            'user_session'  => $_SESSION['user'],
+            'status_page'   => $_SESSION['reference'][__CLASS__],
+            'ref_user_mails'=> json_encode($ref_user_mails)
         ]);
     }
 
@@ -66,26 +66,28 @@ class Admin extends PageAbstract
 
     public function ActionReferencePost(Request $req, Response $res)
     {
-    	$post = $req->getParsedBody();
-    	$tmp = [];
-    	if(isset($post['checkboxAdminActionForm1'])){
-    		$tmp[] = $post['checkboxAdminActionForm1'];
-    	}
-    	if(isset($post['checkboxAdminActionForm2'])){
-    		$tmp[] = $post['checkboxAdminActionForm2'];
-    	}
-    	if(isset($post['inputrow3col2'])){
-    		$tmp[] = $post['inputrow3col2'];
-    	}
+        $post = $req->getParsedBody();
+        $tmp = [];
+        if (isset($post['checkboxAdminActionForm1'])) {
+            $tmp[] = $post['checkboxAdminActionForm1'];
+        }
+        if (isset($post['checkboxAdminActionForm2'])) {
+            $tmp[] = $post['checkboxAdminActionForm2'];
+        }
+        if (isset($post['inputrow3col2'])) {
+            $tmp[] = $post['inputrow3col2'];
+        }
 
-    	return $this->ActionReference($req, $res,
-    		[
-    			'ref_id' => $post['ref_id_input'],
-    			'status' => $post['status_input'],
-    			'comment' => $post['comment'],
-    			'mails'	=> $tmp
-    		]
-    	);
+        return $this->ActionReference(
+            $req,
+            $res,
+            [
+                'ref_id' => $post['ref_id_input'],
+                'status' => $post['status_input'],
+                'comment' => $post['comment'],
+                'mails' => $tmp
+            ]
+        );
     }
 
     public function ActionReference(Request $req, Response $res, array $args)
@@ -99,15 +101,15 @@ class Admin extends PageAbstract
 
         $res_update = $ref->updateStatus($args['ref_id'], $args['status']);
 
-        if($res_update == 1){
-        	$type = "success";
-        	$msg_text = "Action done";
-        	foreach ($args['mails'] as $key => $mail_to) {
-        		$this->sendMail($req, $res, $args, $ref_status_before_update, $mail_to);
-        	}
-        }else{
-        	$type = "error";
-        	$msg_text = "An error happened, bad insert, $res_update rows were updated, 1 row to update was expected";
+        if ($res_update == 1) {
+            $type = "success";
+            $msg_text = "Action done";
+            foreach ($args['mails'] as $key => $mail_to) {
+                $this->sendMail($req, $res, $args, $ref_status_before_update, $mail_to);
+            }
+        } else {
+            $type = "error";
+            $msg_text = "An error happened, bad insert, $res_update rows were updated, 1 row to update was expected";
         }
 
         $this->container->flash->addMessage(
@@ -129,23 +131,23 @@ class Admin extends PageAbstract
 
         $join_table = $this->container->project->getSlug() . '_reference';
 
-        $res_ref = $ref_model->where("reference.id", "=", $args['ref_id'])        
+        $res_ref = $ref_model->where("reference.id", "=", $args['ref_id'])
         ->leftJoin($join_table, $join_table.'.reference_id', '=', 'reference.id')
         ->firstOrFail();
 
-        if(isset($args['comment']) && !empty($args['comment'])){
-        	$admin_msg = "Administrator's message :\n".$args['comment'];
-        }else{
-        	$admin_msg = "";
+        if (isset($args['comment']) && !empty($args['comment'])) {
+            $admin_msg = "Administrator's message :\n".$args['comment'];
+        } else {
+            $admin_msg = "";
         }
 
-        $msg_ref = 
+        $msg_ref =
         "
         Name : " . $res_ref['attributes']['name'] ."\n
         Country : " . $res_ref['attributes']['country'] ."\n
         Assets : " . $res_ref['attributes']['num_assets'] ."\n
         Helpdesk : " . $res_ref['attributes']['num_helpdesk'] ."\n
-        Registration date : " . date("d M Y, h:i a",strtotime($res_ref['attributes']['created_at'])) ."\n
+        Registration date : " . date("d M Y, h:i a", strtotime($res_ref['attributes']['created_at'])) ."\n
         Comment : " . $res_ref['attributes']['comment']."\n";
 
         $msg = "The status of your reference below has been changed by the admin from $status_from to $status_to :\n$msg_ref\n$admin_msg";
@@ -158,14 +160,14 @@ class Admin extends PageAbstract
         $mail->Body    = $msg;
         $send_ok = $mail->send();
 
-        if($send_ok === false){
-	        $this->container->flash->addMessage(
-	            "error",
-	            "Error sending the mail to $mail_to.\n".$mail->ErrorInfo
-	        );
-        	return false;
+        if ($send_ok === false) {
+            $this->container->flash->addMessage(
+                "error",
+                "Error sending the mail to $mail_to.\n".$mail->ErrorInfo
+            );
+            return false;
         } else {
-        	return true;
+            return true;
         }
     }
 }
