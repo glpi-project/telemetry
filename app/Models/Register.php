@@ -13,7 +13,14 @@ class Register extends \Illuminate\Database\Eloquent\Model
         'id'
     ];
 
-
+    /**
+     * Check if the form's values from the registration page are correct and insert in database
+     *
+     * @param array $post   Informations from the registration's form
+     *
+     * @return array
+     * @see insertRegister()
+    **/
     public function checkRegister($post)
     {
         $user = htmlentities($post['username']);
@@ -21,7 +28,7 @@ class Register extends \Illuminate\Database\Eloquent\Model
         $mail = htmlentities($post['mail']);
         $admin = false;
 
-        if (!$this->is_valid_password($hash)) {
+        if (!$this->isValidPassword($hash)) {
             $this->setTabReturn('406', 'Password is not compliant');
             return $this->tab;
         }
@@ -37,13 +44,26 @@ class Register extends \Illuminate\Database\Eloquent\Model
     * At least one lowercase letter
     * At least one uppercase letter
     * At least one digit
+    *
+    * @param string $password
+    *
+    * @return boolean
     **/
-    public function is_valid_password($password)
+    public function isValidPassword($password)
     {
         return preg_match('#^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#', $password) ? true : false;
     }
 
-
+    /**
+     * Create the new user by insert him in database
+     *
+     * @param string $user
+     * @param string $hash  The hashed password
+     * @param string $mail
+     * @param boolean $admin
+     *
+     * @return array
+    **/
     private function insertRegister($user, $hash, $mail, $admin)
     {
 
@@ -81,6 +101,11 @@ class Register extends \Illuminate\Database\Eloquent\Model
     * Status 200 OK
     * Status 406 Not Acceptable
     * Status 417 Expectation Failed
+    *
+    * @param integer $status
+    * @param string $msg
+    *
+    * @return void
     **/
     private function setTabReturn($status, $msg)
     {

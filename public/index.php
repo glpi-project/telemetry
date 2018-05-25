@@ -103,8 +103,8 @@ if ($container->project->hasAdminPage()) {
     //Admin denied
     $app->map(
         ['get', 'post'],
-        '/admin/ActionReferencePost',
-        'GLPI\Telemetry\Controllers\Admin:ActionReferencePost'
+        '/admin/actionReferencePost',
+        'GLPI\Telemetry\Controllers\Admin:actionReferencePost'
     )
        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
        ->add($container['csrf'])

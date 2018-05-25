@@ -11,14 +11,16 @@ abstract class PageAbstract extends ControllerAbstract
 {
 
     /**
-     * This function will set filters (orderby, sort and status)
+     * This function will set filters (orderby, sort and status).
      * It is used in several pages
-     * @param array $args[] Contain the route's parameters like status
-     * @param array $get[] Contain Query Params
-     * @param boolean $status_filter To set or not status filter (use for References page)
-     * @return array [args, session_ref] Who can be changed by the function
+     *
+     * @param array $args[]     Contain the route's parameters like status
+     * @param array $get[]      Contain Query Params
+     * @param boolean $status_filter    To set or not status filter (use for References page)
+     *
+     * @return array
     **/
-    public function setDifferentsFilters(array $get, array $args, $status_filter = true)
+    protected function setDifferentsFilters(array $get, array $args, $status_filter = true)
     {
         $session_ref = $_SESSION['reference'];
         $page = get_class($this);
@@ -64,11 +66,13 @@ abstract class PageAbstract extends ControllerAbstract
 
     /**
      * This function load references and dynamics references
-     * @param $bool_user to specify if the function will have to load references for a user
-     * @param $status to specify if the function will have to load references for a specific status
-     * @return array ['references', 'dyn_refs'] to return references and dynamics references
+     *
+     * @param boolean $bool_user    To specify if the function will have to load references for a user
+     * @param integer $status   To specify if the function will have to load references for a specific status
+     *
+     * @return array
      **/
-    public function load_refs($bool_user = false, $status = null)
+    protected function loadRefs($bool_user = false, $status = null)
     {
         $status = ($status === null) ? $_SESSION['reference'][get_class($this)] : $status;
 

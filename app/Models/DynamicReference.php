@@ -11,6 +11,7 @@ class DynamicReference extends \Illuminate\Database\Eloquent\Model
      * Set the table associated with the model.
      *
      * @param  string  $table
+     *
      * @return void
      */
     public function setTable($table)

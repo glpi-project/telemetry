@@ -20,7 +20,7 @@ class Profile extends PageAbstract
         $ref_model = $ref->newInstance();
         $_SESSION['user']['references_count'] = $ref_model->where('user_id', $_SESSION['user']['id'])->get()->count();
 
-        $refs_tab = $this->load_refs(true);
+        $refs_tab = $this->loadRefs(true);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
 
@@ -79,7 +79,7 @@ class Profile extends PageAbstract
             'email' => $mail
         ];
 
-        if (empty($pass) xor empty($confirm_pass) || $pass !== $confirm_pass || !$register_model->is_valid_password($pass)) {
+        if (empty($pass) xor empty($confirm_pass) || $pass !== $confirm_pass || !$register_model->isValidPassword($pass)) {
             // store a message for user (displayed after redirect)
             $this->container->flash->addMessage(
                 'warn',

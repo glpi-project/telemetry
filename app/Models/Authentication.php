@@ -7,7 +7,15 @@ class Authentication extends \Illuminate\Database\Eloquent\Model
     protected $table = 'users';
     protected $user;
 
-    function Authenticate($post)
+    /**
+     * Authenticate or not the user
+     *
+     * @param array $post   This is the informations from the connection form
+     *
+     * @return boolean
+     * @see isExist()
+     **/
+    function authenticate($post)
     {
 
         if ($this->isExist($post) != false) {
@@ -17,13 +25,24 @@ class Authentication extends \Illuminate\Database\Eloquent\Model
         }
     }
 
-
+    /**
+     * Get the current user
+     *
+     * @return GLPI\Telemetry\Models\User
+     * @see isExist()
+     **/
     public function getUser()
     {
         return $this->user;
     }
 
-
+    /**
+     * Test if the username already exist in database, verify the password and build the user object
+     *
+     * @param array $post   This is the informations from the connection form
+     *
+     * @return boolean|GLPI\Telemetry\Models\User
+     **/
     public function isExist($post)
     {
         $user_ref = new UserModel();
@@ -36,7 +55,6 @@ class Authentication extends \Illuminate\Database\Eloquent\Model
             $check_pw = password_verify($post['password'], $user_obj->hash);
             if ($check_pw) {
                 $this->user = $user_obj;
-                $user_obj->setUserInfo();
                 return $user_obj;
             }
         }

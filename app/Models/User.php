@@ -7,17 +7,16 @@ class User extends \Illuminate\Database\Eloquent\Model
     protected $table = 'users';
     protected $id;
     protected $username;
-    protected $references_count;
     protected $guarded = [
       ''
     ];
     protected $fillable = array('username', 'is_admin', 'mail');
 
-    public function setUserInfo()
-    {
-        $this->references_count = $this->getReferencesCount($this->id);
-    }
-
+    /**
+     * Return informations about the current user
+     *
+     * @return array
+     */
     public function getUserInfo()
     {
         return
@@ -25,23 +24,30 @@ class User extends \Illuminate\Database\Eloquent\Model
                 'id' => $this->id,
                 'username' => $this->username,
                 'mail' => $this->mail,
-                'references_count' => $this->references_count,
                 'is_admin' => $this->is_admin
             ];
     }
 
-    public function getReferencesCount($user_id)
-    {
-        return ReferenceModel::where('user_id', "=", $user_id)->get()->count();
-    }
-
+    /**
+     * Return a user from database by his name
+     *
+     * @param string $name
+     *
+     * @return GLPI\Telemetry\Models\User
+     */
     public function getUser($name)
     {
-        $test = $this::where('username', '=', $name)->first();
-        return $test;
+        $user = $this::where('username', '=', $name)->first();
+        return $user;
     }
 
-    //return true if user exist
+    /**
+     * Test if a username exist in database
+     *
+     * @param string $username
+     *
+     * @return boolean
+     */
     public function usernameExist($username)
     {
         if (! is_null($this->where('username', '=', $username)->first())) {

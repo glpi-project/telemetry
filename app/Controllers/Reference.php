@@ -16,7 +16,7 @@ class Reference extends PageAbstract
 
         $_SESSION['reference'] = $this->setDifferentsFilters($get, $args, false);
 
-        $refs_tab = $this->load_refs(false, ReferenceModel::ACCEPTED);
+        $refs_tab = $this->loadRefs(false, ReferenceModel::ACCEPTED);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
 

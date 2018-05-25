@@ -30,12 +30,11 @@ class Reference extends \Illuminate\Database\Eloquent\Model
 
 
     /**
-     * Find emails
+     * Find emails from user and reference
      *
-     * @param reference id
+     * @param integer $ref_id
      *
-     * @return an array [user's email, reference's email]
-     * Return array even if only one of this is null.
+     * @return array
     **/
     public function findMails($ref_id)
     {
@@ -56,7 +55,13 @@ class Reference extends \Illuminate\Database\Eloquent\Model
         ];
     }
 
-
+    /**
+     * Match between the constant and the string value for status
+     *
+     * @param integer $status
+     *
+     * @return array
+    **/
     public function statusIntToText($status)
     {
         switch ($status) {

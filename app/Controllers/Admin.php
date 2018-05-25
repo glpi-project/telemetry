@@ -13,7 +13,7 @@ class Admin extends PageAbstract
 
         $_SESSION['reference'] = $this->setDifferentsFilters($get, $args);
 
-        $refs_tab = $this->load_refs(false);
+        $refs_tab = $this->loadRefs(false);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
 
@@ -64,7 +64,7 @@ class Admin extends PageAbstract
         return $res->withRedirect($this->container->router->pathFor('admin'));
     }
 
-    public function ActionReferencePost(Request $req, Response $res)
+    public function actionReferencePost(Request $req, Response $res)
     {
         $post = $req->getParsedBody();
         $tmp = [];
@@ -78,7 +78,7 @@ class Admin extends PageAbstract
             $tmp[] = $post['inputrow3col2'];
         }
 
-        return $this->ActionReference(
+        return $this->actionReference(
             $req,
             $res,
             [
@@ -90,7 +90,7 @@ class Admin extends PageAbstract
         );
     }
 
-    public function ActionReference(Request $req, Response $res, array $args)
+    public function actionReference(Request $req, Response $res, array $args)
     {
         $get = $req->getQueryParams();
         $ref_ref = new ReferenceModel;
