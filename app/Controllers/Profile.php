@@ -1,79 +1,28 @@
 <?php namespace GLPI\Telemetry\Controllers;
 
-use GLPI\Telemetry\Controllers\ControllerAbstract;
+use GLPI\Telemetry\Controllers\PageAbstract;
 use GLPI\Telemetry\Models\Reference as ReferenceModel;
 use GLPI\Telemetry\Models\User as UserModel;
 use GLPI\Telemetry\Models\Register as RegisterModel;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class Profile extends ControllerAbstract
+class Profile extends PageAbstract
 {
     public function view(Request $req, Response $res, array $args)
     {
         $get = $req->getQueryParams();
 
-        $diff_filters = ReferenceModel::setDifferentsFilters($get, $args, $_SESSION['reference'], __CLASS__);
-        $_SESSION['reference'] = $diff_filters;
+        $_SESSION['reference'] = $this->setDifferentsFilters($get, $args);
 
         //Reload SESSION variables for user's references
         $ref = new ReferenceModel();
         $ref_model = $ref->newInstance();
         $_SESSION['user']['references_count'] = $ref_model->where('user_id', $_SESSION['user']['id'])->get()->count();
 
-        //check for refences presence
-        $dyn_refs = $this->container->project->getDynamicReferences();
-        if (false === $dyn_refs) {
-             // retrieve data from model
-            $references = ReferenceModel::active()->orderBy(
-                $_SESSION['reference']['orderby'],
-                $_SESSION['reference']['sort']
-            )->paginate($_SESSION['reference']['pagination']);
-        } else {
-            try {
-                $join_table = $this->container->project->getSlug() . '_reference';
-                $order_field = $_SESSION['reference']['orderby'];
-                $order_table = (isset($dyn_refs[$order_field]) ? $join_table : 'reference');
-                // retrieve data from model
-                $ref = new ReferenceModel();
-                $model = $ref->newInstance();
-                $model = call_user_func_array(
-                    [
-                        $model,
-                        'select'
-                    ],
-                    array_merge(
-                        ['reference.*'],
-                        array_map(
-                            function ($key) use ($join_table) {
-                                return $join_table . '.' . $key;
-                            },
-                            array_keys($dyn_refs)
-                        )
-                    )
-                );
-                $model->where('status', '=', $_SESSION['reference'][__CLASS__]);
-                $model->where('user_id', '=', $_SESSION['user']['id']);
-                $model->orderBy(
-                    $order_table . '.' . $order_field,
-                    $_SESSION['reference']['sort']
-                )
-                    ->leftJoin($join_table, 'reference.id', '=', $join_table . '.reference_id')
-                ;
-                $references = $model->paginate($_SESSION['reference']['pagination']);
-            } catch (\Illuminate\Database\QueryException $e) {
-                if ($e->getCode() == '42P01') {
-                    //rlation does not exists
-                    throw new \RuntimeException(
-                        'You have configured dynamic references for your project; but table ' .
-                        $join_table . ' is missing!',
-                        0,
-                        $e
-                    );
-                }
-                throw $e;
-            }
-        }
+        $refs_tab = $this->load_refs(true);
+        $references = $refs_tab['references'];
+        $dyn_refs = $refs_tab['dyn_refs'];
 
         $references->setPath($this->container->router->pathFor('profile'));
 
