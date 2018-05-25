@@ -15,7 +15,7 @@ class Authentication extends \Illuminate\Database\Eloquent\Model
      * @return boolean
      * @see isExist()
      **/
-    function authenticate($post)
+    public function authenticate($post)
     {
 
         if ($this->isExist($post) != false) {
