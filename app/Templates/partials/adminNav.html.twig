@@ -5,12 +5,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div class="navbar-nav">
-            <a class="nav-item nav-link {{ class == 'telemetry' ? 'active'}}"
-               href="{{path_for("telemetry")}}">
+            <a class="nav-item nav-link {{ myheader.class == 'adminReferencesManagement' ? 'active'}}"
+               href="{{path_for("adminReferencesManagement")}}">
                <i class='fa fa-cog'></i>
                References</a>
-            <a class="nav-item nav-link {{ class == 'reference' ? 'active'}}"
-                href="{{path_for('reference')}}">
+            <a class="nav-item nav-link {{ myheader.class == 'adminUsersManagement' ? 'active'}}"
+                href="{{path_for('adminUsersManagement')}}">
                <i class='fa fa-cog'></i>
                Users</a>
          </div>

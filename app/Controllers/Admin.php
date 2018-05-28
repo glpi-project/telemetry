@@ -7,14 +7,14 @@ use Slim\Http\Response;
 
 class Admin extends PageAbstract
 {
-    public function view2(Request $req, Response $res, array $args)
+    public function viewUsersManagement(Request $req, Response $res, array $args)
     {
         $this->render($this->container->project->pathFor('adminManageUsers.html.twig'), [
          'class' => 'admin'
         ]);
     }
 
-    public function view(Request $req, Response $res, array $args)
+    public function viewReferencesManagement(Request $req, Response $res, array $args)
     {
         $get = $req->getQueryParams();
 
@@ -35,10 +35,10 @@ class Admin extends PageAbstract
             }
         }
 
-        $references->setPath($this->container->router->pathFor('admin'));
+        $references->setPath($this->container->router->pathFor('adminReferencesManagement'));
 
         // render in twig view
-        $this->render($this->container->project->pathFor('admin.html.twig'), [
+        $this->render($this->container->project->pathFor('adminReferencesManagement.html.twig'), [
             'class'         => 'admin',
             'showmodal'     => isset($get['showmodal']),
             'uuid'          => isset($get['uuid']) ? $get['uuid'] : '',
@@ -68,7 +68,7 @@ class Admin extends PageAbstract
             $_SESSION['reference']['orderby'] = $args['orderby'];
         }
 
-        return $res->withRedirect($this->container->router->pathFor('admin'));
+        return $res->withRedirect($this->container->router->pathFor('adminReferencesManagement'));
     }
 
     public function ActionReferencePost(Request $req, Response $res)
