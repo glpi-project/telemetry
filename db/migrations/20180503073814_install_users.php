@@ -60,7 +60,6 @@ class InstallUsers extends AbstractMigration
         $table
             ->addColumn('user_id', 'integer', ['null' => true])
             ->addColumn('status', 'integer', ['default' => 1, 'null' => true])
-            ->removeColumn('is_displayed')
             ->addForeignKey(
                 'user_id',
                 'users',
@@ -71,21 +70,54 @@ class InstallUsers extends AbstractMigration
             ->update()
         ;
 
+        // query()
+        $stmt = $this->query("SELECT * FROM reference"); // returns PDOStatement
+        $rows = $stmt->fetchAll(); // returns the result as an array
 
+        foreach ($rows as $key => $value) {
+            $id = $value['id'];
+            if ($value['is_displayed'] == true) {
+                $str = "UPDATE reference set status = '2' WHERE id = $id";
+            } else {
+                $str = "UPDATE reference set status = '1' WHERE id = $id";
+            }
+            $this->query($str);
+        }
 
-
+        $table->removeColumn('is_displayed')->update();
     }
 
     public function down()
     {
+
         $table = $this->table('reference');
         $table
             ->dropForeignKey(
                 'telemetry_users_reference_id_fkey'
             )
             ->removeColumn('user_id', 'integer', ['null' => true])
-            ->removeColumn('status', 'integer', ['null' => true])
             ->addColumn('is_displayed', 'boolean', ['default' => false, 'null' => true])
+            ->update()
+        ;
+
+        // query()
+        $stmt = $this->query("SELECT * FROM reference"); // returns PDOStatement
+        $rows = $stmt->fetchAll(); // returns the result as an array
+
+        foreach ($rows as $key => $value) {
+            $id = $value['id'];
+            if ($value['status'] == 2) {
+                $str = "UPDATE reference set is_displayed = true WHERE id = $id";
+            } else {
+                $str = "UPDATE reference set is_displayed = false WHERE id = $id";
+            }
+            $this->query($str);
+        }
+
+
+        $table = $this->table('reference');
+        $table
+            ->removeColumn('status', 'integer', ['null' => true])
             ->update()
         ;
 
