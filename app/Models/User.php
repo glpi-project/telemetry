@@ -11,7 +11,7 @@ class User extends \Illuminate\Database\Eloquent\Model
     protected $guarded = [
       ''
     ];
-    protected $fillable = array('username', 'is_admin', 'mail');
+    protected $fillable = array('username', 'is_admin', 'email');
 
     public function setUserInfo()
     {
@@ -37,7 +37,7 @@ class User extends \Illuminate\Database\Eloquent\Model
 
     public function getUser($name)
     {
-        $test = $this::where('username', '=', $name)->first();
+        $test = $this::where('username', '=', $name)->first(['id', 'username', 'is_admin', 'email']);
         return $test;
     }
 

@@ -15,14 +15,11 @@ class Profile extends PageAbstract
 
         $_SESSION['reference'] = $this->setDifferentsFilters($get, $args);
 
-        //Reload SESSION variables for user's references
-        $ref = new ReferenceModel();
-        $ref_model = $ref->newInstance();
-        $_SESSION['user']['references_count'] = $ref_model->where('user_id', $_SESSION['user']['id'])->get()->count();
-
-        $refs_tab = $this->load_refs(true);
+        $refs_tab = $this->load_refs($_SESSION['user']['id']);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
+
+        $_SESSION['user']['references_count'] = ReferenceModel::where('user_id', '=', $_SESSION['user']['id'])->count();
 
         $references->setPath($this->container->router->pathFor('profile'));
 

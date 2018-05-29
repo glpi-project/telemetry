@@ -9,8 +9,19 @@ class Admin extends PageAbstract
 {
     public function viewUsersManagement(Request $req, Response $res, array $args)
     {
-        $this->render($this->container->project->pathFor('adminManageUsers.html.twig'), [
-         'class' => 'admin'
+        $users = $this->loadUsers();
+
+        echo "<pre>";var_dump($users);
+
+        $users->setPath($this->container->router->pathFor('adminUsersManagement'));
+
+        $this->render($this->container->project->pathFor('adminUsersManagement.html.twig'), [
+         'class'        => 'admin',
+         'showmodal'    => isset($get['showmodal']),
+         'users'        => $users,
+         'pagination'   => $users->appends($_GET)->render(),
+         'uuid'         => isset($get['uuid']) ? $get['uuid'] : '',
+         'user_session' => $_SESSION['user']
         ]);
     }
 

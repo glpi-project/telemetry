@@ -29,6 +29,16 @@ $app       = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 $app->add(new RKA\Middleware\SchemeAndHost());
 
+
+//Override the default Not Found Handler
+$container['notFoundHandler'] = function ($container) {
+    return function ($request, $response) use ($container) {
+        return $container['response']
+            ->write($container->flash->addMessage('error', 'Something went wrong, you were redirected.'))
+            ->withRedirect($container->router->pathFor('telemetry'));
+    };
+};
+
 $container['project'] = function ($c) use ($config) {
     $project = new \GLPI\Telemetry\Project($config['project']['name'], $c->logger);
     $project->setConfig($config['project']);
