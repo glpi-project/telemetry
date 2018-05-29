@@ -22,17 +22,6 @@ class Connection extends ControllerAbstract
         $auth = $auth_ref->newInstance();
 
         if ($auth->authenticate($post)) {
-            // store a message for user (displayed after redirect)
-            $msg_text = "You are now connected !";
-            $this->container->flash->addMessage(
-                'success',
-                $msg_text
-            );
-            $this->container->flash->addMessage(
-                'success',
-                'Welcome '.$post['user']
-            );
-
             $_SESSION['user'] = $auth->getUser()['attributes'];
 
             //redirect
