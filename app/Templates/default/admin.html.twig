@@ -128,14 +128,16 @@
             </button>
          </div>
          <div class="modal-body">
-          <p>Please check at least one of these email address.</p>
-            <div class="form-group">
+          <label>
+            <input id="form-admin-action-mail-checkbox" type="checkbox" name="form-admin-action-mail-checkbox" onchange="loadBodyActionForm()"> Send email to inform of the change of reference's status.
+          </label>
+            <div id="form-admin-action-body" class="form-group">
                <div id="table_mails_action"></div>
                <label class="sr-only" for="comment">Comment</label>
                <textarea class="form-control form-control-sm"
                          name="comment"
                          rows="6"
-                         placeholder="Your message for the user"></textarea>
+                         placeholder="Your message to comment on your action, it will be added to the email."></textarea>
             </div>
             <input type="hidden" id="ref_id_input_id" name="ref_id_input">
             <input type="hidden" id="status_input_id" name="status_input">

@@ -2,6 +2,8 @@ function actionInfoToForm(ref_id, status, mails){
   $('#ref_id_input_id').val(ref_id);
   $('#status_input_id').val(status);
   $('#table_mails_action').prepend(createTable(mails[ref_id]));
+  $('#form-admin-action-mail-checkbox').prop('checked', true);
+  loadBodyActionForm();
 }
 
 
@@ -22,6 +24,17 @@ function actionInfoToForm(ref_id, status, mails){
 		$('#inputrow3col2id')[0].disabled = true;
 	}
  }
+
+function loadBodyActionForm() {
+	if ($('#form-admin-action-mail-checkbox').prop('checked')){
+		$('#form-admin-action-body')[0].classList.remove('d-none');
+		$('#form-admin-action-mail-checkbox')[0].setAttribute('checked', 'checked');
+	} else {
+		$('#form-admin-action-body')[0].classList.add('d-none');
+		$('#form-admin-action-mail-checkbox')[0].setAttribute('checked', '');
+		$('#submitAdminActionForm')[0].disabled = false;
+	}
+}
 
 function createTable(mails_obj) {
 

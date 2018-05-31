@@ -85,7 +85,8 @@ class Admin extends PageAbstract
                 'ref_id' => $post['ref_id_input'],
                 'status' => $post['status_input'],
                 'comment' => $post['comment'],
-                'mails' => $tmp
+                'mails' => $tmp,
+                'check_mails' => isset($post['form-admin-action-mail-checkbox'])
             ]
         );
     }
@@ -104,8 +105,10 @@ class Admin extends PageAbstract
         if ($res_update == 1) {
             $type = "success";
             $msg_text = "Action done";
-            foreach ($args['mails'] as $key => $mail_to) {
-                $this->sendMail($req, $res, $args, $ref_status_before_update, $mail_to);
+            if ($args['check_mails']) {
+                foreach ($args['mails'] as $key => $mail_to) {
+                    $this->sendMail($req, $res, $args, $ref_status_before_update, $mail_to);
+                }
             }
         } else {
             $type = "error";
