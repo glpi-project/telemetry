@@ -223,3 +223,9 @@ td.sort
   margin: auto;
   width: 100%;
 }
+
+.popup-connection {
+   width: 300px;
+   padding-left: 2%;
+   padding-right: 2%;
+}

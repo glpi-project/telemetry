@@ -32,6 +32,8 @@ if ($container->project->hasConnectionPage()) {
     $app->post('/connection', 'GLPI\Telemetry\Controllers\Connection:send')
         ->add($container['csrf'])
         ->setName('sendConnection');
+    $app->post('/connectionNav', 'GLPI\Telemetry\Controllers\Connection:loadNavView')
+        ->setName('loadNavView');
 }
 
 if ($container->project->hasRegisterPage()) {

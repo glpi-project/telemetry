@@ -1,6 +1,8 @@
-<?php namespace GLPI\Telemetry\Controllers;
+<?php 
+namespace GLPI\Telemetry\Controllers;
 
 use GLPI\Telemetry\Controllers\ControllerAbstract;
+use GLPI\Telemetry\Middleware\CsrfView;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use GLPI\Telemetry\Models\Authentication as AuthenticationModel;
@@ -33,7 +35,7 @@ class Connection extends ControllerAbstract
                 'Wrong username or password'
             );
             //redirect
-            return $res->withRedirect($this->container->router->pathFor('connection'));
+            return $res->withRedirect($this->container->router->pathFor('telemetry'));
         }
     }
 
@@ -41,5 +43,23 @@ class Connection extends ControllerAbstract
     {
         unset($_SESSION['user']);
         return $res->withRedirect($this->container->router->pathFor('telemetry'));
+    }
+
+    public function loadNavView(Request $req, Response $res)
+    {
+        $slimGuard = $this->container['csrf'];
+        $slimGuard->validateStorage();
+        // Generate new tokens
+        $csrfNameKey = $slimGuard->getTokenNameKey();
+        $csrfValueKey = $slimGuard->getTokenValueKey();
+        $keyPair = $slimGuard->generateToken();
+
+        return $this->render($this->container->project->pathFor('connection_navbar.html.twig'), [
+         'class' => 'connection',
+         'csrf' => '
+            <input type="hidden" name="csrf_name" value="'.$keyPair['csrf_name'].'">
+            <input type="hidden" name="csrf_value" value="'.$keyPair['csrf_value'].'">
+         '
+        ]);
     }
 }

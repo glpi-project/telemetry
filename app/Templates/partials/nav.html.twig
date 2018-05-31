@@ -30,26 +30,21 @@
          {% endif %}
         </div>
         <div class="navbar-nav my-2 my-lg-0">
+
             {% if enable_profile == false %}
             <!-- Split button -->
-            <div class="btn-group">
-            <a class="nav-item nav-link {{ class == 'connection' ? 'active'}}"
-                href="{{path_for('connection')}}">
-               <i class='fa fa-user-circle'></i>
-               Connection</a>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
-                  <span class="caret"></span>
+              <div class="btn-group">
+                <a class="nav-item nav-link {{ class == 'connection' ? 'active'}}"
+                  href="{{path_for('connection')}}">
+                 <i class='fa fa-user-circle'></i>
+                 Connection</a>
+                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <ul class="dropdown-menu" role="menu" aria-expanded="false">
-                  <li>
-                    <a class="nav-item nav-link {{ class == 'register' ? 'active'}}"
-                        href="{{path_for('register')}}">
-                       <i class='fa fa-address-book'></i>
-                       Register</a>
-                  </li>
-                </ul>
-            </div>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <div id="conn-form-nav"></div>
+                </div>
+              </div>
             {% endif %}
 
             {% if enable_profile %}

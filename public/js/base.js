@@ -113,3 +113,8 @@ $(document).on('hidden.bs.dropdown', function(event) {
     // Set focus back to dropdown toggle
     dropdown.find('.dropdown-toggle').focus();
 });
+
+// Prevent Bootstrap dropdown from closing on clicks
+$('.dropdown-menu').click(function(e) {
+    e.stopPropagation();
+});
