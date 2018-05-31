@@ -85,9 +85,9 @@
             </td>
             <td>
                <div>
-                  {% if reference.status == 1 %} <i class="fa fa-clock-o"></i> Pending {% endif %}
-                  {% if reference.status == 0 %} <i class="fa fa-times"></i> Denied {% endif %}
-                  {% if reference.status == 2 %} <i class="fa fa-check"></i> Accepted {% endif %}
+                  {% if reference.status == 1 %} <i class="fa fa-clock-o" title="Pending status means that the administrator has not yet managed the reference."></i>{% endif %}
+                  {% if reference.status == 0 %} <i class="fa fa-times" title="Denied status means that the administrator has encountered a problem with your reference."></i>{% endif %}
+                  {% if reference.status == 2 %} <i class="fa fa-check" title="Accepted status means that the administrator validated your reference. It is displayed in 'References' tab."></i>{% endif %}
                </div>
             </td>
             <td>
