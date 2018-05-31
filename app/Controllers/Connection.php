@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace GLPI\Telemetry\Controllers;
 
 use GLPI\Telemetry\Controllers\ControllerAbstract;
