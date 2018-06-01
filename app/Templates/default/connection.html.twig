@@ -12,7 +12,7 @@
 {% block content %}
 <div class="{{ class|default('container') }}">
 
-   <form method="post">
+   <form method="post" method="post" action="{{path_for('sendConnection')}}">
         <div class="form-group">
             <label for="username">Username</label>
             <input class="form-control" name="user" type="text" required="required" autofocus="autofocus" placeholder="Username" >
