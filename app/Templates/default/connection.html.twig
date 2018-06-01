@@ -25,8 +25,8 @@
 
 
     {% if my_csrf is defined %}
-        <input type="hidden" name="csrf_name" value="{{ csrf.name  }}"/>
-        <input type="hidden" name="csrf_value" value="{{ csrf.value }}"/>
+        <input type="hidden" name="csrf_name" value="{{ my_csrf.name  }}"/>
+        <input type="hidden" name="csrf_value" value="{{ my_csrf.value }}"/>
     {% else %}
         {{ csrf.field | raw }}
     {% endif %}
