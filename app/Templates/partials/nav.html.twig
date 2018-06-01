@@ -34,13 +34,16 @@
             {% if enable_profile == false %}
             <!-- Split button -->
               <div class="btn-group">
-                <a class="nav-item nav-link {{ class == 'connection' ? 'active'}}"
-                  href="{{path_for('connection')}}">
-                 <i class='fa fa-user-circle'></i>
-                 Connection</a>
-                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
+                <a
+                    class="nav-item nav-link{{ class == 'connection' ? ' active'}} dropdown-toggle"
+                    id="login"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    href="{{path_for('connection')}}">
+                    <i class='fa fa-user-circle'></i>
+                    Connection
+                </a>
                 <div class="dropdown-menu dropdown-menu-right">
                   <div id="conn-form-nav"></div>
                 </div>
