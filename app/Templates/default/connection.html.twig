@@ -1,4 +1,4 @@
-{% extends "partials/base.html.twig" %}
+{% extends 'partials/' ~ (ajax ? 'ajax' : 'base') ~ '.html.twig' %}
 {% block title %}Connection{% endblock %}
 
 {% block header %}
@@ -10,22 +10,29 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="{{ class|default('container') }}">
 
    <form method="post">
-      <div class="form-group">
-         <label for="username">Username</label>
-         <input class="form-control" name="user" type="text" required="required">
-      </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" name="user" type="text" required="required" autofocus="autofocus" placeholder="Username" >
+        </div>
 
-      <div class="form-group">
-         <label for="password">Password</label>
-         <input class="form-control" name="password" type="password" required="required">
-      </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" name="password" type="password" required="required" placeholder="Password">
+        </div>
 
-      <button type="submit" class="btn btn-outline-primary">Connect</button>
 
-      {{ csrf.field | raw }}
+    {% if csrf is defined %}
+        <input type="hidden" name="csrf_name" value="{{ csrf_name  }}">
+        <input type="hidden" name="csrf_value" value="{{ csrf_value }}">
+    {% endif %}
+
+        <button type="submit" class="btn btn-outline-primary">Connect</button>
+        <div class="pull-right">
+            No account? <a href="{{path_for('register')}}">Register now!</a>
+        <div>
    </form>
 
 </div>

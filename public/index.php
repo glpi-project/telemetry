@@ -13,7 +13,7 @@ if ($container->project->hasContactPage()) {
         ->add($container['csrf'])
         ->setName('contact');
     $app->post('/contact', 'GLPI\Telemetry\Controllers\Contact:send')
-        ->add($recaptcha)
+        //->add($recaptcha)
         ->add($container['csrf'])
         ->setName('sendContact');
 }
@@ -32,8 +32,6 @@ if ($container->project->hasConnectionPage()) {
     $app->post('/connection', 'GLPI\Telemetry\Controllers\Connection:send')
         ->add($container['csrf'])
         ->setName('sendConnection');
-    $app->post('/connectionNav', 'GLPI\Telemetry\Controllers\Connection:loadNavView')
-        ->setName('loadNavView');
 }
 
 if ($container->project->hasRegisterPage()) {
@@ -164,7 +162,7 @@ $app->map(
 
 //Reference registration
 $app->post('/reference', 'GLPI\Telemetry\Controllers\Reference:register')
-   ->add($recaptcha)
+   //->add($recaptcha)
    ->add($container['csrf'])
    ->setName('registerReference');
 /** /References */

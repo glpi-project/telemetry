@@ -9,17 +9,36 @@ use GLPI\Telemetry\Models\Authentication as AuthenticationModel;
 
 class Connection extends ControllerAbstract
 {
-    public function view()
+    public function view(Request $req, Response $res)
     {
-        $this->render($this->container->project->pathFor('connection.html.twig'), [
-         'class' => 'connection'
-        ]);
+        $params = ['ajax' => $req->isXhr()];
+
+        if ($req->isXhr()) {
+            $slimGuard = $this->container['csrf'];
+            $slimGuard->validateStorage();
+            // Generate new tokens
+            $csrfNameKey = $slimGuard->getTokenNameKey();
+            $csrfValueKey = $slimGuard->getTokenValueKey();
+            $keyPair = $slimGuard->generateToken();
+
+            $params += [
+                'class'    => 'popup-connection',
+                'csrf'     => [
+                    'name'    => $keyPair['csrf_name'],
+                    'value'   => $keyPair['csrf_value']
+                ]
+            ];
+        }
+        $this->render(
+            $this->container->project->pathFor('connection.html.twig'),
+            $params
+        );
     }
 
     public function send(Request $req, Response $res, $redirect = 'telemetry')
     {
         $post = $req->getParsedBody();
-        
+
         $auth_ref = new AuthenticationModel;
         $auth = $auth_ref->newInstance();
 
@@ -43,23 +62,5 @@ class Connection extends ControllerAbstract
     {
         unset($_SESSION['user']);
         return $res->withRedirect($this->container->router->pathFor('telemetry'));
-    }
-
-    public function loadNavView(Request $req, Response $res)
-    {
-        $slimGuard = $this->container['csrf'];
-        $slimGuard->validateStorage();
-        // Generate new tokens
-        $csrfNameKey = $slimGuard->getTokenNameKey();
-        $csrfValueKey = $slimGuard->getTokenValueKey();
-        $keyPair = $slimGuard->generateToken();
-
-        return $this->render($this->container->project->pathFor('connection_navbar.html.twig'), [
-         'class' => 'connection',
-         'csrf' => '
-            <input type="hidden" name="csrf_name" value="'.$keyPair['csrf_name'].'">
-            <input type="hidden" name="csrf_value" value="'.$keyPair['csrf_value'].'">
-         '
-        ]);
     }
 }

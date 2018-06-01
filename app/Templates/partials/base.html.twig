@@ -44,16 +44,15 @@
           if($("#conn-form-nav")) {
             //Call AJAX to load connection form on navbar
             $.ajax({
-              type: "post",
-              url: '{{ path_for("loadNavView") }}', 
-              data: {action : "getConnectionNav"},
-
-              success: function(result){
-                  $("#conn-form-nav").html(result);
-            },
-              error : function(result){
-                  $("#conn-form-nav").html("Connection form failed !");
-            }});
+                type: "get",
+                url: '{{ path_for("connection") }}',
+                success: function(result){
+                    $("#conn-form-nav").html(result);
+                },
+                error : function(result){
+                    $("#conn-form-nav").html("Connection form failed !");
+                }
+            });
           }
         </script>
       {% endblock %}
