@@ -24,15 +24,17 @@
         </div>
 
 
-    {% if csrf is defined %}
+    {% if my_csrf is defined %}
         <input type="hidden" name="csrf_name" value="{{ csrf.name  }}"/>
         <input type="hidden" name="csrf_value" value="{{ csrf.value }}"/>
+    {% else %}
+        {{ csrf.field | raw }}
     {% endif %}
 
         <button type="submit" class="btn btn-outline-primary">Connect</button>
         <div class="pull-right">
             No account? <a href="{{path_for('register')}}">Register now!</a>
-        <div>
+        </div>
    </form>
 
 </div>

@@ -23,7 +23,7 @@ class Connection extends ControllerAbstract
 
             $params += [
                 'class'    => 'popup-connection',
-                'csrf'     => [
+                'my_csrf'  => [
                     'name'    => $keyPair['csrf_name'],
                     'value'   => $keyPair['csrf_value']
                 ]
