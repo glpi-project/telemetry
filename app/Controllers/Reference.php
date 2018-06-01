@@ -21,6 +21,7 @@ class Reference extends PageAbstract
         $dyn_refs = $refs_tab['dyn_refs'];
 
         $references->setPath($this->container->router->pathFor('reference'));
+        $user = (isset($_SESSION['user']) ? $_SESSION['user'] : null);
 
         // render in twig view
         $this->render($this->container->project->pathFor('reference.html.twig'), [
@@ -33,7 +34,7 @@ class Reference extends PageAbstract
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
             'dyn_refs'      => $dyn_refs,
-            'user'          => $_SESSION['user']
+            'user'          => $user
         ]);
     }
 
