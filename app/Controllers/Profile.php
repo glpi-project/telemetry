@@ -15,6 +15,7 @@ class Profile extends PageAbstract
 
         $_SESSION['reference'] = $this->setDifferentsFilters($get, $args);
 
+
         //Reload SESSION variables for user's references
         $ref = new ReferenceModel();
         $ref_model = $ref->newInstance();
@@ -23,6 +24,8 @@ class Profile extends PageAbstract
         $refs_tab = $this->loadRefs(true);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
+
+        $_SESSION['user']['references_count'] = ReferenceModel::where('user_id', '=', $_SESSION['user']['id'])->count();
 
         $references->setPath($this->container->router->pathFor('profile'));
 

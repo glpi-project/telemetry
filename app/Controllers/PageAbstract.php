@@ -6,6 +6,7 @@ use Slim\Http\Response;
 use Interop\Container\ContainerInterface;
 use GLPI\Telemetry\Controllers\ControllerAbstract;
 use GLPI\Telemetry\Models\Reference as ReferenceModel;
+use GLPI\Telemetry\Models\User as UserModel;
 
 abstract class PageAbstract extends ControllerAbstract
 {
@@ -67,12 +68,11 @@ abstract class PageAbstract extends ControllerAbstract
     /**
      * This function load references and dynamics references
      *
-     * @param boolean $bool_user    To specify if the function will have to load references for a user
-     * @param integer $status   To specify if the function will have to load references for a specific status
-     *
-     * @return array
+     * @param $user_id to specify if the function will have to load references for a specific user
+     * @param $status to specify if the function will have to load references for a specific status
+     * @return array ['references', 'dyn_refs'] to return references and dynamics references
      **/
-    protected function loadRefs($bool_user = false, $status = null)
+    public function load_refs($user_id = null, $status = null)
     {
         $status = ($status === null) ? $_SESSION['reference'][get_class($this)] : $status;
 
@@ -108,8 +108,8 @@ abstract class PageAbstract extends ControllerAbstract
                     )
                 );
                 $model->where('status', '=', $status);
-                if ($bool_user) {
-                    $model->where('user_id', '=', $_SESSION['user']['id']);
+                if ($user_id != null) {
+                    $model->where('user_id', '=', $user_id);
                 }
                 $model->orderBy(
                     $order_table . '.' . $order_field,
@@ -132,5 +132,39 @@ abstract class PageAbstract extends ControllerAbstract
             }
         }
         return ['references' => $references, 'dyn_refs' => $dyn_refs];
+    }
+
+    public function loadUsers($is_admin = null, $order_field = 'username')
+    {
+        $ref = new UserModel();
+        $model = $ref->newInstance();
+        if ($is_admin != null) {
+            $model->where('is_admin', '=', $is_admin);
+        }
+        $model->orderBy(
+            $order_field,
+            $_SESSION['users']['sort']
+        );
+        $users = $model->paginate($_SESSION['users']['pagination']);
+
+        foreach ($users as $key => $user) {
+            $user['attributes'] = 
+                $user['attributes'] + 
+                ['refs_count'=>$this->loadUserRefsCount($user['attributes']['id'])];
+        }
+
+        return $users;
+    }
+
+    public function loadUserRefsCount($user_id = null)
+    {
+        if ($user_id == null) {
+            $user_id = $_SESSION['user']['id'];
+        }
+
+        //Reload SESSION variables for user's references
+        $ref = new ReferenceModel();
+        $ref_model = $ref->newInstance();
+        return $ref_model->where('user_id', $user_id)->get()->count();
     }
 }

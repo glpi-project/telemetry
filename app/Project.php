@@ -1,6 +1,7 @@
 <?php
 
 namespace GLPI\Telemetry;
+use GLPI\Telemetry\Models\User as UserModel;
 
 class Project
 {
@@ -89,6 +90,11 @@ class Project
         );
         $this->project_path = __DIR__ . '/../projects/' . $this->slug;
         $this->templates_path =  $this->project_path . '/Templates';
+
+        //reload user's informations
+        $user_ref = new UserModel;
+        $user_model = $user_ref->newInstance();
+        $_SESSION['user'] = $user_model->getUser($_SESSION['user']['username'])['attributes'];
 
         if (isset($_SESSION['user']['username'])) {
             $this->enable_profile = true;

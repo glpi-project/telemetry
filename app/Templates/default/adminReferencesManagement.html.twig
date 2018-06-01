@@ -11,8 +11,10 @@
 {% set myheader= {
    'title': '<i class="fa fa-cog"></i> Admin',
    'text':  'Manage references',
+   'class': 'adminReferencesManagement'
 } %}
 {{ parent() }}
+{% include('partials/adminNav.html.twig') %}
 {% endblock %}
 
 {% block content %}

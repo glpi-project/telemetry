@@ -10,7 +10,7 @@ class User extends \Illuminate\Database\Eloquent\Model
     protected $guarded = [
       ''
     ];
-    protected $fillable = array('username', 'is_admin', 'mail');
+    protected $fillable = array('username', 'is_admin', 'email');
 
     /**
      * Return informations about the current user

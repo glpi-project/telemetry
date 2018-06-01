@@ -95,10 +95,20 @@ if ($container->project->hasProfilePage()) {
 
 if ($container->project->hasAdminPage()) {
     // admin
-    $app->get('/admin[/status/{status}[/page/{page:\d+}]]', 'GLPI\Telemetry\Controllers\Admin:view')
+    $app->get('/admin/references[/status/{status}[/page/{page:\d+}]]', 'GLPI\Telemetry\Controllers\Admin:viewReferencesManagement')
         ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
         ->add($container['csrf'])
-        ->setName('admin');
+        ->setName('adminReferencesManagement');
+
+    //Admin users management
+    $app->map(
+        ['get', 'post'],
+        '/admin/users',
+        'GLPI\Telemetry\Controllers\Admin:viewUsersManagement'
+    )
+       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+       ->add($container['csrf'])
+       ->setName('adminUsersManagement');
 
     //Admin denied
     $app->map(
@@ -114,7 +124,7 @@ if ($container->project->hasAdminPage()) {
     $app->map(
         ['get', 'post'],
         '/admin/view[/{status}]',
-        'GLPI\Telemetry\Controllers\Admin:view'
+        'GLPI\Telemetry\Controllers\Admin:viewReferencesManagement'
     )
        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
        ->add($container['csrf'])

@@ -7,7 +7,27 @@ use Slim\Http\Response;
 
 class Admin extends PageAbstract
 {
-    public function view(Request $req, Response $res, array $args)
+    public function viewUsersManagement(Request $req, Response $res, array $args)
+    {
+        $users = $this->loadUsers();
+
+        $users->setPath($this->container->router->pathFor('adminUsersManagement'));
+
+        $this->render($this->container->project->pathFor('adminUsersManagement.html.twig'), [
+         'class'        => 'admin',
+         'showmodal'    => isset($get['showmodal']),
+         'users'        => $users,
+         'pagination'   => $users->appends($_GET)->render(),
+         'uuid'         => isset($get['uuid']) ? $get['uuid'] : '',
+         'user_session' => $_SESSION['user'],
+         'actions'      => [
+            ['code' => 'to_admin', 'msg' => 'Upgrade user to admin'],
+            ['code' => 'to_not_admin', 'msg' => 'Downgrade this admin user']
+         ]
+        ]);
+    }
+
+    public function viewReferencesManagement(Request $req, Response $res, array $args)
     {
         $get = $req->getQueryParams();
 
@@ -28,10 +48,10 @@ class Admin extends PageAbstract
             }
         }
 
-        $references->setPath($this->container->router->pathFor('admin'));
+        $references->setPath($this->container->router->pathFor('adminReferencesManagement'));
 
         // render in twig view
-        $this->render($this->container->project->pathFor('admin.html.twig'), [
+        $this->render($this->container->project->pathFor('adminReferencesManagement.html.twig'), [
             'class'         => 'admin',
             'showmodal'     => isset($get['showmodal']),
             'uuid'          => isset($get['uuid']) ? $get['uuid'] : '',
@@ -61,7 +81,7 @@ class Admin extends PageAbstract
             $_SESSION['reference']['orderby'] = $args['orderby'];
         }
 
-        return $res->withRedirect($this->container->router->pathFor('admin'));
+        return $res->withRedirect($this->container->router->pathFor('adminReferencesManagement'));
     }
 
     public function actionReferencePost(Request $req, Response $res)
