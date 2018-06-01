@@ -72,7 +72,7 @@ abstract class PageAbstract extends ControllerAbstract
      * @param $status to specify if the function will have to load references for a specific status
      * @return array ['references', 'dyn_refs'] to return references and dynamics references
      **/
-    public function load_refs($user_id = null, $status = null)
+    public function loadRefs($user_id = null, $status = null)
     {
         $status = ($status === null) ? $_SESSION['reference'][get_class($this)] : $status;
 
