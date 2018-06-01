@@ -11,8 +11,6 @@ class Admin extends PageAbstract
     {
         $users = $this->loadUsers();
 
-        echo "<pre>";var_dump($users);
-
         $users->setPath($this->container->router->pathFor('adminUsersManagement'));
 
         $this->render($this->container->project->pathFor('adminUsersManagement.html.twig'), [
@@ -21,7 +19,11 @@ class Admin extends PageAbstract
          'users'        => $users,
          'pagination'   => $users->appends($_GET)->render(),
          'uuid'         => isset($get['uuid']) ? $get['uuid'] : '',
-         'user_session' => $_SESSION['user']
+         'user_session' => $_SESSION['user'],
+         'actions'      => [
+            ['code' => 'to_admin', 'msg' => 'Upgrade user to admin'],
+            ['code' => 'to_not_admin', 'msg' => 'Downgrade this admin user']
+         ]
         ]);
     }
 

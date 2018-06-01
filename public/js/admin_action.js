@@ -112,3 +112,7 @@ function validateAdminActionForm(){
 	}
 	return true;
 }
+
+function usersManagementModal(user){
+	$('#input_form_user_action_user_id').val(user.id);
+}

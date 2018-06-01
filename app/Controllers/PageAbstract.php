@@ -145,16 +145,11 @@ abstract class PageAbstract extends ControllerAbstract
         $users = $model->paginate($_SESSION['users']['pagination']);
 
         foreach ($users as $key => $user) {
-            $references = $this->load_refs($user['id']);
-            foreach ($references as $key2 => $reference) {
-                echo "<pre>";var_dump($user['id']);   
-            }
-            //$user['references'] = $reference['references'];
-            $users[$key] = $user['attributes'];
+            $user['attributes'] = 
+                $user['attributes'] + 
+                ['refs_count'=>$this->loadUserRefsCount($user['attributes']['id'])];
         }
-/*
-$reference[0]['attributes']
-*/
+
         return $users;
     }
 
@@ -167,6 +162,6 @@ $reference[0]['attributes']
         //Reload SESSION variables for user's references
         $ref = new ReferenceModel();
         $ref_model = $ref->newInstance();
-        $_SESSION['user']['references_count'] = $ref_model->where('user_id', $user_id)->get()->count();
+        return $ref_model->where('user_id', $user_id)->get()->count();
     }
 }

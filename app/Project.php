@@ -97,8 +97,6 @@ class Project
         $_SESSION['user'] = $user_model->getUser($_SESSION['user']['username'])['attributes'];
 
         if (isset($_SESSION['user']['username'])) {
-
-            var_dump($_SESSION['user']);
             $this->enable_profile = true;
             if ($_SESSION['user']['is_admin']) {
                 $this->enable_admin = true;
