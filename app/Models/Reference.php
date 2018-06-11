@@ -23,6 +23,14 @@ class Reference extends \Illuminate\Database\Eloquent\Model
         return $query->where('status', '=', self::ACCEPTED);
     }
 
+    /**
+     * Update reference status
+     *
+     * @param integer $id Reference id
+     * @param integer $status New reference status
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function updateStatus($id, $status)
     {
         return $this::where('id', '=', $id)->update(['status' => $status]);
@@ -42,11 +50,11 @@ class Reference extends \Illuminate\Database\Eloquent\Model
         $user = $ref_user->newInstance();
 
         $res_ref = $this::where('id', '=', $ref_id)->first();
-        $ref_mail = $res_ref->attributes['email'];
+        $ref_mail = ($res_ref === null) ? null : $res_ref->attributes['email'];
         $ref_user_id = $res_ref->attributes['user_id'];
 
         $res_user = $user::where('id', '=', $ref_user_id)->first();
-        $user_mail = $res_user->attributes['email'];
+        $user_mail = ($res_user === null) ? null : $res_user->attributes['email'];
 
         return
         [
@@ -56,11 +64,30 @@ class Reference extends \Illuminate\Database\Eloquent\Model
     }
 
     /**
+     * Find Username from reference's id
+     *
+     * @param integer $ref_id Reference's id
+     *
+     * @return String
+     */
+    public function findUsername($ref_id)
+    {
+        $ref_user = new UserModel();
+        $user = $ref_user->newInstance();
+
+        $res_ref = $this::where('id', '=', $ref_id)->first();
+        $ref_user_id = $res_ref->attributes['user_id'];
+
+        $res_user = $user::where('id', '=', $ref_user_id)->first();
+        return ($res_user === null) ? null : $res_user->attributes['username'];
+    }
+
+    /**
      * Match between the constant and the string value for status
      *
      * @param integer $status
      *
-     * @return array
+     * @return String|boolean
     **/
     public function statusIntToText($status)
     {
