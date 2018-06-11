@@ -14,9 +14,7 @@ class Reference extends PageAbstract
     {
         $get = $req->getQueryParams();
 
-        $_SESSION['reference'] = $this->setDifferentsFilters($get, $args, false);
-
-        $refs_tab = $this->loadRefs(false, ReferenceModel::ACCEPTED);
+        $refs_tab = $this->loadRefs('reference', null, ReferenceModel::ACCEPTED);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
 
@@ -34,7 +32,8 @@ class Reference extends PageAbstract
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
             'dyn_refs'      => $dyn_refs,
-            'user'          => $user
+            'user'          => $user,
+            'type_page'     => 'reference'
         ]);
     }
 
@@ -208,23 +207,5 @@ class Reference extends PageAbstract
 
         // redirect to ok page
         return $res->withRedirect($this->container->router->pathFor('profile'));
-    }
-
-    public function filter(Request $req, Response $res, array $args)
-    {
-        $get = $req->getQueryParams();
-
-        // manage sorting
-        if (isset($args['orderby'])) {
-            if ($_SESSION['reference']['orderby'] == $args['orderby']) {
-               // toggle sort if orderby requested on the same column
-                $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
-                                                ? "asc"
-                                                : "desc");
-            }
-            $_SESSION['reference']['orderby'] = $args['orderby'];
-        }
-
-        return $res->withRedirect($this->container->router->pathFor('reference'));
     }
 }
