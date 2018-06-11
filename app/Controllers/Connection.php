@@ -39,6 +39,8 @@ class Connection extends ControllerAbstract
     {
         $post = $req->getParsedBody();
 
+        $post['user'] = htmlentities($post['user']);
+
         $auth_ref = new AuthenticationModel;
         $auth = $auth_ref->newInstance();
 
