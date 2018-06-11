@@ -3,7 +3,6 @@
 {% block head %}
     {{ parent() }}
     <link rel="stylesheet" href="{{base_url()}}/libs/country-flags-sass/flags.css" />
-    <link rel="stylesheet" href="{{base_url()}}/libs/select2/css/select2.min.css" />
     <script type="text/javascript" src="{{base_url()}}/js/profile_action.js"></script>
 {% endblock %}
 
@@ -32,10 +31,10 @@
       </thead>
       <tbody>
          <tr>
-            <td>{{user_session['username']}}</td>
-            <td>{{user_session['email']}}</td>
-            <td>{{user_session['references_count']}}</td>
-            {% if user_session['is_admin'] == true %}<td>Yes</td>
+            <td>{{user_session.username|raw}}</td>
+            <td>{{user_session.email|raw}}</td>
+            <td>{{user_session.references_count}}</td>
+            {% if user_session.is_admin == true %}<td>Yes</td>
             {% else %}<td>No</td>
             {% endif %}
             <td><button class="btn btn-primary" data-toggle="modal" data-target="#edit_user_profile" onclick="actionProfileUser({{ user_session | json_encode() }})">Edit</button></td>
@@ -45,28 +44,22 @@
 
    <h3>Your references</h3>
 
-  Sort your result by 
-   <select id="dropdownStatusProfile" onchange="window.location.href=dropdownStatusProfile.value">
-      <option id="dropdownStatusDeniedProfile" value="{{ path_for('sorterProfile', {'status': '0'}) }}">Denied</option>
-      <option id="dropdownStatusPendingProfile" value="{{ path_for('sorterProfile', {'status': '1'}) }}">Pending</option>
-      <option id="dropdownStatusAcceptedProfile" value="{{ path_for('sorterProfile', {'status': '2'}) }}">Accepted</option>
-   </select>
-   references ({{ references.total }} loaded).
+  {% include 'default/customResearch.html.twig' %}
 
    <table class="table table-striped glpi_references">
       <thead>
          <tr>
             <td>
                {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterProfileReferences', {'orderby': 'name'}) }}">Name</a>
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'name'}) }}">Name</a>
             </td>
             <td>
                {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterProfileReferences', {'orderby': 'country'}) }}">Country</a>
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'country'}) }}">Country</a>
             </td>
             <td>
                {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterProfileReferences', {'orderby': 'created_at'}) }}">Registration date</a>
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'created_at'}) }}">Registration date</a>
             </td>
             <td>
                Mail
@@ -96,7 +89,7 @@
             <td>{{reference.created_at|date("Y-m-d") }}</td>
             <td>
                <div class="elipsis" title="{{reference.email}}">
-                  <a href="{{reference.email}}">{{reference.email}}</a>
+                  <a href="mailto:{{reference.email}}">{{reference.email}}</a>
                </div>
             </td>
             <td>
@@ -107,7 +100,7 @@
                </div>
             </td>
             <td>
-               <button class="btn btn-primary" data-toggle="modal" data-target="#register_reference_profile" onclick="actionProfileForm({{ reference }})">Edit</button>
+               <button class="btn btn-primary" data-toggle="modal" data-target="#register_reference_profile" onclick="showReferenceModal({{ reference }})">Edit</button>
             </td>
             <td>
                <button class="btn btn-danger" data-toggle="modal" data-target="#delete_reference_profile" onclick="actionProfileDelete({{ reference }})">Delete</button>
@@ -141,7 +134,8 @@
               <input class="form-control form-control-sm" type="text"
                      name='name'
                      id="input_form_profile_user_name" 
-                     placeholder="Name"
+                     placeholder="Name" 
+                     value="{{ user_session.username | raw }}" 
                      required>
             </div>
 
@@ -150,7 +144,8 @@
               <input class="form-control form-control-sm" type="email"
                      name='mail'
                      id="input_form_profile_user_mail" 
-                     placeholder="Mail"
+                     placeholder="Mail" 
+                     value="{{ user_session.email | raw }}"
                      required>
             </div>
 
@@ -189,7 +184,7 @@
               </ul>
             </div>
 
-            <input type="hidden" name="ref_id" id="input_form_profile_user_id">
+            <input type="hidden" name="ref_id" id="input_form_profile_user_id" value="{{ user_session.id }}">
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline-primary" id="submit_profile_user_update">Update</button>
@@ -239,7 +234,7 @@
                   <span aria-hidden="true">&times;</span>
                </button>
             </div>
-            <div class="modal-body" id="modal_body_profile_update">
+            <div class="modal-body" id="modal_body_view_reference">
                <div class="alert alert-warning" role="alert" id="warning-country">
                   <strong>Warning!</strong> You may have note that your adblocker forbid a freegeoip url. We use this service only to locate your country and prefill the dropdown bellow!
                </div>
@@ -261,7 +256,7 @@
                <div class="form-group">
                   <label class="sr-only" for="country">Country</label>
                   <select class="form-control"
-                          id="countries_select_modal_profile"
+                          id="countries_select_modal"
                           name="country"
                           placeholder="Country">
                      <option></option>
@@ -332,20 +327,17 @@
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="{{base_url()}}/libs/select2/js/select2.min.js"></script>
-<script type="text/javascript" src="{{base_url()}}/js/password.min.js"></script>
 
 <script type="text/javascript">
 
 $(document).ready(function() {
-    var countries_s2 = $("#countries_select_modal_profile").select2({
+    var countries_s2 = $("#countries_select_modal").select2({
         templateSelection: formatState,
         templateResult: formatState,
         placeholder: "Country",
         width: '100%',
         dropdownParent: $('#register_reference_profile')
     });
-
-   document.getElementById("dropdownStatusProfile").selectedIndex = {{status_page}};
 });
 </script>
 {% endblock %}
