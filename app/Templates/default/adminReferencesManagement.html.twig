@@ -19,57 +19,86 @@
 
 {% block content %}
 <div class="container">
-  Sort your result by 
-   <select id="dropdownStatusAdmin" onchange="window.location.href=dropdownStatusAdmin.value">
-      <option id="dropdownStatusDenied" value="{{ path_for('sorterAdmin', {'status': '0'}) }}">Denied</option>
-      <option id="dropdownStatusPending" value="{{ path_for('sorterAdmin', {'status': '1'}) }}">Pending</option>
-      <option id="dropdownStatusAccepted" value="{{ path_for('sorterAdmin', {'status': '2'}) }}">Accepted</option>
-   </select>
-   references ({{ references.total }} loaded).
+  {% include 'default/customResearch.html.twig' %}
 
-   <table class="table table-striped glpi_references">
+  <form method="post" action="{{ path_for('doReferencesActions', {'type_page': type_page}) }}">
+    This sort has loaded {{ references.total }} references. {{sort}}
+    <input type="submit" class="btn btn-warning float-right" value="Launch actions">
+
+    <table class="table table-striped glpi_references">
       <thead>
          <tr>
-            <td>
+            <td colspan="2">
                {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterAdminReferences', {'orderby': 'name'}) }}">Name</a>
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'name'}) }}">Name</a>
             </td>
             <td>
                {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterAdminReferences', {'orderby': 'country'}) }}">Country</a>
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'country'}) }}">Country</a>
             </td>
     {% if dyn_refs|length > 0 %}
         {% for key, labels in dyn_refs %}
             <td>
                {% if orderby == key %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterAdminReferences', {'orderby': key}) }}">{{labels.short_label}}</a>
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': key}) }}">{{labels.short_label}}</a>
             </td>
         {% endfor %}
     {% endif %}
             <td>
                {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterAdminReferences', {'orderby': 'created_at'}) }}">Registration date</a>
-            </td>
-            <td>
-               Comment
-            </td>
-            <td>
-               Status
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'created_at'}) }}">Registration date</a>
             </td>
             <td>
                Actions
+            </td>
+            <td>
+              <input type="checkbox" class="check" id="checkAll">
             </td>
          </tr>
       </thead>
       <tbody>
          {% for reference in references %}
          <tr>
-             <td>
-                 {% if reference.url %}
-                     <a href="{{reference.url}}" target="_blank">{{reference.name}}</a>
-                 {% else %}
-                     {{reference.name}}
-                 {% endif %}
+            <td>
+              {% set data = { 'ref_id': reference.id, 'mails': ref_user_mails } %}
+
+              <div class="dropdown">
+                <button class="btn btn-secondary fa fa-plus" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" aria-expanded="false">
+                  <button 
+                    class="btn dropdown-item button-admin-view-reference" 
+                    type="button" 
+                    data-toggle="modal" 
+                    data-target="#register_reference_profile" 
+                    onclick="showReferenceModal({{ reference }})" 
+                    aria-expanded="true">View reference</button>
+
+                  <button 
+                    id="{{ reference.id }}" 
+                    class="btn dropdown-item button-admin-view-mail" 
+                    type="button"
+                    data-toggle="modal" 
+                    data-target="#add_action_comment" 
+                    value="{{ data | json_encode() }}" 
+                    aria-expanded="true">Send mail
+                  </button>
+                  {% if arr_ref_id_user[reference.id] != null %}
+                    <button 
+                      class="btn dropdown-item" 
+                      type="button" 
+                      onclick="window.location.href='{{ path_for('filterSearch', {type_page:'users_management', search:arr_ref_id_user[reference.id]}) }}'" 
+                      type="button">View reference's user
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+            <td>
+              {% if reference.url %}
+                <a href="{{reference.url}}" target="_blank">{{reference.name}}</a>
+                {% else %}
+                   {{reference.name}}
+                {% endif %}
             </td>
             <td>
                <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
@@ -79,39 +108,30 @@
             <td>{{reference[key]}}</td>
         {% endfor %}
     {% endif %}
-            <td>{{reference.created_at|date("Y-m-d") }}</td>
             <td>
-               <div class="elipsis" title="{{reference.comment}}">
-                {{reference.comment}}
-               </div>
+              {{reference.created_at|date("Y-m-d") }}
             </td>
             <td>
-               <div>
-                  {% if reference.status == 1 %} <i class="fa fa-clock-o" title="Pending status means that the administrator has not yet managed the reference."></i>{% endif %}
-                  {% if reference.status == 0 %} <i class="fa fa-times" title="Denied status means that the administrator has encountered a problem with your reference."></i>{% endif %}
-                  {% if reference.status == 2 %} <i class="fa fa-check" title="Accepted status means that the administrator validated your reference. It is displayed in 'References' tab."></i>{% endif %}
-               </div>
+              <select name="select-{{ reference.id }}" class="massive_actions_select">
+                {% for action in actions %}
+                  {% set selected = '' %}
+                  {% if action.code == action_code %}
+                    {% set selected = 'selected' %}
+                  {% endif %}
+                    <option label="{{ reference.id }}" name="option-{{ reference.id }}" value="{{ action.code }}" {{ selected }}>{{ action.msg }}</option>
+                {% endfor %}
+              </select>
             </td>
             <td>
-               <div>
-                  {% if reference.status == 0 %}
-                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 2, {{ ref_user_mails }})"><i class="fa fa-check"></i></a> or 
-                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 1, {{ ref_user_mails }})"><i class="fa fa-clock-o"></i></a>
-                  {% endif %}
-                  {% if reference.status == 1 %}
-                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 2, {{ ref_user_mails }})"><i class="fa fa-check"></i></a> or 
-                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 0, {{ ref_user_mails }})"><i class="fa fa-times"></i></a>
-                  {% endif %}
-                  {% if reference.status == 2 %}
-                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 1, {{ ref_user_mails }})"><i class="fa fa-clock-o"></i></a> or 
-                     <a href="#" data-toggle="modal" data-target="#add_action_comment" onclick="actionInfoToForm({{reference.id}}, 0, {{ ref_user_mails }})"><i class="fa fa-times"></i></a>
-                  {% endif %}
-               </div>
+              <input type="checkbox" name="checkbox-{{ reference.id }}" class="check" value="{{ reference.id }}">
             </td>
          </tr>
          {% endfor %}
       </tbody>
-   </table>
+    </table>
+    <input type="submit" class="btn btn-warning float-right" value="Launch actions">
+    {{ csrf.field | raw }}
+  </form>
 
    <nav aria-label="Page navigation">
       {{ references.render() |raw }}
@@ -124,14 +144,14 @@
    <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title">Manage your action</h5>
+            <h5 class="modal-title">Sending mails</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <div class="modal-body">
           <label>
-            <input id="form-admin-action-mail-checkbox" type="checkbox" name="form-admin-action-mail-checkbox" onchange="loadBodyActionForm()"> Send email to inform of the change of reference's status.
+            Send email to inform emails below about this reference.
           </label>
             <div id="form-admin-action-body" class="form-group">
                <div id="table_mails_action"></div>
@@ -142,7 +162,6 @@
                          placeholder="Your message to comment on your action, it will be added to the email."></textarea>
             </div>
             <input type="hidden" id="ref_id_input_id" name="ref_id_input">
-            <input type="hidden" id="status_input_id" name="status_input">
          </div>
          <div class="modal-footer">
             <button type="submit" id="submitAdminActionForm" onclick="return validateAdminActionForm()" class="btn btn-outline-primary" disabled>Submit</button>
@@ -152,6 +171,99 @@
    </div>
 </div>
 {{ csrf.field | raw }}
+</form>
+
+
+
+<form method="post" action="{{ path_for('actionProfileReferenceUpdate') }}">
+<div class="modal fade" id="register_reference_profile">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title">Showing the reference</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body" id="modal_body_view_reference">
+           <div class="alert alert-warning" role="alert" id="warning-country">
+              <strong>Warning!</strong> You may have note that your adblocker forbid a freegeoip url. We use this service only to locate your country and prefill the dropdown bellow!
+           </div>
+           <div class="form-group">
+              <label class="sr-only" for="name">Name (company name)</label>
+              <input class="form-control form-control-sm" type="text"
+                    required="required"
+                    name='name'
+                    placeholder="Your (company) name">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="url">Url</label>
+              <input class="form-control form-control-sm" type="url"
+                     name='url'
+                     placeholder="URL">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="country">Country</label>
+              <select class="form-control"
+                      id="countries_select_modal"
+                      name="country"
+                      placeholder="Country">
+                 <option></option>
+                 {% for country in countries %}
+                 <option value="{{country.cca2}}">{{country.name.common}}</option>
+                 {% endfor %}
+              </select>
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="phone">Phone</label>
+              <input class="form-control form-control-sm" type="text"
+                     name='phone'
+                     placeholder="Phone">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="email">Email</label>
+              <input class="form-control form-control-sm" type="email"
+                     name="email"
+                     placeholder="Email">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="referent">Referent name</label>
+              <input class="form-control form-control-sm" type="text"
+                     name="referent"
+                     placeholder="Referent name">
+           </div>
+
+{% if dyn_refs|length > 0 %}
+    {% for key, labels in dyn_refs %}
+           <div class="form-group">
+              <label class="sr-only" for="{{key}}">{{labels.label}}</label>
+              <input class="form-control form-control-sm" type="number"
+                     name="{{key}}"
+                     min="0"
+                     placeholder="{{labels.label}}">
+           </div>
+    {% endfor %}
+{% endif %}
+
+           <div class="form-group">
+              <label class="sr-only" for="comment">Comment</label>
+              <textarea class="form-control form-control-sm"
+                        name="comment"
+                        rows="6"
+                        placeholder="Your message"></textarea>
+           </div>
+        </div>
+        <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+     </div>
+  </div>
+</div>
 </form>
 {% endblock %}
 
@@ -165,27 +277,13 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    var countries_s2 = $("#countries_select").select2({
+    var countries_s2 = $("#countries_select_modal").select2({
         templateSelection: formatState,
         templateResult: formatState,
         placeholder: "Country",
         width: '100%',
-        dropdownParent: $('#add_action_comment')
+        dropdownParent: $('#register_reference_profile')
     });
-
-   getCountryCode.done(function(result) {
-      $("#warning-country").remove();
-      countries_s2
-         .val(result.country_code)
-         .trigger("change")
-   });
-
-   document.getElementById("dropdownStatusAdmin").selectedIndex = {{status_page}};
-
-   // if get parameter showmodal is present, show the corresponding modal
-   {% if showmodal == true %}
-   $("#add_action_comment").modal('show');
-   {% endif %}
 });
 </script>
 {% endblock %}
