@@ -13,19 +13,12 @@ class Profile extends PageAbstract
     {
         $get = $req->getQueryParams();
 
-        $_SESSION['reference'] = $this->setDifferentsFilters($get, $args);
-
-
         //Reload SESSION variables for user's references
-        $ref = new ReferenceModel();
-        $ref_model = $ref->newInstance();
-        $_SESSION['user']['references_count'] = $ref_model->where('user_id', $_SESSION['user']['id'])->get()->count();
+        $_SESSION['user']['references_count'] = $this->loadUserRefsCount();
 
-        $refs_tab = $this->loadRefs(true);
+        $refs_tab = $this->loadRefs('profile', $_SESSION['user']['id']);
         $references = $refs_tab['references'];
         $dyn_refs = $refs_tab['dyn_refs'];
-
-        $_SESSION['user']['references_count'] = ReferenceModel::where('user_id', '=', $_SESSION['user']['id'])->count();
 
         $references->setPath($this->container->router->pathFor('profile'));
 
@@ -34,40 +27,38 @@ class Profile extends PageAbstract
             'class'         => 'profile',
             'uuid'          => isset($get['uuid']) ? $get['uuid'] : '',
             'references'    => $references,
-            'pagination'    => $references->appends($_GET)->render(),
-            'orderby'       => $_SESSION['reference']['orderby'],
-            'sort'          => $_SESSION['reference']['sort'],
+            'pagination'    => $_SESSION['profile']['pagination'],
+            'orderby'       => $_SESSION['profile']['orderby'],
+            'sort'          => $_SESSION['profile']['sort'],
             'dyn_refs'      => $dyn_refs,
-            'user_session'  => $_SESSION['user'],
-            'status_page'   => $_SESSION['reference'][__CLASS__]
+            'user_session'  => (object) $_SESSION['user'],
+            'status_page'   => $_SESSION['profile']['customFilter'],
+            'customFilter'  => $_SESSION['profile']['customFilter'],
+            'search'        => $_SESSION['profile']['search'],
+            'search_on'     => $_SESSION['profile']['search_on'],
+            'type_page'     => 'profile'
         ]);
-    }
-
-    public function filter(Request $req, Response $res, array $args)
-    {
-        $get = $req->getQueryParams();
-
-        // manage sorting
-        if (isset($args['orderby'])) {
-            if ($_SESSION['reference']['orderby'] == $args['orderby']) {
-               // toggle sort if orderby requested on the same column
-                $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
-                                                ? "asc"
-                                                : "desc");
-            }
-            $_SESSION['reference']['orderby'] = $args['orderby'];
-        }
-
-        return $res->withRedirect($this->container->router->pathFor('profile'));
     }
 
     public function userUpdate(Request $req, Response $res)
     {
         $post = $req->getParsedBody();
 
+        var_dump($post['name']);
+        die;
+
+        $user = utf8_encode($post['name']);
         $user = htmlentities($post['name']);
+
+
+
+        $mail = utf8_encode($post['mail']);
         $mail = htmlentities($post['mail']);
+
+        $pass = utf8_encode($post['new_password']);
         $pass = htmlentities($post['new_password']);
+
+        $confirm_pass = utf8_encode($post['confirm_password']);
         $confirm_pass = htmlentities($post['confirm_password']);
 
         $user_ref = new UserModel();
