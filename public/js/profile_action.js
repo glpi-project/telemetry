@@ -1,39 +1,10 @@
-function actionProfileForm(ref){
-	var modalElement = $('#modal_body_profile_update')[0];
-	var selectCountry = $('#countries_select_modal_profile')[0];
-	$('#ref_id_form_update').val(ref.id);
-	for( var i=0 ; i<selectCountry.options.length ; i++){
-		if(selectCountry.item(i).value == ref.country.toUpperCase()){
-			selectCountry.options[i].selected = true;
-		      $("#warning-country").remove();
-		      $("#countries_select_modal_profile")
-		         .val(selectCountry.item(i).value)
-		         .trigger("change");
-		}
-	}
-
-	modalElement.children[0].children[1].value = ref.name;
-	modalElement.children[1].children[1].value = ref.url;
-	modalElement.children[3].children[1].value = ref.phone;
-	modalElement.children[4].children[1].value = ref.email;
-	modalElement.children[5].children[1].value = ref.referent;
-	modalElement.children[6].children[1].value = ref.num_assets;
-	modalElement.children[7].children[1].value = ref.num_helpdesk;
-	modalElement.children[8].children[1].value = ref.comment;
-}
-
 function actionProfileDelete(ref){
 	$('#input_form_profile_delete_id').val(ref.id);
 }
 
 function actionProfileUser(user){
-	$('#input_form_profile_user_id').val(user.id);
-	$('#input_form_profile_user_name').val(user.username);
-	$('#input_form_profile_user_mail').val(user.email);
-
 	$('#input_form_profile_user_new_password').keyup(function(){
 		var pass = $(this).val();
-		isAtLeastOneSpecial(pass);
 
 		var size = 8;
 		var hasUpper = /[A-Z]/;
