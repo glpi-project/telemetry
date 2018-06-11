@@ -6,11 +6,11 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkupAdmin">
          <div class="navbar-nav">
             <a class="nav-item nav-link {{ myheader.class == 'adminReferencesManagement' ? 'active'}}"
-               href="{{path_for("adminReferencesManagement")}}">
+               href="{{path_for('withoutFilters', {'type_page': 'reference_management'})}}">
                <i class='fa fa-cog'></i>
                References</a>
             <a class="nav-item nav-link {{ myheader.class == 'adminUsersManagement' ? 'active'}}"
-                href="{{path_for('adminUsersManagement')}}">
+                href="{{path_for('withoutFilters', {'type_page': 'users_management'})}}">
                <i class='fa fa-cog'></i>
                Users</a>
          </div>
