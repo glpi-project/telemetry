@@ -137,13 +137,13 @@ $container['view'] = function ($c) {
 
 
 //setup recaptcha
-/*$container[Captcha::class] = function ($c) {
+$container[Captcha::class] = function ($c) {
     return new Captcha($c[ReCaptcha::class]);
 };
 $container[ReCaptcha::class] = function ($c) {
     return new ReCaptcha($c['settings']['recaptcha']['secret']);
 };
-$recaptcha = $app->getContainer()->get(Captcha::class);*/
+$recaptcha = $app->getContainer()->get(Captcha::class);
 
 // system error handling
 $container['errorHandler'] = function ($c) {

@@ -194,7 +194,7 @@ $app->map(
 
 //Reference registration
 $app->post('/reference', 'GLPI\Telemetry\Controllers\Reference:register')
-   //->add($recaptcha)
+   ->add($recaptcha)
    ->add($container['csrf'])
    ->setName('registerReference');
 /** /References */
