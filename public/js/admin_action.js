@@ -1,12 +1,3 @@
-function actionInfoToForm(ref_id, status, mails){
-  $('#ref_id_input_id').val(ref_id);
-  $('#status_input_id').val(status);
-  $('#table_mails_action').prepend(createTable(mails[ref_id]));
-  $('#form-admin-action-mail-checkbox').prop('checked', true);
-  loadBodyActionForm();
-}
-
-
  function renderSubmitButtonAdminActionForm(){
  	ck1 = $('#checkboxAdminActionForm1')[0] ;
 	ck2 = $('#checkboxAdminActionForm2')[0];
@@ -25,17 +16,6 @@ function actionInfoToForm(ref_id, status, mails){
 	}
  }
 
-function loadBodyActionForm() {
-	if ($('#form-admin-action-mail-checkbox').prop('checked')){
-		$('#form-admin-action-body')[0].classList.remove('d-none');
-		$('#form-admin-action-mail-checkbox')[0].setAttribute('checked', 'checked');
-	} else {
-		$('#form-admin-action-body')[0].classList.add('d-none');
-		$('#form-admin-action-mail-checkbox')[0].setAttribute('checked', '');
-		$('#submitAdminActionForm')[0].disabled = false;
-	}
-}
-
 function createTable(mails_obj) {
 
     // Create table.
@@ -47,7 +27,7 @@ function createTable(mails_obj) {
     table.setAttribute('id', 'tableFormActionAdmin')
     table.className = "table table-striped glpi_references";
 
-    if(mails_obj['user_mail']){
+    if(mails_obj.user_mail){
 	    // Insert New Row for table at index '0'.
 	    var row1 = table.insertRow();
 	    // Insert New Column for Row1 at index '0'.
@@ -55,7 +35,7 @@ function createTable(mails_obj) {
 	    row1col1.innerHTML = 'User mail';
 	    // Insert New Column for Row1 at index '1'.
 	    var row1col2 = row1.insertCell(1);
-	    row1col2.innerHTML = mails_obj['user_mail'];
+	    row1col2.innerHTML = mails_obj.user_mail;
 
 	   	var row1col3 = row1.insertCell(2);
 	    checkbox1 = document.createElement('input');
@@ -63,11 +43,11 @@ function createTable(mails_obj) {
 	    checkbox1.setAttribute('onchange', 'renderSubmitButtonAdminActionForm()');
 	    checkbox1.setAttribute('id', 'checkboxAdminActionForm1');
 	    checkbox1.setAttribute('name', 'checkboxAdminActionForm1');
-	    checkbox1.setAttribute('value', mails_obj['user_mail'])
+	    checkbox1.setAttribute('value', mails_obj.user_mail)
 	    row1col3.prepend(checkbox1);
     }
 
-    if(mails_obj['ref_mail']){
+    if(mails_obj.ref_mail){
 	    // Insert New Row for table at index '1'.
 	    var row2 = table.insertRow();
 	    // Insert New Column for Row2 at index '0'.
@@ -75,7 +55,7 @@ function createTable(mails_obj) {
 	    row2col1.innerHTML = 'Reference mail';
 	    // Insert New Column for Row2 at index '1'.
 	    var row2col2 = row2.insertCell(1);
-	    row2col2.innerHTML = mails_obj['ref_mail'];
+	    row2col2.innerHTML = mails_obj.ref_mail;
 
 	    var row2col3 = row2.insertCell(2);
 	    checkbox2 = document.createElement('input');
@@ -83,7 +63,7 @@ function createTable(mails_obj) {
 	   	checkbox2.setAttribute('onchange', 'renderSubmitButtonAdminActionForm()');
 	    checkbox2.setAttribute('id', 'checkboxAdminActionForm2');
 	    checkbox2.setAttribute('name', 'checkboxAdminActionForm2');
-	    checkbox2.setAttribute('value', mails_obj['ref_mail'])
+	    checkbox2.setAttribute('value', mails_obj.ref_mail)
 	    row2col3.prepend(checkbox2);
     }
 
@@ -91,7 +71,7 @@ function createTable(mails_obj) {
     var row3 = table.insertRow();
     // Insert New Column for Row3 at index '0'.
     var row3col1 = row3.insertCell(0);
-    row3col1.innerHTML = 'Or send to';
+    row3col1.innerHTML = 'Send to';
     // Insert New Column for Row3 at index '1'.
     var row3col2 = row3.insertCell(1);
     var inputrow3col2 = document.createElement('input');
