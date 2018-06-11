@@ -44,9 +44,6 @@ class Profile extends PageAbstract
     {
         $post = $req->getParsedBody();
 
-        var_dump($post['name']);
-        die;
-
         $user = utf8_encode($post['name']);
         $user = htmlentities($post['name']);
 
