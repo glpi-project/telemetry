@@ -10,84 +10,31 @@ use GLPI\Telemetry\Models\User as UserModel;
 
 abstract class PageAbstract extends ControllerAbstract
 {
-
-    /**
-     * This function will set filters (orderby, sort and status).
-     * It is used in several pages
-     *
-     * @param array $args[]     Contain the route's parameters like status
-     * @param array $get[]      Contain Query Params
-     * @param boolean $status_filter    To set or not status filter (use for References page)
-     *
-     * @return array
-    **/
-    protected function setDifferentsFilters(array $get, array $args, $status_filter = true)
-    {
-        $session_ref = $_SESSION['reference'];
-        $page = get_class($this);
-
-        // default session param for this controller
-        if (!isset($session_ref)) {
-            $session_ref['orderby'] = 'created_at';
-            $session_ref['sort'] = 'desc';
-        }
-        
-        /**
-         * if status is not specified in parameter $args :
-         * default -> pending
-         * and if the status is specified in the $session_ref, we'll take it.
-         * That allow the pagination doesn't specified any status parameter.
-        **/
-
-        if ($status_filter) {
-            if (!isset($args['status'])) {
-                $args['status'] = 1;
-                if ($session_ref[$page] !== null) {
-                    $args['status'] = $session_ref[$page];
-                }
-            }
-            $session_ref[$page] = $args['status'];
-        }
-
-        // manage sorting
-        if (isset($get['orderby'])) {
-            if ($session_ref['orderby'] == $get['orderby']) {
-               // toggle sort if orderby requested on the same column
-                $session_ref['sort'] = ($session_ref['sort'] == "desc"
-                                                ? "asc"
-                                                : "desc");
-            }
-            $session_ref['orderby'] = $get['orderby'];
-        }
-        $session_ref['pagination'] = 15;
-
-        return $session_ref;
-    }
-
-
     /**
      * This function load references and dynamics references
      *
-     * @param $user_id to specify if the function will have to load references for a specific user
-     * @param $status to specify if the function will have to load references for a specific status
+     * @param String $management_name Define wich type of page we are 'reference_management', 'profile', 'users_management'
+     * @param String $user_id Specify if the function will have to load references for a specific user
+     * @param integer $status Specify if the function will have to load references for a specific status
+     *
      * @return array ['references', 'dyn_refs'] to return references and dynamics references
      **/
-    public function loadRefs($user_id = null, $status = null)
+    public function loadRefs($management_name, $user_id = null, $status = null)
     {
-        $status = ($status === null) ? $_SESSION['reference'][get_class($this)] : $status;
+        $status = ($status === null) ? $_SESSION[$management_name]['customFilter'] : $status;
 
         //check for refences presence
         $dyn_refs = $this->container->project->getDynamicReferences();
         if (false === $dyn_refs) {
              // retrieve data from model
             $references = ReferenceModel::active()->orderBy(
-                $_SESSION['reference']['orderby'],
-                $_SESSION['reference']['sort']
-            )->paginate($_SESSION['reference']['pagination']);
+                $_SESSION[$management_name]['orderby'],
+                $_SESSION[$management_name]['sort']
+            )->paginate($_SESSION[$management_name]['pagination']);
         } else {
             try {
                 $join_table = $this->container->project->getSlug() . '_reference';
-                $order_field = $_SESSION['reference']['orderby'];
+                $order_field = $_SESSION[$management_name]['orderby'];
                 $order_table = (isset($dyn_refs[$order_field]) ? $join_table : 'reference');
                 // retrieve data from model
                 $ref = new ReferenceModel();
@@ -111,16 +58,22 @@ abstract class PageAbstract extends ControllerAbstract
                 if ($user_id != null) {
                     $model->where('user_id', '=', $user_id);
                 }
-                $model->orderBy(
-                    $order_table . '.' . $order_field,
-                    $_SESSION['reference']['sort']
-                )
-                    ->leftJoin($join_table, 'reference.id', '=', $join_table . '.reference_id')
-                ;
-                $references = $model->paginate($_SESSION['reference']['pagination']);
+                $search = $_SESSION[$management_name]['search'];
+                if ($search != 'null') {
+                    $model->whereRaw('LOWER("'.strtolower($_SESSION[$management_name]['search_on']).'") LIKE ? ', ['%'.htmlentities(strtolower($search)).'%']);
+                }
+
+                if ($order_field != null) {
+                    $model->orderBy(
+                        $order_table . '.' . $order_field,
+                        $_SESSION[$management_name]['sort']
+                    );
+                }
+                    $model->leftJoin($join_table, 'reference.id', '=', $join_table . '.reference_id');
+                $references = $model->paginate($_SESSION[$management_name]['pagination']);
             } catch (\Illuminate\Database\QueryException $e) {
                 if ($e->getCode() == '42P01') {
-                    //rlation does not exists
+                    //relation does not exists
                     throw new \RuntimeException(
                         'You have configured dynamic references for your project; but table ' .
                         $join_table . ' is missing!',
@@ -134,28 +87,57 @@ abstract class PageAbstract extends ControllerAbstract
         return ['references' => $references, 'dyn_refs' => $dyn_refs];
     }
 
-    public function loadUsers($is_admin = null, $order_field = 'username')
+    /**
+     * Load users from database based on filters controller
+     *
+     * @param String $order_field
+     *
+     * @return GLPI\Telemetry\Models\User
+     */
+    public function loadUsers($order_field = 'username')
     {
         $ref = new UserModel();
         $model = $ref->newInstance();
-        if ($is_admin != null) {
+        $is_admin = $model->stringBoolAdmin($_SESSION['users_management']['customFilter']);
+        $search = $_SESSION['users_management']['search'];
+        $model = call_user_func_array(
+            [
+                $model,
+                'select'
+            ],
+            ['users.*']
+        );
+
+        if ($is_admin !== null) {
             $model->where('is_admin', '=', $is_admin);
         }
+
+        if ($search != 'null') {
+            $model->whereRaw('LOWER("'.strtolower($_SESSION['users_management']['search_on']).'") LIKE ? ', ['%'.htmlentities(strtolower($search)).'%']);
+        }
+        
         $model->orderBy(
             $order_field,
-            $_SESSION['users']['sort']
+            $_SESSION['users_management']['sort']
         );
-        $users = $model->paginate($_SESSION['users']['pagination']);
+        $users = $model->paginate($_SESSION['users_management']['pagination']);
 
         foreach ($users as $key => $user) {
-            $user['attributes'] = 
-                $user['attributes'] + 
+            $user['attributes'] =
+                $user['attributes'] +
                 ['refs_count'=>$this->loadUserRefsCount($user['attributes']['id'])];
         }
 
         return $users;
     }
 
+    /**
+     * Update reference status
+     *
+     * @param integer $user_id
+     *
+     * @return GLPI\Telemetry\Models\Reference
+     */
     public function loadUserRefsCount($user_id = null)
     {
         if ($user_id == null) {
@@ -166,5 +148,137 @@ abstract class PageAbstract extends ControllerAbstract
         $ref = new ReferenceModel();
         $ref_model = $ref->newInstance();
         return $ref_model->where('user_id', $user_id)->get()->count();
+    }
+
+    /**
+     * Associating for any action code an array for the update
+     *
+     * @param String $action
+     *
+     * @return array
+     */
+    public function actionsToUpdateArray($action)
+    {
+        switch ($action) {
+            case 'to_admin':
+                return ['is_admin' => true];
+                break;
+
+            case 'to_not_admin':
+                return ['is_admin' => false];
+                break;
+
+            case 'to_pending':
+                return ['status' => ReferenceModel::PENDING];
+                break;
+
+            case 'to_denied':
+                return ['status' => ReferenceModel::DENIED];
+                break;
+
+            case 'to_accepted':
+                return ['status' => ReferenceModel::ACCEPTED];
+                break;
+            
+            default:
+                return null;
+                break;
+        }
+    }
+
+    /**
+     * Make the action for admin management
+     *
+     * @param array $args Specidied the type page : 'reference_management', 'users_management', 'profile'
+     *
+     * @return Slim\Http\Response
+     */
+    public function doActions(Request $req, Response $res, $args)
+    {
+        $post = $req->getParsedBody();
+        unset($post['csrf_name']);
+        unset($post['csrf_value']);
+
+        foreach ($post as $key => $value) {
+            $tmp = explode("-", $key);
+            switch ($tmp[0]) {
+                case 'select':
+                    //$actions[object.id] = action.code
+                    $actions[$tmp[1]] = $value;
+                    break;
+                case 'checkbox':
+                    $objects_id[] = $tmp[1];
+                    break;
+                
+                default:
+                    $res
+                    ->write($container->flash->addMessage('error', 'Something went wrong, you were redirected.'))
+                    ->withRedirect($container->router->pathFor('telemetry'));
+                    break;
+            }
+        }
+
+        switch ($args['type_page']) {
+            case 'users_management':
+                $ref = new UserModel();
+                break;
+
+            case 'reference_management':
+                $ref = new ReferenceModel();
+                break;
+            
+            default:
+                $res
+                ->write($container->flash->addMessage('error', 'Something went wrong, you were redirected.'))
+                ->withRedirect($container->router->pathFor('telemetry'));
+                break;
+        }
+
+        $model = $ref->newInstance();
+
+        foreach ($actions as $object_id => $action) {
+            if (in_array($object_id, $objects_id)) {
+                $arrayActions = $this->actionsToUpdateArray($action);
+                if ($arrayActions === null) {
+                    return false;
+                } else {
+                    $action_res = $model->where('id', '=', $object_id)->update($arrayActions);
+                }
+            }
+        }
+        unset($post);
+        return $this->typePageRedirect($req, $res, $args['type_page']);
+    }
+
+    /**
+     * Make the action for admin management
+     *
+     * @param String $type_page Specidied the type page : 'reference_management', 'users_management', 'profile'
+     *
+     * @return Slim\Http\Response
+     */
+    public function typePageRedirect(Request $req, Response $res, $type_page)
+    {
+        switch ($type_page) {
+            case 'users_management':
+                return $res->withRedirect($this->container->router->pathFor('adminUsersManagement'));
+                break;
+
+            case 'reference_management':
+                return $res->withRedirect($this->container->router->pathFor('adminReferencesManagement'));
+                break;
+
+            case 'profile':
+                return $res->withRedirect($this->container->router->pathFor('profile'));
+                break;
+
+            case 'reference':
+                return $res->withRedirect($this->container->router->pathFor('reference'));
+                break;
+            
+            default:
+                return $res->withRedirect($this->container->router->pathFor('telemetry'));
+                break;
+        }
     }
 }
