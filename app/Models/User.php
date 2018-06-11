@@ -56,4 +56,29 @@ class User extends \Illuminate\Database\Eloquent\Model
             return false;
         }
     }
+
+    /**
+     * Convert String to Boolean
+     *
+     * @param String $str Boolean as a string
+     *
+     * @return Boolean
+     */
+    public function stringBoolAdmin($str)
+    {
+        switch ($str) {
+            case 'null':
+                return null;
+                break;
+            case 'true':
+                return true;
+                break;
+            case 'false':
+                return false;
+                break;
+            default:
+                return null;
+                break;
+        }
+    }
 }
