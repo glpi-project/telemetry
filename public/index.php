@@ -6,6 +6,9 @@ require '../app/init.php';
 $app->get('/', 'GLPI\Telemetry\Controllers\Telemetry:view')
     ->setName('telemetry');
 
+// Filters on app
+
+
 if ($container->project->hasContactPage()) {
     // contact
     $app->get('/contact', 'GLPI\Telemetry\Controllers\Contact:view')
@@ -47,7 +50,7 @@ if ($container->project->hasRegisterPage()) {
 
 if ($container->project->hasProfilePage()) {
     // profile
-    $app->get('/profile[/status/{status}[/page/{page:\d+}]]', 'GLPI\Telemetry\Controllers\Profile:view')
+    $app->get('/profile[/pagination/{pagination}[/customFilter/{customFilter}[/search/{search}[/page/{page:\d+}]]]]', 'GLPI\Telemetry\Controllers\Profile:view')
         ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
         ->add($container['csrf'])
         ->setName('profile');
@@ -72,16 +75,6 @@ if ($container->project->hasProfilePage()) {
        ->add($container['csrf'])
        ->setName('actionProfileReferenceDelete');
 
-    //Profile sorting
-    $app->map(
-        ['get', 'post'],
-        '/profile/view[/{status}]',
-        'GLPI\Telemetry\Controllers\Profile:view'
-    )
-       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
-       ->add($container['csrf'])
-       ->setName('sorterProfile');
-
     //Profile user update
     $app->map(
         ['get', 'post'],
@@ -95,50 +88,45 @@ if ($container->project->hasProfilePage()) {
 
 if ($container->project->hasAdminPage()) {
     // admin
-    $app->get('/admin/references[/status/{status}[/page/{page:\d+}]]', 'GLPI\Telemetry\Controllers\Admin:viewReferencesManagement')
+    $app->get('/admin/references[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Admin:viewReferencesManagement')
         ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
         ->add($container['csrf'])
         ->setName('adminReferencesManagement');
 
+    $app->get('/admin/users[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Admin:viewUsersManagement')
+        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+        ->add($container['csrf'])
+        ->setName('adminUsersManagement');
+
     //Admin users management
     $app->map(
         ['get', 'post'],
-        '/admin/users',
-        'GLPI\Telemetry\Controllers\Admin:viewUsersManagement'
+        '/admin/usersActions[/type_page/{type_page}]',
+        'GLPI\Telemetry\Controllers\Admin:doActions'
     )
        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
        ->add($container['csrf'])
-       ->setName('adminUsersManagement');
+       ->setName('doUsersActions');
+
+    //Admin users management
+    $app->map(
+        ['get', 'post'],
+        '/admin/referencesActions[/type_page/{type_page}]',
+        'GLPI\Telemetry\Controllers\Admin:doActions'
+    )
+       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+       ->add($container['csrf'])
+       ->setName('doReferencesActions');
 
     //Admin denied
     $app->map(
         ['get', 'post'],
-        '/admin/actionReferencePost',
-        'GLPI\Telemetry\Controllers\Admin:actionReferencePost'
+        '/admin/prepareMails',
+        'GLPI\Telemetry\Controllers\Admin:prepareMails'
     )
        ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
        ->add($container['csrf'])
        ->setName('actionAdminReferencesWithMsg');
-
-    //Admin sorting
-    $app->map(
-        ['get', 'post'],
-        '/admin/view[/{status}]',
-        'GLPI\Telemetry\Controllers\Admin:viewReferencesManagement'
-    )
-       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
-       ->add($container['csrf'])
-       ->setName('sorterAdmin');
-
-    //Admin References filtering
-    $app->map(
-        ['get', 'post'],
-        '/admin/filter[/order/{orderby}]',
-        'GLPI\Telemetry\Controllers\Admin:filter'
-    )
-       ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
-       ->add($container['csrf'])
-       ->setName('filterAdminReferences');
 }
 
 
@@ -149,26 +137,60 @@ $app->get('/reference[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Reference:
     ->add($container['csrf'])
     ->setName('reference');
 
-//References filtering
+//App filters
 $app->map(
     ['get', 'post'],
-    '/reference/filter[/order/{orderby}]',
-    'GLPI\Telemetry\Controllers\Reference:filter'
+    '/telemetry/WithoutFilter[/type_page/{type_page}]',
+    'GLPI\Telemetry\Controllers\Filters:setDifferentsFilters'
 )
    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
    ->add($container['csrf'])
-   ->setName('filterReferences');
+   ->setName('withoutFilters');
 
-//Profile References filtering
 $app->map(
     ['get', 'post'],
-    '/profile/filter[/order/{orderby}]',
-    'GLPI\Telemetry\Controllers\Profile:filter'
+    '/telemetry/filter[/type_page/{type_page}[/order/{orderby}]]',
+    'GLPI\Telemetry\Controllers\Filters:setDifferentsFilters'
 )
    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
    ->add($container['csrf'])
-   ->setName('filterProfileReferences');
+   ->setName('filterOrderBy');
 
+$app->map(
+    ['get', 'post'],
+    '/telemetry/paginationfilter[/type_page/{type_page}[/pagination/{pagination}]]',
+    'GLPI\Telemetry\Controllers\Filters:setDifferentsFilters'
+)
+   ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+   ->add($container['csrf'])
+   ->setName('filterPagination');
+
+$app->map(
+    ['get', 'post'],
+    '/telemetry/customfilter[/type_page/{type_page}[/customFilter/{customFilter}]]',
+    'GLPI\Telemetry\Controllers\Filters:setDifferentsFilters'
+)
+   ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+   ->add($container['csrf'])
+   ->setName('filterCustomFilter');
+
+$app->map(
+    ['get', 'post'],
+    '/telemetry/actionfilter[/type_page/{type_page}[/action_code/{action_code}]]',
+    'GLPI\Telemetry\Controllers\Filters:setDifferentsFilters'
+)
+   ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+   ->add($container['csrf'])
+   ->setName('filterAction');
+
+$app->map(
+    ['get', 'post'],
+    '/telemetry/searchfilter[/type_page/{type_page}[/search/{search}]]',
+    'GLPI\Telemetry\Controllers\Filters:setDifferentsFilters'
+)
+   ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
+   ->add($container['csrf'])
+   ->setName('filterSearch');
 
 //Reference registration
 $app->post('/reference', 'GLPI\Telemetry\Controllers\Reference:register')
