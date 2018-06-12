@@ -22,7 +22,7 @@
   {% include 'default/customResearch.html.twig' %}
 
   <form method="post" action="{{ path_for('doReferencesActions', {'type_page': type_page}) }}">
-    This sort has loaded {{ references.total }} references. {{sort}}
+    This sort has loaded {{ references.total }} references.
     <input type="submit" class="btn btn-warning float-right" value="Launch actions">
 
     <table class="table table-striped glpi_references">
