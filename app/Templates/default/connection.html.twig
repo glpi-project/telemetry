@@ -14,12 +14,12 @@
 
    <form method="post" action="{{path_for('sendConnection')}}">
         <div class="form-group">
-            <label for="username">Username</label>
+            {% if my_csrf is not defined %}<label for="username">Username</label>{% endif %}
             <input class="form-control" name="user" type="text" required="required" autofocus="autofocus" placeholder="Username"/>
         </div>
 
         <div class="form-group">
-            <label for="password">Password</label>
+            {% if my_csrf is not defined %}<label for="password">Password</label>{% endif %}
             <input class="form-control" name="password" type="password" required="required" placeholder="Password"/>
         </div>
 
