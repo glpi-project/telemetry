@@ -16,7 +16,7 @@ if ($container->project->hasContactPage()) {
         ->add($container['csrf'])
         ->setName('contact');
     $app->post('/contact', 'GLPI\Telemetry\Controllers\Contact:send')
-        //->add($recaptcha)
+        ->add($recaptcha)
         ->add($container['csrf'])
         ->setName('sendContact');
 }
