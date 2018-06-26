@@ -83,8 +83,8 @@ $container['view'] = function ($c) {
 
     // Instantiate and add Slim specific extension
     $uri = str_replace(
-        'index.php',
-        '',
+        ['index.php', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']],
+        ['', ''],
         $c['request']->getUri()->getBaseUrl()
     );
     $view->addExtension(new Slim\Views\TwigExtension($c['router'], $uri));

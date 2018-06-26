@@ -1,0 +1,12 @@
+diff -up vendor/illuminate/database/Eloquent/Builder.php.patch vendor/illuminate/database/Eloquent/Builder.php
+--- vendor/illuminate/database/Eloquent/Builder.php.patch	2018-06-26 11:27:17.747196777 +0200
++++ vendor/illuminate/database/Eloquent/Builder.php	2018-06-26 11:28:32.614981334 +0200
+@@ -1182,7 +1182,7 @@ class Builder
+         // We will keep track of how many wheres are on the query before running the
+         // scope so that we can properly group the added scope constraints in the
+         // query as their own isolated nested where statement and avoid issues.
+-        $originalWhereCount = count($query->wheres);
++        $originalWhereCount = count((array)$query->wheres);
+ 
+         $result = call_user_func_array($scope, $parameters) ?: $this;
+ 

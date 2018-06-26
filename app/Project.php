@@ -355,7 +355,7 @@ class Project
     {
         if (mb_strlen($string) > $length) {
             if ($this->logger !== null) {
-                $this->logger->warning("String exceed length $length", $string);
+                $this->logger->warning("String exceed length $length", [$string]);
             } else {
                 trigger_error("String exceed length $length\n$string", E_USER_NOTICE);
             }
