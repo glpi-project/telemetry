@@ -143,7 +143,15 @@ table.glpi_references td {
    white-space: nowrap;
 }
 
+.elipsis_normal {
+   white-space: initial;
+}
+
 #register_reference {
+   display: none;
+}
+
+#add_action_comment {
    display: none;
 }
 
@@ -192,3 +200,32 @@ td.sort
     color: orange;
 }
 /** /Messaging */
+
+
+.form-warn, .form-warn_profile_user {
+  background-color: #D9534F;
+  color: #eeeeee;
+  border-radius: 3px;
+  width: 100%;
+  margin: auto;
+  padding: .2em;
+  margin-bottom: .5em;
+}
+
+.form-warn ul, .form-warn_profile_user ul{
+  padding-left: 1em;
+  margin: auto;
+  text-align: left;
+  list-style: ;
+}
+
+.table_register_passw_conditions {
+  margin: auto;
+  width: 100%;
+}
+
+.popup-connection {
+   width: 300px;
+   padding-left: 2%;
+   padding-right: 2%;
+}

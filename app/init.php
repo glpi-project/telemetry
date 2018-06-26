@@ -29,6 +29,16 @@ $app       = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
 $app->add(new RKA\Middleware\SchemeAndHost());
 
+
+//Override the default Not Found Handler
+$container['notFoundHandler'] = function ($container) {
+    return function ($request, $response) use ($container) {
+        return $container['response']
+            ->write($container->flash->addMessage('error', 'Something went wrong, you were redirected.'))
+            ->withRedirect($container->router->pathFor('telemetry'));
+    };
+};
+
 $container['project'] = function ($c) use ($config) {
     $project = new \GLPI\Telemetry\Project($config['project']['name'], $c->logger);
     $project->setConfig($config['project']);
@@ -110,11 +120,21 @@ $container['view'] = function ($c) {
     //enable contact page
     $env->addGlobal('enable_contact', $c->project->hasContactPage());
 
+    //enable profile page
+    $env->addGlobal('enable_profile', $c->project->hasProfilePage());
+
+    //enable connection page
+    $env->addGlobal('enable_connection', $c->project->hasConnectionPage());
+
+    //enable admin page
+    $env->addGlobal('enable_admin', $c->project->hasAdminPage());
+
     //footer links
     $env->addGlobal('footer_links', $c->project->getFooterLinks());
 
     return $view;
 };
+
 
 //setup recaptcha
 $container[Captcha::class] = function ($c) {
@@ -124,7 +144,6 @@ $container[ReCaptcha::class] = function ($c) {
     return new ReCaptcha($c['settings']['recaptcha']['secret']);
 };
 $recaptcha = $app->getContainer()->get(Captcha::class);
-
 
 // system error handling
 $container['errorHandler'] = function ($c) {

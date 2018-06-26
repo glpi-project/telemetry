@@ -38,6 +38,28 @@
       <script src="{{base_url()}}/libs/tether/tether.min.js"></script>
       <script src="{{base_url()}}/libs/bootstrap/js/bootstrap.min.js"></script>
       <script src="{{base_url()}}/js/base.js"></script>
-      {% block userscripts %}{% endblock %}
+      {% block userscripts %}
+        <script type="text/javascript">
+            var _form_loaded = false;
+            $(function() {
+                $('#login').on('click', function() {
+                    if (!_form_loaded) {
+                        //Call AJAX to load connection form on navbar
+                        $.ajax({
+                            type: "get",
+                            url: '{{ path_for("connection") }}',
+                            success: function(result){
+                                $("#conn-form-nav").html(result);
+                                _form_loaded = true;
+                            },
+                            error : function(result){
+                                $("#conn-form-nav").html("Connection form failed !");
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+      {% endblock %}
     </body>
 </html>

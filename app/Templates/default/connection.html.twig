@@ -1,0 +1,49 @@
+{% extends 'partials/' ~ (ajax ? 'ajax' : 'base') ~ '.html.twig' %}
+{% block title %}Connection{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-user-circle"></i> Connection',
+   'text':  'Connect to manage your references',
+} %}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="{{ class|default('container') }}">
+
+   <form method="post" action="{{path_for('sendConnection')}}">
+        <div class="form-group">
+            {% if my_csrf is not defined %}<label for="username">Username</label>{% endif %}
+            <input class="form-control" name="user" type="text" required="required" autofocus="autofocus" placeholder="Username"/>
+        </div>
+
+        <div class="form-group">
+            {% if my_csrf is not defined %}<label for="password">Password</label>{% endif %}
+            <input class="form-control" name="password" type="password" required="required" placeholder="Password"/>
+        </div>
+
+
+    {% if my_csrf is defined %}
+        <input type="hidden" name="csrf_name" value="{{ my_csrf.name  }}"/>
+        <input type="hidden" name="csrf_value" value="{{ my_csrf.value }}"/>
+    {% else %}
+        {{ csrf.field | raw }}
+    {% endif %}
+
+        <button type="submit" class="btn btn-outline-primary">Connect</button>
+        <div class="pull-right">
+            No account? <a href="{{path_for('register')}}">Register now!</a>
+        </div>
+   </form>
+
+</div>
+{% endblock %}
+
+{% block userscripts %}
+{{ parent() }}
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+{% endblock %}
+

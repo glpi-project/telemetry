@@ -1,0 +1,289 @@
+{% extends "partials/base.html.twig" %}
+{% block title %}Admin{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{base_url()}}/libs/country-flags-sass/flags.css" />
+    <link rel="stylesheet" href="{{base_url()}}/libs/select2/css/select2.min.css" />
+    <script type="text/javascript" src="{{base_url()}}/js/admin_action.js"></script>
+{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-cog"></i> Admin',
+   'text':  'Manage references',
+   'class': 'adminReferencesManagement'
+} %}
+{{ parent() }}
+{% include('partials/adminNav.html.twig') %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% include 'default/customResearch.html.twig' %}
+
+  <form method="post" action="{{ path_for('doReferencesActions', {'type_page': type_page}) }}">
+    This sort has loaded {{ references.total }} references.
+    <input type="submit" class="btn btn-warning float-right" value="Launch actions">
+
+    <table class="table table-striped glpi_references">
+      <thead>
+         <tr>
+            <td colspan="2">
+               {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'name'}) }}">Name</a>
+            </td>
+            <td>
+               {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'country'}) }}">Country</a>
+            </td>
+    {% if dyn_refs|length > 0 %}
+        {% for key, labels in dyn_refs %}
+            <td>
+               {% if orderby == key %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': key}) }}">{{labels.short_label}}</a>
+            </td>
+        {% endfor %}
+    {% endif %}
+            <td>
+               {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'created_at'}) }}">Registration date</a>
+            </td>
+            <td>
+               Actions
+            </td>
+            <td>
+              <input type="checkbox" class="check" id="checkAll">
+            </td>
+         </tr>
+      </thead>
+      <tbody>
+         {% for reference in references %}
+         <tr>
+            <td>
+              {% set data = { 'ref_id': reference.id, 'mails': ref_user_mails } %}
+
+              <div class="dropdown">
+                <button class="btn btn-secondary fa fa-plus" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" aria-expanded="false">
+                  <button 
+                    class="btn dropdown-item button-admin-view-reference" 
+                    type="button" 
+                    data-toggle="modal" 
+                    data-target="#register_reference_profile" 
+                    onclick="showReferenceModal({{ reference }})" 
+                    aria-expanded="true">View reference</button>
+
+                  <button 
+                    id="{{ reference.id }}" 
+                    class="btn dropdown-item button-admin-view-mail" 
+                    type="button"
+                    data-toggle="modal" 
+                    data-target="#add_action_comment" 
+                    value="{{ data | json_encode() }}" 
+                    aria-expanded="true">Send mail
+                  </button>
+                  {% if arr_ref_id_user[reference.id] != null %}
+                    <button 
+                      class="btn dropdown-item" 
+                      type="button" 
+                      onclick="window.location.href='{{ path_for('filterSearch', {type_page:'users_management', search:arr_ref_id_user[reference.id]}) }}'" 
+                      type="button">View reference's user
+                    </button>
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+            <td>
+              {% if reference.url %}
+                <a href="{{reference.url}}" target="_blank">{{reference.name}}</a>
+                {% else %}
+                   {{reference.name}}
+                {% endif %}
+            </td>
+            <td>
+               <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
+            </td>
+    {% if dyn_refs|length > 0 %}
+        {% for key in dyn_refs|keys %}
+            <td>{{reference[key]}}</td>
+        {% endfor %}
+    {% endif %}
+            <td>
+              {{reference.created_at|date("Y-m-d") }}
+            </td>
+            <td>
+              <select name="select-{{ reference.id }}" class="massive_actions_select">
+                {% for action in actions %}
+                  {% set selected = '' %}
+                  {% if action.code == action_code %}
+                    {% set selected = 'selected' %}
+                  {% endif %}
+                    <option label="{{ reference.id }}" name="option-{{ reference.id }}" value="{{ action.code }}" {{ selected }}>{{ action.msg }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input type="checkbox" name="checkbox-{{ reference.id }}" class="check" value="{{ reference.id }}">
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+    </table>
+    <input type="submit" class="btn btn-warning float-right" value="Launch actions">
+    {{ csrf.field | raw }}
+  </form>
+
+   <nav aria-label="Page navigation">
+      {{ references.render() |raw }}
+   </nav>
+
+</div>
+
+<form method="post" action="{{ path_for('actionAdminReferencesWithMsg') }}">
+<div class="modal fade" id="add_action_comment">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Sending mails</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+          <label>
+            Send email to inform emails below about this reference.
+          </label>
+            <div id="form-admin-action-body" class="form-group">
+               <div id="table_mails_action"></div>
+               <label class="sr-only" for="comment">Comment</label>
+               <textarea class="form-control form-control-sm"
+                         name="comment"
+                         rows="6"
+                         placeholder="Your message to comment on your action, it will be added to the email."></textarea>
+            </div>
+            <input type="hidden" id="ref_id_input_id" name="ref_id_input">
+         </div>
+         <div class="modal-footer">
+            <button type="submit" id="submitAdminActionForm" onclick="return validateAdminActionForm()" class="btn btn-outline-primary" disabled>Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>
+{{ csrf.field | raw }}
+</form>
+
+
+
+<form method="post" action="{{ path_for('actionProfileReferenceUpdate') }}">
+<div class="modal fade" id="register_reference_profile">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title">Showing the reference</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body" id="modal_body_view_reference">
+           <div class="alert alert-warning" role="alert" id="warning-country">
+              <strong>Warning!</strong> You may have note that your adblocker forbid a freegeoip url. We use this service only to locate your country and prefill the dropdown bellow!
+           </div>
+           <div class="form-group">
+              <label class="sr-only" for="name">Name (company name)</label>
+              <input class="form-control form-control-sm" type="text"
+                    required="required"
+                    name='name'
+                    placeholder="Your (company) name">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="url">Url</label>
+              <input class="form-control form-control-sm" type="url"
+                     name='url'
+                     placeholder="URL">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="country">Country</label>
+              <select class="form-control"
+                      id="countries_select_modal"
+                      name="country"
+                      placeholder="Country">
+                 <option></option>
+                 {% for country in countries %}
+                 <option value="{{country.cca2}}">{{country.name.common}}</option>
+                 {% endfor %}
+              </select>
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="phone">Phone</label>
+              <input class="form-control form-control-sm" type="text"
+                     name='phone'
+                     placeholder="Phone">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="email">Email</label>
+              <input class="form-control form-control-sm" type="email"
+                     name="email"
+                     placeholder="Email">
+           </div>
+
+           <div class="form-group">
+              <label class="sr-only" for="referent">Referent name</label>
+              <input class="form-control form-control-sm" type="text"
+                     name="referent"
+                     placeholder="Referent name">
+           </div>
+
+{% if dyn_refs|length > 0 %}
+    {% for key, labels in dyn_refs %}
+           <div class="form-group">
+              <label class="sr-only" for="{{key}}">{{labels.label}}</label>
+              <input class="form-control form-control-sm" type="number"
+                     name="{{key}}"
+                     min="0"
+                     placeholder="{{labels.label}}">
+           </div>
+    {% endfor %}
+{% endif %}
+
+           <div class="form-group">
+              <label class="sr-only" for="comment">Comment</label>
+              <textarea class="form-control form-control-sm"
+                        name="comment"
+                        rows="6"
+                        placeholder="Your message"></textarea>
+           </div>
+        </div>
+        <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+     </div>
+  </div>
+</div>
+</form>
+{% endblock %}
+
+
+
+{% block userscripts %}
+{{ parent() }}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="{{base_url()}}/libs/select2/js/select2.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    var countries_s2 = $("#countries_select_modal").select2({
+        templateSelection: formatState,
+        templateResult: formatState,
+        placeholder: "Country",
+        width: '100%',
+        dropdownParent: $('#register_reference_profile')
+    });
+});
+</script>
+{% endblock %}

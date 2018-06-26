@@ -2,6 +2,8 @@
 
 namespace GLPI\Telemetry;
 
+use GLPI\Telemetry\Models\User as UserModel;
+
 class Project
 {
     private $name;
@@ -14,6 +16,9 @@ class Project
     private $project_path;
     private $templates_path;
     private $enable_contact = true;
+    private $enable_profile = true;
+    private $enable_connection = true;
+    private $enable_admin = false;
     private $footer_links = [
         'GLPI project'  => [
             'faclass'   => 'fa fa-globe',
@@ -86,6 +91,23 @@ class Project
         );
         $this->project_path = __DIR__ . '/../projects/' . $this->slug;
         $this->templates_path =  $this->project_path . '/Templates';
+
+        //reload user's informations
+        if (isset($_SESSION['user'])) {
+            $user_ref = new UserModel;
+            $user_model = $user_ref->newInstance();
+            $_SESSION['user'] = $user_model->getUser($_SESSION['user']['username'])['attributes'];
+        }
+
+        if (isset($_SESSION['user']['username'])) {
+            $this->enable_profile = true;
+            if ($_SESSION['user']['is_admin']) {
+                $this->enable_admin = true;
+            }
+        } else {
+            $this->enable_profile = false;
+            $this->enable_admin = false;
+        }
     }
 
     /**
@@ -105,6 +127,18 @@ class Project
 
         if (isset($config['enable_contact'])) {
             $this->enable_contact = (bool)$config['enable_contact'];
+        }
+
+        if (isset($config['enable_profile'])) {
+            $this->enable_profile = (bool)$config['enable_profile'];
+        }
+
+        if (isset($config['enable_connection'])) {
+            $this->enable_connection = (bool)$config['enable_connection'];
+        }
+
+        if (isset($config['enable_admin'])) {
+            $this->enable_admin = (bool)$config['enable_admin'];
         }
 
         if (isset($config['schema'])) {
@@ -460,6 +494,46 @@ class Project
     public function hasContactPage()
     {
         return $this->enable_contact;
+    }
+
+    /**
+     * Is connection page active for current project
+     *
+     * @return boolean
+     */
+    public function hasConnectionPage()
+    {
+        return $this->enable_connection;
+    }
+
+    /**
+     * Is register page active for current project
+     *
+     * @return boolean
+     */
+    public function hasRegisterPage()
+    {
+        return !$this->enable_profile;
+    }
+
+    /**
+     * Is profile page active for current project
+     *
+     * @return boolean
+     */
+    public function hasProfilePage()
+    {
+        return $this->enable_profile;
+    }
+
+    /**
+     * Is admin page active for current project
+     *
+     * @return boolean
+     */
+    public function hasAdminPage()
+    {
+        return $this->enable_admin;
     }
 
     /**

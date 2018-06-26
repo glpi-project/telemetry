@@ -7,22 +7,73 @@
           <img src="{{path_for('logo')}}" title="{{project_name}} Usage" alt="" />
       </a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-         <div class="navbar-nav">
-            <a class="nav-item nav-link {{ class == 'telemetry' ? 'active'}}"
-               href="{{path_for("telemetry")}}">
-               <i class='fa fa-bar-chart'></i>
-               Telemetry</a>
-            <a class="nav-item nav-link {{ class == 'reference' ? 'active'}}"
-                href="{{path_for('reference')}}">
-               <i class='fa fa-users'></i>
-               References</a>
-           {% if enable_contact %}
-            <a class="nav-item nav-link {{ class == 'contact' ? 'active'}}"
-                href="{{path_for('contact')}}">
-               <i class='fa fa-envelope'></i>
-               Contact</a>
-           {% endif %}
-         </div>
+        <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <a class="nav-item nav-link {{ class == 'telemetry' ? 'active'}}"
+             href="{{path_for("telemetry")}}">
+             <i class='fa fa-bar-chart'></i>
+             Telemetry</a>
+          <a class="nav-item nav-link {{ class == 'reference' ? 'active'}}"
+              href="{{path_for('withoutFilters', {'type_page': 'reference'})}}">
+             <i class='fa fa-users'></i>
+             References</a>
+         {% if enable_contact %}
+          <a class="nav-item nav-link {{ class == 'contact' ? 'active'}}"
+              href="{{path_for('contact')}}">
+             <i class='fa fa-envelope'></i>
+             Contact</a>
+         {% endif %}
+         {% if enable_admin %}
+          <a class="nav-item nav-link {{ class == 'admin' ? 'active'}}"
+              href="{{path_for('withoutFilters', {'type_page': 'reference_management'})}}">
+             <i class='fa fa-cog'></i>
+             Admin</a>
+         {% endif %}
+        </div>
+        <div class="navbar-nav my-2 my-lg-0">
+
+            {% if enable_profile == false %}
+            <!-- Split button -->
+              <div class="btn-group">
+                <a
+                    class="nav-item nav-link{{ class == 'connection' ? ' active'}} dropdown-toggle"
+                    id="login"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    href="{{path_for('connection')}}">
+                    <i class='fa fa-user-circle'></i>
+                    Connection
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <div id="conn-form-nav"></div>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if enable_profile %}
+            <!-- Split button -->
+            <div class="btn-group">
+                <a class="nav-item nav-link {{ class == 'profile' ? 'active'}}"
+                    href="{{path_for('withoutFilters', {'type_page': 'profile'})}}">
+                   <i class='fa fa-user'></i>
+                   Profile</a>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-expanded="false">
+                  <li>
+                    {% if enable_profile %}
+                    <a class="nav-item nav-link {{ class == 'connection' ? 'active'}}"
+                       href="{{path_for('disconnect')}}">
+                       <i class='fa fa-sign-out'></i>
+                       Disconnect</a>
+                    {% endif %}
+                  </li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
       </div>
    </nav>
 </header>

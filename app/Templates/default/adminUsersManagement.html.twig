@@ -1,0 +1,103 @@
+{% extends "partials/base.html.twig" %}
+{% block title %}Admin{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{base_url()}}/js/admin_action.js"></script>
+{% endblock %}
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-cog"></i> Admin',
+   'text':  'Manage users',
+   'class': 'adminUsersManagement'
+} %}
+{{ parent() }}
+{% include('partials/adminNav.html.twig') %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  {% include 'default/customResearch.html.twig' %}
+
+  <form method="post" action="{{ path_for('doUsersActions', {'type_page': type_page}) }}">
+    This sort has loaded {{ users.total }} users.
+    <input type="submit" class="btn btn-warning float-right" value="Launch actions">
+    
+     <table class="table table-striped">
+        <thead>
+           <tr>
+              <td>
+                 {% if orderby == 'username' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+                 <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'username'}) }}">Username</a>
+              </td>
+              <td>
+                 {% if orderby == 'email' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+                 <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'email'}) }}">Email</a>
+              </td>
+              <th>
+              	References count
+              </th>
+              <th>
+              	Admin
+              </th>
+              <th>
+              	Actions
+              </th>
+              <th>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="check" id="checkAll">
+                  </label>
+                </div>
+              </th>
+           </tr>
+        </thead>
+        <tbody>
+           {% for user in users %}
+           <tr>
+              <td>
+                {{ user.username|raw }}
+              </td>
+              <td>
+              	{{ user.email|raw }}
+              </td>
+              <td>
+              	{{ user.refs_count }}
+              </td>
+              <td>
+  	           	{% if user.is_admin == true %}Yes
+  	            {% else %}No
+  	            {% endif %}
+              </td>
+              <td>
+                <select name="select-{{ user.id }}" class="massive_actions_select">
+                  {% for action in actions %}
+                    {% set selected = '' %}
+                    {% if action.code == action_code %}
+                      {% set selected = 'selected' %}
+                    {% endif %}
+                      <option label="{{ user.id }}" name="option-{{ user.id }}" value="{{ action.code }}" {{ selected }}>{{ action.msg }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <input type="checkbox" name="checkbox-{{ user.id }}" class="check" value="{{ user.id }}">
+              </td>
+           </tr>
+           {% endfor %}
+        </tbody>
+      </table>
+      <input type="submit" class="btn btn-warning float-right" value="Launch actions">
+      {{ csrf.field|raw }}
+  </form>
+   <nav aria-label="Page navigation">
+  {{ users.render()|raw }}
+  </nav>
+
+</div>
+{% endblock %}
+
+{% block userscripts %}
+{{ parent() }}
+{% endblock %}
+

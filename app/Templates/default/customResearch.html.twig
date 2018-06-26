@@ -1,0 +1,102 @@
+<table class="table">
+    <tr>
+      <td class="text-center">Pagination</td>
+      {% if users is defined %}
+        <td class="text-center">Admin</td>
+      {% endif %}
+      {% if references is defined %}
+        <td class="text-center">Status</td>
+      {% endif %}
+      {% if type_page == 'profile' %}
+      <td class="text-center">Massive actions</td>
+      {% endif %}
+    </tr>
+    <tr>
+      <td class="text-center">
+        <select id="select_admin_users_management_pagination_id" onchange="window.location.href=select_admin_users_management_pagination_id.value">
+          {% for i in 1..10 %}
+            {% set selected = '' %}
+            {% if i*10 == pagination %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterPagination', {'type_page': type_page, 'pagination': i*10}) }}" {{ selected }}>{{ i * 10}}</option>
+          {% endfor %}
+        </select>
+      </td>
+      <td class="text-center">
+        {% if users is defined %}
+          <select id="select_admin_users_management_admin_id" onchange="window.location.href=select_admin_users_management_admin_id.value">
+            {% set selected = '' %}
+            {% if customFilter == null %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterCustomFilter', {'type_page': type_page, 'customFilter': 'null'}) }}" {{ selected }}>All</option>
+            {% set selected = '' %}
+            {% if customFilter == 'true' %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterCustomFilter', {'type_page': type_page, 'customFilter': 'true'}) }}" {{ selected }}>Yes</option>
+            {% set selected = '' %}
+            {% if customFilter == 'false' %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterCustomFilter', {'type_page': type_page, 'customFilter': 'false'}) }}" {{ selected }}>No</option>
+          </select>
+        {% endif %}
+        {% if references is defined %}
+          <select id="select_admin_references_management_admin_id" onchange="window.location.href=select_admin_references_management_admin_id.value">
+            {% set selected = '' %}
+            {% if customFilter == '0' %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterCustomFilter', {'type_page': type_page, 'customFilter': '0'}) }}" {{ selected }}>Denied</option>
+            {% set selected = '' %}
+            {% if customFilter == '1' %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterCustomFilter', {'type_page': type_page, 'customFilter': '1'}) }}" {{ selected }}>Pending</option>
+            {% set selected = '' %}
+            {% if customFilter == '2' %}
+              {% set selected = 'selected' %}
+            {% endif %}
+            <option value="{{ path_for('filterCustomFilter', {'type_page': type_page, 'customFilter': '2'}) }}" {{ selected }}>Accepted</option>
+          </select>
+        {% endif %}
+      </td>
+      {% if actions is defined %}
+        <td class="text-center">
+          <select id="main_massive_actions_select" onchange="window.location.href=main_massive_actions_select.value">
+            {% for action in actions %}
+              {% set selected = '' %}
+              {% if action.code == action_code %}
+                {% set selected = 'selected' %}
+              {% endif %}
+              <option value="{{ path_for('filterAction', {'type_page': type_page, 'action_code': action.code}) }}" {{ selected }}>{{ action.msg }}</option>
+            {% endfor %}
+          </select>
+        </td>
+      {% endif %}
+      <td class="text-center col-md-3">
+        <div class="input-group input-lg">
+          {% set val_search = '' %}
+          {% if search != 'null' %}
+            {% set val_search = search %}
+          {% endif %}
+          <input 
+            id="research_input_admin_users_management_id" 
+            type="text" 
+            class="form-control input-sm" 
+            placeholder="{{ search_on }}" 
+            aria-label="Recipient's username" 
+            aria-describedby="basic-addon2"
+            value="{{ val_search|raw }}">
+          <div class="input-group-append">
+            <button 
+              class="btn btn-outline-secondary fa fa-search" 
+              type="button" 
+              onclick="buildPathForButtunSearch('{{ path_for('filterSearch', {'type_page': type_page}) }}')"></button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>

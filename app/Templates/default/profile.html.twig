@@ -1,0 +1,343 @@
+{% extends "partials/base.html.twig" %}
+{% block title %}Profile{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{base_url()}}/libs/country-flags-sass/flags.css" />
+    <script type="text/javascript" src="{{base_url()}}/js/profile_action.js"></script>
+{% endblock %}
+
+{% block header %}
+{% set myheader= {
+   'title': '<i class="fa fa-user"></i> Profile',
+   'text':  'You can see here your global informations and your references.',
+} %}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+   <h3>User's informations</h3>
+
+   <table class="table table-striped">
+      <thead>
+         <tr>
+            <td>Name</td>
+            <td>Mail</td>
+            <td>Number of references</td>
+            <td>Admin</td>
+            <td></td><!-- Edit -->
+         </td>
+      </thead>
+      <tbody>
+         <tr>
+            <td>{{user_session.username|raw}}</td>
+            <td>{{user_session.email|raw}}</td>
+            <td>{{user_session.references_count}}</td>
+            {% if user_session.is_admin == true %}<td>Yes</td>
+            {% else %}<td>No</td>
+            {% endif %}
+            <td><button class="btn btn-primary" data-toggle="modal" data-target="#edit_user_profile" onclick="actionProfileUser({{ user_session | json_encode() }})">Edit</button></td>
+         </tr>
+      </tbody>
+   </table>
+
+   <h3>Your references</h3>
+
+  {% include 'default/customResearch.html.twig' %}
+
+   <table class="table table-striped glpi_references">
+      <thead>
+         <tr>
+            <td>
+               {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'name'}) }}">Name</a>
+            </td>
+            <td>
+               {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'country'}) }}">Country</a>
+            </td>
+            <td>
+               {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
+               <a href="{{ path_for('filterOrderBy', {'type_page': type_page, 'orderby': 'created_at'}) }}">Registration date</a>
+            </td>
+            <td>
+               Mail
+            </td>
+            <td>
+               Status
+            </td>
+            <td></td><!-- edit -->
+            <td></td><!-- del -->
+         </tr>
+      </thead>
+      <tbody>
+         {% for reference in references %}
+         <tr>
+             <td>
+              <div class="elipsis_normal">
+                 {% if reference.url %}
+                     <a href="{{reference.url}}" target="_blank">{{reference.name}}</a>
+                 {% else %}
+                     {{reference.name}}
+                 {% endif %}
+              </div>
+            </td>
+            <td>
+               <span class="flag flag-{{reference.country}}" title="{{reference.country}}"></span>
+            </td>
+            <td>{{reference.created_at|date("Y-m-d") }}</td>
+            <td>
+               <div class="elipsis" title="{{reference.email}}">
+                  <a href="mailto:{{reference.email}}">{{reference.email}}</a>
+               </div>
+            </td>
+            <td>
+               <div>
+                  {% if reference.status == 1 %} <i class="fa fa-clock-o" title="Pending status means that the administrator has not yet managed the reference."></i>{% endif %}
+                  {% if reference.status == 0 %} <i class="fa fa-times" title="Denied status means that the administrator has encountered a problem with your reference."></i>{% endif %}
+                  {% if reference.status == 2 %} <i class="fa fa-check" title="Accepted status means that the administrator validated your reference. It is displayed in 'References' tab."></i>{% endif %}
+               </div>
+            </td>
+            <td>
+               <button class="btn btn-primary" data-toggle="modal" data-target="#register_reference_profile" onclick="showReferenceModal({{ reference }})">Edit</button>
+            </td>
+            <td>
+               <button class="btn btn-danger" data-toggle="modal" data-target="#delete_reference_profile" onclick="actionProfileDelete({{ reference }})">Delete</button>
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+   <nav aria-label="Page navigation">
+  {{ references.render() |raw }}
+  </nav>
+
+
+<!-- Edit your profile modal -->
+  <form method="post" action="{{ path_for('actionProfileUserUpdate') }}">
+    <div class="modal fade" id="edit_user_profile">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title">Update your profile informations</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body" id="modal_body_profile_user">
+
+            <h6>Change your informations</h6>
+
+            <div class="form-group">
+              <label class="sr-only" for="name">Name</label>
+              <input class="form-control form-control-sm" type="text"
+                     name='name'
+                     id="input_form_profile_user_name" 
+                     placeholder="Name" 
+                     value="{{ user_session.username | raw }}" 
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label class="sr-only" for="name">Mail</label>
+              <input class="form-control form-control-sm" type="email"
+                     name='mail'
+                     id="input_form_profile_user_mail" 
+                     placeholder="Mail" 
+                     value="{{ user_session.email | raw }}"
+                     required>
+            </div>
+
+            <h6>Change your password</h6>
+
+            <div class="form-group" id="div_form_profile_user_new_password">
+              <label class="sr-only" for="name">New password</label>
+              <input class="form-control form-control-sm" 
+                     type="password"
+                     name='new_password'
+                     id="input_form_profile_user_new_password" 
+                     placeholder="New password">
+            <div class="progress-bar d-none" 
+                 id="div_form_profile_user_new_password_progress_bar"
+                 role="progressbar"
+                 aria-valuemin="0" 
+                 aria-valuemax="100"
+                 style="width: 40%">
+            </div>
+            </div>
+
+            <div class="form-group" id="div_form_profile_user_confirm_password">
+              <label class="sr-only" for="name">Confirm password</label>
+              <input class="form-control form-control-sm" type="password"
+                     name='confirm_password'
+                     id="input_form_profile_user_confirm_password" 
+                     placeholder="Confirm password">
+            </div>
+
+            <div class="form-warn_profile_user">
+              <ul>
+                 <li>Password must be at least 8 characters.</li>
+                 <li>Password must have at least one uppercase letter.</li>
+                 <li>Password must have at least one lowercase letter.</li>
+                 <li>Password must have at least one digit.</li>
+              </ul>
+            </div>
+
+            <input type="hidden" name="ref_id" id="input_form_profile_user_id" value="{{ user_session.id }}">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-primary" id="submit_profile_user_update">Update</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ csrf.field | raw }}
+  </form>
+
+
+<!-- Delete your reference modal -->
+  <form method="post" action="{{ path_for('actionProfileReferenceDelete') }}">
+    <div class="modal fade" id="delete_reference_profile">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title">Confirm your choice</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body" id="modal_body_profile_delete">
+            <p>This action is final, your reference will be deleted.</p>
+            <input type="hidden" name="ref_id" id="input_form_profile_delete_id">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-primary" >Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ csrf.field | raw }}
+  </form>
+
+
+<!-- Update your reference modal -->
+   <form method="post" action="{{ path_for('actionProfileReferenceUpdate') }}">
+   <div class="modal fade" id="register_reference_profile">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">Update your reference</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body" id="modal_body_view_reference">
+               <div class="alert alert-warning" role="alert" id="warning-country">
+                  <strong>Warning!</strong> You may have note that your adblocker forbid a freegeoip url. We use this service only to locate your country and prefill the dropdown bellow!
+               </div>
+               <div class="form-group">
+                  <label class="sr-only" for="name">Name (company name)</label>
+                  <input class="form-control form-control-sm" type="text"
+                        required="required"
+                        name='name'
+                        placeholder="Your (company) name">
+               </div>
+
+               <div class="form-group">
+                  <label class="sr-only" for="url">Url</label>
+                  <input class="form-control form-control-sm" type="url"
+                         name='url'
+                         placeholder="URL">
+               </div>
+
+               <div class="form-group">
+                  <label class="sr-only" for="country">Country</label>
+                  <select class="form-control"
+                          id="countries_select_modal"
+                          name="country"
+                          placeholder="Country">
+                     <option></option>
+                     {% for country in countries %}
+                     <option value="{{country.cca2}}">{{country.name.common}}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+
+               <div class="form-group">
+                  <label class="sr-only" for="phone">Phone</label>
+                  <input class="form-control form-control-sm" type="text"
+                         name='phone'
+                         placeholder="Phone">
+               </div>
+
+               <div class="form-group">
+                  <label class="sr-only" for="email">Email</label>
+                  <input class="form-control form-control-sm" type="email"
+                         name="email"
+                         placeholder="Email">
+               </div>
+
+               <div class="form-group">
+                  <label class="sr-only" for="referent">Referent name</label>
+                  <input class="form-control form-control-sm" type="text"
+                         name="referent"
+                         placeholder="Referent name">
+               </div>
+
+    {% if dyn_refs|length > 0 %}
+        {% for key, labels in dyn_refs %}
+               <div class="form-group">
+                  <label class="sr-only" for="{{key}}">{{labels.label}}</label>
+                  <input class="form-control form-control-sm" type="number"
+                         name="{{key}}"
+                         min="0"
+                         placeholder="{{labels.label}}">
+               </div>
+        {% endfor %}
+    {% endif %}
+
+               <div class="form-group">
+                  <label class="sr-only" for="comment">Comment</label>
+                  <textarea class="form-control form-control-sm"
+                            name="comment"
+                            rows="6"
+                            placeholder="Your message"></textarea>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <input type="hidden" name="id" id="ref_id_form_update" />
+               <input type="hidden" name="uuid" value="{{uuid}}" />
+               <button type="submit" class="btn btn-outline-primary">Update</button>
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   {{ csrf.field | raw }}
+   </form>
+
+</div>
+{% endblock %}
+
+{% block userscripts %}
+{{ parent() }}
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="{{base_url()}}/libs/select2/js/select2.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    var countries_s2 = $("#countries_select_modal").select2({
+        templateSelection: formatState,
+        templateResult: formatState,
+        placeholder: "Country",
+        width: '100%',
+        dropdownParent: $('#register_reference_profile')
+    });
+});
+</script>
+{% endblock %}
