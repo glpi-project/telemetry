@@ -40,6 +40,7 @@
         "atoum/telemetry-extension": "^1.0"
     },
     "scripts": {
-        "start": "php -S 0.0.0.0:8080 -t public public/index.php"
+        "start": "php -S 0.0.0.0:8080 -t public public/index.php",
+        "post-install-cmd": "patch -d vendor/illuminate/database/ -p3 < illuminate-php7.2.patch"
     }
 }
