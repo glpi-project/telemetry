@@ -243,6 +243,7 @@ class Telemetry extends ControllerAbstract
             // retrieve db engine
             $db_engines = TelemetryModel::select(
                 DB::raw("CASE
+                            WHEN UPPER(db_engine) LIKE 'POSTGRE%' THEN 'PostgreSQL'
                             WHEN UPPER(db_engine) LIKE 'MARIA%' THEN 'MariaDB'
                             WHEN UPPER(db_engine) LIKE 'MYSQL%' THEN 'MySQL'
                             ELSE 'MySQL'
