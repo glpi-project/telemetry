@@ -3,7 +3,7 @@ var getCountryCode = null;
 $(document).ready(function() {
    // try to find user country (may be blocked by adblocker)
    // getCountryCode is a promise
-   getCountryCode = $.getJSON('http://freegeoip.net/json/');
+   getCountryCode = $.getJSON('https://freegeoip.net/json/');
 
    // laravel pagination generate boostrap 3 code,
    // as we use version 4, we add some aditionnal classes
