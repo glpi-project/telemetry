@@ -75,7 +75,7 @@ class Reference extends ControllerAbstract
                 $references = $model->paginate($_SESSION['reference']['pagination']);
             } catch (\Illuminate\Database\QueryException $e) {
                 if ($e->getCode() == '42P01') {
-                    //rlation does not exists
+                    //relation does not exists
                     throw new \RuntimeException(
                         'You have configured dynamic references for your project; but table ' .
                         $join_table . ' is missing!',

@@ -163,7 +163,9 @@
                             rows="6"
                             placeholder="Your message"></textarea>
                </div>
+    {% if mode != 'DEV' %}
                <div class="g-recaptcha" data-sitekey="{{ recaptchasitekey }}"></div>
+    {% endif %}
             </div>
             <div class="modal-footer">
                <input type="hidden" name="uuid" value="{{uuid}}" />
@@ -181,7 +183,9 @@
 {% block userscripts %}
 {{ parent() }}
 
+{% if mode != 'DEV' %}
 <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endif %}
 <script src="{{base_url()}}/libs/select2/js/select2.min.js"></script>
 
 <script type="text/javascript">
