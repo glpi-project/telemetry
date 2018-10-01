@@ -96,19 +96,19 @@
                   <label class="sr-only" for="name">Name (company name)</label>
                   <input class="form-control form-control-sm" type="text"
                         required="required"
-                        name='name'
+                        name="name" id="name"
                         placeholder="Your (company) name">
                </div>
 
                <div class="form-group">
                   <label class="sr-only" for="url">Url</label>
                   <input class="form-control form-control-sm" type="url"
-                         name='url'
+                         name="url" id="url"
                          placeholder="URL">
                </div>
 
                <div class="form-group">
-                  <label class="sr-only" for="country">Country</label>
+                  <label class="sr-only" for="countries_select">Country</label>
                   <select class="form-control"
                           id="countries_select"
                           name="country"
@@ -123,21 +123,21 @@
                <div class="form-group">
                   <label class="sr-only" for="phone">Phone</label>
                   <input class="form-control form-control-sm" type="text"
-                         name='phone'
+                         name="phone" id="phone"
                          placeholder="Phone">
                </div>
 
                <div class="form-group">
                   <label class="sr-only" for="email">Email</label>
                   <input class="form-control form-control-sm" type="email"
-                         name="email"
+                         name="email" id="email"
                          placeholder="Email">
                </div>
 
                <div class="form-group">
                   <label class="sr-only" for="referent">Referent name</label>
                   <input class="form-control form-control-sm" type="text"
-                         name="referent"
+                         name="referent" id="referent"
                          placeholder="Referent name">
                </div>
 
@@ -146,7 +146,7 @@
                <div class="form-group">
                   <label class="sr-only" for="{{key}}">{{labels.label}}</label>
                   <input class="form-control form-control-sm" type="number"
-                         name="{{key}}"
+                         name="{{key}}" id="{{key}}"
                          min="0"
                          placeholder="{{labels.label}}">
                </div>
@@ -156,7 +156,7 @@
                <div class="form-group">
                   <label class="sr-only" for="comment">Comment</label>
                   <textarea class="form-control form-control-sm"
-                            name="comment"
+                            name="comment" id="comment"
                             rows="6"
                             placeholder="Your message"></textarea>
                </div>
