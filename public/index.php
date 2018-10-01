@@ -28,7 +28,7 @@ $app->get('/reference[/page/{page:\d+}]', 'GLPI\Telemetry\Controllers\Reference:
 //References filtering
 $app->map(
     ['get', 'post'],
-    '/reference/filter[/order/{orderby}]',
+    '/reference/{action:filter|order}[/{value}]',
     'GLPI\Telemetry\Controllers\Reference:filter'
 )
    ->add(new GLPI\Telemetry\Middleware\CsrfView($container))
@@ -71,6 +71,11 @@ $app->get(
     '/telemetry/plugins/all',
     'GLPI\Telemetry\Controllers\Telemetry:allPlugins'
 )->setName('allPlugins');
+
+$app->post(
+    '/references/filter',
+    'GLPI\Telemetry\Controllers\References\doFilter'
+)->setName('filter_references');
 
 // run slim
 $app->run();

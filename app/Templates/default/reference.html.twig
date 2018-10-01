@@ -17,31 +17,65 @@
 
 {% block content %}
 <div class="container">
+    <h4>
+        {{total}} users already registered their {{project_name}} installations
+        {% if filters.count is defined and filters.count != total %} <span class="small">({{ filters.count }} found)</span>{% endif %}
+    </h4>
 
-    <h4>{{total}} users already registered their {{project_name}} installation</h4>
+    <form id="filter_references" action="{{ path_for('filterReferences', {'action': 'filter'}) }}" method="POST">
+        <div class="row">
+            <div class="col">
+                <input name="filter_name" id="filter_name" type="text" class="form-control form-control-sm" placeholder="Name" value="{{filters.name|default('')}}">
+            </div>
+            <div class="col">
+                <select class="form-control"
+                        id="filter_country"
+                        name="filter_country"
+                        placeholder="Select a country">
+                    <option>Select a country</option>
+                    {% for country in countries %}
+                    <option value="{{country.cca2}}"{% if filters.country is defined and filters.country == country.cca2 %} selected="selected"{% endif %}>{{country.name.common}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="col-md-auto">
+                <button type="submit" class="btn btn-dark btn-sm">
+                    <i class="fa fa-search"></i>
+                    <span class="sr-only">Search</span>
+                </button>
+                <button type="submit" class="btn btn-sm" name="reset_filters">
+                    <i class="fa fa-trash-o"></i>
+                    <span class="sr-only">Reset</span>
+                </button>
+            </div>
+
+        </div>
+        {{ csrf.field | raw }}
+    </form>
 
    <table class="table table-striped glpi_references">
       <thead>
          <tr>
             <td>
                {% if orderby == 'name' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterReferences', {'orderby': 'name'}) }}">Name</a>
+               <a href="{{ path_for('filterReferences', {'action': 'order', 'value': 'name'}) }}">Name</a>
             </td>
             <td>
                {% if orderby == 'country' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterReferences', {'orderby': 'country'}) }}">Country</a>
+               <a href="{{ path_for('filterReferences', {'action': 'order', 'value': 'country'}) }}">Country</a>
             </td>
     {% if dyn_refs|length > 0 %}
         {% for key, labels in dyn_refs %}
             <td>
                {% if orderby == key %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterReferences', {'orderby': key}) }}">{{labels.short_label}}</a>
+               <a href="{{ path_for('filterReferences', {'action': 'order', 'value': key}) }}">{{labels.short_label}}</a>
             </td>
         {% endfor %}
     {% endif %}
             <td>
                {% if orderby == 'created_at' %}<i class="fa fa-sort-{{sort}}"></i>{% endif %}
-               <a href="{{ path_for('filterReferences', {'orderby': 'created_at'}) }}">Registration date</a>
+               <a href="{{ path_for('filterReferences', {'action': 'order', 'value': 'created_at'}) }}">Registration date</a>
             </td>
             <td>
                Comment
@@ -188,13 +222,20 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    var countries_s2 = $("#countries_select").select2({
+    $("#countries_select").select2({
         templateSelection: formatState,
         templateResult: formatState,
         placeholder: "Country",
         width: '100%',
         dropdownParent: $('#register_reference')
     });
+
+    $("#filter_country").select2({
+        templateSelection: formatState,
+        templateResult: formatState,
+        width: '100%',
+    });
+
 
    // if get parameter showmodal is present, show the corresponding modal
    {% if showmodal == true %}

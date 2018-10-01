@@ -32,24 +32,27 @@ class Reference extends ControllerAbstract
             }
             $_SESSION['reference']['orderby'] = $get['orderby'];
         }
-        $_SESSION['reference']['pagination'] = 15;
 
-        //check for refences presence
-        $dyn_refs = $this->container->project->getDynamicReferences();
-        if (false === $dyn_refs) {
-             // retrieve data from model
-            $references = ReferenceModel::active()->orderBy(
-                $_SESSION['reference']['orderby'],
-                $_SESSION['reference']['sort']
-            )->paginate($_SESSION['reference']['pagination']);
-        } else {
-            try {
+        $_SESSION['reference']['pagination'] = 15;
+        $order_field = $_SESSION['reference']['orderby'];
+        $order_sort  = $_SESSION['reference']['sort'];
+
+        try {
+            //prepare model and common queries
+            $ref = new ReferenceModel();
+            $model = $ref->newInstance();
+            $where = [
+                ['is_displayed', '=', true]
+            ];
+
+            //check for references presence
+            $dyn_refs = $this->container->project->getDynamicReferences();
+            if (false !== $dyn_refs) {
                 $join_table = $this->container->project->getSlug() . '_reference';
-                $order_field = $_SESSION['reference']['orderby'];
                 $order_table = (isset($dyn_refs[$order_field]) ? $join_table : 'reference');
+                $order_field = $order_table . '.' . $order_field;
+
                 // retrieve data from model
-                $ref = new ReferenceModel();
-                $model = $ref->newInstance();
                 $model = call_user_func_array(
                     [
                         $model,
@@ -65,26 +68,44 @@ class Reference extends ControllerAbstract
                         )
                     )
                 );
-                $model->where('is_displayed', '=', true);
-                $model->orderBy(
-                    $order_table . '.' . $order_field,
-                    $_SESSION['reference']['sort']
-                )
-                    ->leftJoin($join_table, 'reference.id', '=', $join_table . '.reference_id')
-                ;
-                $references = $model->paginate($_SESSION['reference']['pagination']);
-            } catch (\Illuminate\Database\QueryException $e) {
-                if ($e->getCode() == '42P01') {
-                    //relation does not exists
-                    throw new \RuntimeException(
-                        'You have configured dynamic references for your project; but table ' .
-                        $join_table . ' is missing!',
-                        0,
-                        $e
-                    );
-                }
-                throw $e;
+                $model->leftJoin($join_table, 'reference.id', '=', $join_table . '.reference_id');
             }
+
+            $current_filters = [];
+            if (isset($_SESSION['reference']['filters'])) {
+                if (!empty($_SESSION['reference']['filters']['name'])) {
+                    $current_filters['name'] = $_SESSION['reference']['filters']['name'];
+                    $where[] = ['name', 'like', "%{$_SESSION['reference']['filters']['name']}%"];
+                }
+                if (!empty($_SESSION['reference']['filters']['country'])) {
+                    $current_filters['country'] = $_SESSION['reference']['filters']['country'];
+                    $where[] = ['country', '=', strtolower($_SESSION['reference']['filters']['country'])];
+                }
+            }
+
+            $model->where($where);
+            if (count($where) > 1) {
+                //calculate filtered number of references
+                $current_filters['count'] = $model->count('reference.id');
+            }
+
+            $model->orderBy(
+                $order_field,
+                $order_sort
+            );
+
+            $references = $model->paginate($_SESSION['reference']['pagination']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '42P01') {
+                //relation does not exists
+                throw new \RuntimeException(
+                    'You have configured dynamic references for your project; but table ' .
+                    $join_table . ' is missing!',
+                    0,
+                    $e
+                );
+            }
+            throw $e;
         }
 
         $references->setPath($this->container->router->pathFor('reference'));
@@ -99,7 +120,8 @@ class Reference extends ControllerAbstract
             'pagination'    => $references->appends($_GET)->render(),
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
-            'dyn_refs'      => $dyn_refs
+            'dyn_refs'      => $dyn_refs,
+            'filters'       => $current_filters
         ]);
     }
 
@@ -182,14 +204,31 @@ class Reference extends ControllerAbstract
         $get = $req->getQueryParams();
 
         // manage sorting
-        if (isset($args['orderby'])) {
-            if ($_SESSION['reference']['orderby'] == $args['orderby']) {
+        if ($args['action'] == 'order') {
+            if (!isset($args['value'])) {
+                throw new \RuntimeException('Missing value for sorting!');
+            }
+            $req_order = $args['value'];
+            if ($_SESSION['reference']['orderby'] == $req_order) {
                // toggle sort if orderby requested on the same column
                 $_SESSION['reference']['sort'] = ($_SESSION['reference']['sort'] == "desc"
                                                 ? "asc"
                                                 : "desc");
             }
-            $_SESSION['reference']['orderby'] = $args['orderby'];
+            $_SESSION['reference']['orderby'] = $req_order;
+        }
+
+        // manage filtering
+        if ($args['action'] == 'filter') {
+            $post = $req->getParsedBody();
+            if (isset($post['reset_filters'])) {
+                unset($_SESSION['reference']['filters']);
+            } else {
+                $_SESSION['reference']['filters'] = [
+                    'name'     => $post['filter_name'],
+                    'country'  => $post['filter_country']
+                ];
+            }
         }
 
         return $res->withRedirect($this->container->router->pathFor('reference'));
