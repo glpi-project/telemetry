@@ -34,7 +34,9 @@
                         placeholder="Select a country">
                     <option>Select a country</option>
                     {% for country in countries %}
+                        {% if country.cca2|lower in ref_countries %}
                     <option value="{{country.cca2}}"{% if filters.country is defined and filters.country == country.cca2 %} selected="selected"{% endif %}>{{country.name.common}}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
 

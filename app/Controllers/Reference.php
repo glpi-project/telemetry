@@ -110,6 +110,12 @@ class Reference extends ControllerAbstract
 
         $references->setPath($this->container->router->pathFor('reference'));
 
+        $ref_countries = [];
+        $existing_countries = ReferenceModel::select('country')->groupBy('country')->get();
+        foreach ($existing_countries as $existing_country) {
+            $ref_countries[] = $existing_country['country'];
+        }
+
         // render in twig view
         $this->render($this->container->project->pathFor('reference.html.twig'), [
             'total'         => ReferenceModel::active()->count(),
@@ -121,7 +127,8 @@ class Reference extends ControllerAbstract
             'orderby'       => $_SESSION['reference']['orderby'],
             'sort'          => $_SESSION['reference']['sort'],
             'dyn_refs'      => $dyn_refs,
-            'filters'       => $current_filters
+            'filters'       => $current_filters,
+            'ref_countries' => $ref_countries
         ]);
     }
 
