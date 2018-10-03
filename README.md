@@ -11,7 +11,7 @@ Check [installation instructions](install.md) to know how to run it.
 
 Known running instances (feel free to open a pull request to add your own):
 
-* [GLPI Telemetry website](http://glpi-project.org/telemetry),
+* [GLPI Telemetry website](https://telemetry.glpi-project.org),
 * [Galette Telemetry website](https://telemetry.galette.eu)
 
 ## Under the hood
