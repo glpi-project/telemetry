@@ -192,3 +192,9 @@ td.sort
     color: orange;
 }
 /** /Messaging */
+
+/** Filtering */
+#filter_references {
+    margin-bottom: .5em;
+}
+/** /Filtering */

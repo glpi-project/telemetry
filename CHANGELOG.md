@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2018-10-02
+
+Add version in footer
+Add a DEV mode to enable debug and disable captcha
+Add references filtering on name and country
+Update to latest boostrap
+Improve DB engine detection, display Percona and PostgreSQL
+Fix infinite loader on map
+Remove country detection (that was broken anyways)
+Fix form labels
+
 ## [1.1.1] - 2018-06-26
 
 Fix error on truncating

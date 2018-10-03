@@ -27,7 +27,4 @@ return $config = [
    ],
    'mail_admin' => '',
    'mail_from' => 'glpi-telemetry@teclib.com',
-   'debug' => true,
-   'displayErrorDetails' => true,
-   'addContentLengthHeader' => false,
 ];

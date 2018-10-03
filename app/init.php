@@ -12,6 +12,18 @@ session_start();
 
 // include user configuration
 $config = require __DIR__ .  '/../config.inc.php';
+if (file_exists(__DIR__ . '/../local.config.inc.php')) {
+    require_once __DIR__ . '/../local.config.inc.php';
+}
+if (!defined('TELEMETRY_MODE')) {
+    define('TELEMETRY_MODE', 'PROD');
+}
+
+$config['addContentLengthHeader'] = false;
+if (TELEMETRY_MODE == 'DEV') {
+    $config['debug'] = true;
+    $config['displayErrorDetails'] = true;
+}
 
 //check for required options
 $valid_conf = true;
@@ -113,18 +125,24 @@ $container['view'] = function ($c) {
     //footer links
     $env->addGlobal('footer_links', $c->project->getFooterLinks());
 
+    //app mode
+    $env->addGlobal('mode', TELEMETRY_MODE);
+
     return $view;
 };
 
 //setup recaptcha
-$container[Captcha::class] = function ($c) {
-    return new Captcha($c[ReCaptcha::class]);
-};
-$container[ReCaptcha::class] = function ($c) {
-    return new ReCaptcha($c['settings']['recaptcha']['secret']);
-};
-$recaptcha = $app->getContainer()->get(Captcha::class);
-
+if (TELEMETRY_MODE == 'DEV') {
+    $recaptcha = null;
+} else {
+    $container[Captcha::class] = function ($c) {
+        return new Captcha($c[ReCaptcha::class]);
+    };
+    $container[ReCaptcha::class] = function ($c) {
+        return new ReCaptcha($c['settings']['recaptcha']['secret']);
+    };
+    $recaptcha = $app->getContainer()->get(Captcha::class);
+}
 
 // system error handling
 $container['errorHandler'] = function ($c) {

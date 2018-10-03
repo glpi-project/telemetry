@@ -30,6 +30,9 @@ var _loadMapRefs = function(references_map) {
       var group = new L.featureGroup;
       $.each($('#references_countries').data("id"), function(index, value) {
          var current_geojson = countries_geo[value['cca3']];
+         if (typeof current_geojson == 'undefined') {
+            return;
+         }
          for (var attr in value) {
             current_geojson.features[0].properties[attr] = value[attr];
          }
