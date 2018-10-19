@@ -33,6 +33,12 @@ class Project
         ]
     ];
     private $dyn_references = [
+        'can_prospect'  => [
+            'label'     => 'I agree to receive emails from GLPI and Teclib (including Newsletters, as well as promotional offers and announcements)',
+            'in_list'   => false,
+            'checked'   => true,
+            'type'      => 'boolean'
+        ],
         'num_assets'    => [
             'label'         => 'Number of assets',
             'short_label'   => '# assets'
