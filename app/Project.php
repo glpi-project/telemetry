@@ -178,6 +178,16 @@ class Project
                 throw new \UnexpectedValueException('Dynamic references configuration must be an array or false');
             }
         }
+
+        $known_types = [
+            'number',
+            'boolean'
+        ];
+        foreach ($this->dyn_references as $reference) {
+            if (isset($reference['type']) && !in_array($reference['type'], $known_types)) {
+                throw new \UnexpectedValueException('Unkown type ' . $reference['type']);
+            }
+        }
     }
 
     /**
