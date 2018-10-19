@@ -133,7 +133,10 @@ $container['view'] = function ($c) {
 
 //setup recaptcha
 if (TELEMETRY_MODE == 'DEV') {
-    $recaptcha = null;
+    $recaptcha = function ($request, $response, $next) {
+        //does nothing
+        return $next($request, $response);
+    };
 } else {
     $container[Captcha::class] = function ($c) {
         return new Captcha($c[ReCaptcha::class]);
